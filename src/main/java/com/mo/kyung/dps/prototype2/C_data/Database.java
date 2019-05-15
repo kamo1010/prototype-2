@@ -1,4 +1,4 @@
-package com.mo.kyung.dps.prototype2.data;
+package com.mo.kyung.dps.prototype2.C_data;
 
 import java.util.Collections;
 import java.util.Map;
@@ -6,9 +6,9 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import com.mo.kyung.dps.prototype2.data.datatypes.AccountUser;
-import com.mo.kyung.dps.prototype2.data.datatypes.ExchangeMessage;
-import com.mo.kyung.dps.prototype2.data.datatypes.Topic;
+import com.mo.kyung.dps.prototype2.C_data.datatypes.AccountUser;
+import com.mo.kyung.dps.prototype2.C_data.datatypes.ExchangeMessage;
+import com.mo.kyung.dps.prototype2.C_data.datatypes.Topic;
 
 public class Database {
 	private static Map<String, AccountUser> users = new TreeMap<String, AccountUser>();
@@ -16,6 +16,7 @@ public class Database {
 	private static Set<ExchangeMessage> uploadedMessages = new TreeSet<ExchangeMessage>();
 	
 	static {
+		addUser(new AccountUser("Patrick", "GRIMBERG", "patrick", "grimberg"));
 		addUser(new AccountUser("Jérôme", "DAZIANO", "jerome", "daziano"));
 		addUser(new AccountUser("Maud", "CADORET", "maud", "cadoret"));
 		addUser(new AccountUser("Hamza", "OUCHEIKH", "hamza", "oucheikh"));
@@ -35,6 +36,19 @@ public class Database {
 		addTopic(new Topic("Administrator"));
 		addTopic(new Topic("Karren"));
 		addTopic(new Topic("Stagiaires"));
+		
+		getUser("abdoulaye").subscribeToTopic(getTopic("Administrator"));
+		getUser("abdoulaye").subscribeToTopic(getTopic("Stagiaires"));
+		getUser("abdoulaye").subscribeToTopic(getTopic("Karren"));
+		getUser("abdoulaye").subscribeToTopic(getTopic("Administrator"));
+		getUser("didier").subscribeToTopic(getTopic("Administrator"));
+		getUser("antoine").subscribeToTopic(getTopic("Administrator"));
+		getUser("patrick").subscribeToTopic(getTopic("Administrator"));
+		getUser("maud").subscribeToTopic(getTopic("Stagiaires"));
+		getUser("alexis").subscribeToTopic(getTopic("Stagiaires"));
+		getUser("hamza").subscribeToTopic(getTopic("Stagiaires"));
+		getUser("kyungmo").subscribeToTopic(getTopic("Stagiaires"));
+		getUser("jerome").subscribeToTopic(getTopic("Karren"));
 	}
 	
 	public static AccountUser addUser(AccountUser user) {

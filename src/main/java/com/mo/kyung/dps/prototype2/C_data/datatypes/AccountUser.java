@@ -1,12 +1,13 @@
-package com.mo.kyung.dps.prototype2.data.datatypes;
+package com.mo.kyung.dps.prototype2.C_data.datatypes;
 
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.mo.kyung.dps.prototype2.data.resources.UserDetailResource;
+import com.mo.kyung.dps.prototype2.C_data.Database;
+import com.mo.kyung.dps.prototype2.C_data.resources.UserDetailResource;
 
-public class AccountUser {
+public class AccountUser implements Comparable<AccountUser> {
 	private String firstName, lastName, login, password;
 	private Set<Topic> topics;
 	private String token;
@@ -67,18 +68,27 @@ public class AccountUser {
 		this.login = login;
 		this.password = password;
 		this.topics = new HashSet<Topic>();
+		this.topics.add(Database.getTopic("Administration"));
 		this.token = null;
 	}
 	public boolean isInterestedIn(Topic topic) {
 		return topics.contains(topic);
 	}
 	public UserDetailResource buildUserDetailResource() {
-		return new UserDetailResource(firstName, lastName, login, topics);
+		Set<String> topicsNames = new HashSet<String>();
+		for (Topic topic : topics) {
+			topicsNames.add(topic.getName());
+		}
+		return new UserDetailResource(firstName, lastName, login, topicsNames);
 	}
 	public boolean subscribeToTopic(Topic topic) {
 		return (addTopic(topic) && topic.addSubscriber(this));
 	}
 	public boolean unsubscribe(Topic topic) {
 		return removeTopic(topic);
+	}
+	@Override
+	public int compareTo(AccountUser anotherUser) {
+		return getLogin().compareTo(anotherUser.getLogin());
 	}
 }

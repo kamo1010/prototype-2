@@ -1,17 +1,15 @@
-package com.mo.kyung.dps.prototype2.data.resources;
+package com.mo.kyung.dps.prototype2.C_data.resources;
 
 import java.util.Set;
 
-import com.mo.kyung.dps.prototype2.data.datatypes.Topic;
-
 public class UserDetailResource {
 	private String firstName, lastName, login;
-	private Set<Topic> topics;
+	private Set<String> topicsNames;
 	public String getFirstName() {
 		return firstName;
 	}
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+	public void setFirstName(String firstNames) {
+		this.firstName = firstNames;
 	}
 	public String getLastName() {
 		return lastName;
@@ -25,20 +23,20 @@ public class UserDetailResource {
 	public void setLogin(String login) {
 		this.login = login;
 	}
-	public Set<Topic> getTopics() {
-		return topics;
+	public Set<String> getTopicsNames() {
+		return topicsNames;
 	}
-	public void setTopics(Set<Topic> topics) {
-		this.topics = topics;
+	public void setTopics(Set<String> topicsNames) {
+		this.topicsNames = topicsNames;
 	}
 	public UserDetailResource() {
 		super();
 	}
-	public UserDetailResource(String firstName, String lastName, String login, Set<Topic> topics) {
+	public UserDetailResource(String firstName, String lastName, String login, Set<String> topicsNames) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.login = login;
-		this.topics = topics;
+		this.topicsNames = topicsNames;
 	}
 }

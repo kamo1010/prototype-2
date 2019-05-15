@@ -1,9 +1,10 @@
-package com.mo.kyung.dps.prototype2.data.datatypes;
+package com.mo.kyung.dps.prototype2.C_data.datatypes;
 
 import java.util.Date;
 
-import com.mo.kyung.dps.prototype2.data.Database;
-import com.mo.kyung.dps.prototype2.data.resources.ExchangeMessageResource;
+import com.mo.kyung.dps.prototype2.C_data.Database;
+import com.mo.kyung.dps.prototype2.C_data.resources.ExchangeMessageReceiveResource;
+import com.mo.kyung.dps.prototype2.C_data.resources.ExchangeMessageResource;
 
 public class ExchangeMessage implements Comparable<ExchangeMessage>{
 	private AccountUser author;
@@ -55,5 +56,9 @@ public class ExchangeMessage implements Comparable<ExchangeMessage>{
 	@Override
 	public int compareTo(ExchangeMessage o) {
 		return -1 * editionDate.compareTo(o.getEditionDate()); //anti-chronological order
+	}
+	public ExchangeMessageReceiveResource buildReceiveResource() {
+		return new ExchangeMessageReceiveResource(new StringBuilder(author.getFirstName()).append(" ").append(author.getLastName()).toString(),
+				topic.getName(), payload, editionDate.toString());
 	}
 }

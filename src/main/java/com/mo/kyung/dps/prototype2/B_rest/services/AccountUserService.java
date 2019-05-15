@@ -1,4 +1,4 @@
-package com.mo.kyung.dps.prototype2.rest.services;
+package com.mo.kyung.dps.prototype2.B_rest.services;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
@@ -21,12 +21,13 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import com.mo.kyung.dps.prototype2.data.Database;
-import com.mo.kyung.dps.prototype2.data.datatypes.AccountUser;
-import com.mo.kyung.dps.prototype2.data.datatypes.ExchangeMessage;
-import com.mo.kyung.dps.prototype2.data.datatypes.Topic;
-import com.mo.kyung.dps.prototype2.data.resources.ExchangeMessageResource;
-import com.mo.kyung.dps.prototype2.data.resources.InvitationResource;
+import com.mo.kyung.dps.prototype2.C_data.Database;
+import com.mo.kyung.dps.prototype2.C_data.datatypes.AccountUser;
+import com.mo.kyung.dps.prototype2.C_data.datatypes.ExchangeMessage;
+import com.mo.kyung.dps.prototype2.C_data.datatypes.Topic;
+import com.mo.kyung.dps.prototype2.C_data.resources.ExchangeMessageReceiveResource;
+import com.mo.kyung.dps.prototype2.C_data.resources.ExchangeMessageResource;
+import com.mo.kyung.dps.prototype2.C_data.resources.InvitationResource;
 
 @Path("{login}")
 public class AccountUserService {
@@ -38,7 +39,7 @@ public class AccountUserService {
 			return Response.status(Status.UNAUTHORIZED).build();
 		} else {
 			if (login.equals(new String(Base64.getDecoder().decode(token), StandardCharsets.UTF_8.toString())
-					.split("+101+")[0])) {
+					.split("@101@")[0])) {
 				return Response.ok(Database.getUser(login).buildUserDetailResource()).build();
 			} else {
 				return Response.status(Status.FORBIDDEN).build();
@@ -54,7 +55,7 @@ public class AccountUserService {
 			return Response.status(Status.UNAUTHORIZED).build();
 		} else {
 			if (login.equals(new String(Base64.getDecoder().decode(token), StandardCharsets.UTF_8.toString())
-					.split("+101+")[0])) {
+					.split("@101@")[0])) {
 				Database.addMessage(new ExchangeMessage(login, message, new Date()));
 				StringBuilder builder = new StringBuilder(login).append("notifications");
 				return Response.created(new URI(builder.toString())).build();
@@ -72,12 +73,12 @@ public class AccountUserService {
 			return Response.status(Status.UNAUTHORIZED).build();
 		} else {
 			if (login.equals(new String(Base64.getDecoder().decode(token), StandardCharsets.UTF_8.toString())
-					.split("+101+")[0])) {
+					.split("@101@")[0])) {
 				AccountUser user = Database.getUser(login);
-				List<ExchangeMessageResource> messages = new ArrayList<ExchangeMessageResource>();
+				List<ExchangeMessageReceiveResource> messages = new ArrayList<ExchangeMessageReceiveResource>();
 				for (ExchangeMessage exchangeMessage : Database.getUploadedMessages()) {
 					if (user.isInterestedIn(exchangeMessage.getTopic())) {
-						messages.add(exchangeMessage.buildResource());
+						messages.add(exchangeMessage.buildReceiveResource());
 					}
 				}
 				return Response.ok(messages).build();
@@ -94,7 +95,7 @@ public class AccountUserService {
 		if (token.isEmpty()) {
 			return Response.status(Status.UNAUTHORIZED).build();
 		} else {
-			if (login.equals(new String(Base64.getDecoder().decode(token), StandardCharsets.UTF_8.toString()).split("+101+")[0])) {
+			if (login.equals(new String(Base64.getDecoder().decode(token), StandardCharsets.UTF_8.toString()).split("@101@")[0])) {
 				return Response.ok(Database.getUser(login).getTopics()).build();
 			} else {
 				return Response.status(Status.FORBIDDEN).build();
@@ -110,15 +111,16 @@ public class AccountUserService {
 			return Response.status(Status.UNAUTHORIZED).build();
 		} else {
 			if (login.equals(new String(Base64.getDecoder().decode(token), StandardCharsets.UTF_8.toString())
-					.split("+101+")[0])) {
-				if (Database.getTopics().containsKey(topicName)) {
+					.split("@101@")[0])) {
+				if (!Database.getTopics().containsKey(topicName)) {
 					Topic topic = new Topic(topicName);
 					AccountUser user = Database.getUser(login);
 					Database.addTopic(topic);
 					user.subscribeToTopic(topic);
+					StringBuilder builder = new StringBuilder(login).append("/topics/").append(topicName);
+					return Response.created(new URI(builder.toString())).build();
 				}
-				StringBuilder builder = new StringBuilder(login).append("topics/").append(topicName);
-				return Response.created(new URI(builder.toString())).build();
+				return Response.status(418).build();
 			} else {
 				return Response.status(Status.FORBIDDEN).build();
 			}
@@ -133,7 +135,7 @@ public class AccountUserService {
 			return Response.status(Status.UNAUTHORIZED).build();
 		} else {
 			if (login.equals(new String(Base64.getDecoder().decode(token), StandardCharsets.UTF_8.toString())
-					.split("+101+")[0])) {
+					.split("@101@")[0])) {
 				AccountUser user = Database.getUser(login);
 				Topic topic = Database.getTopic(topicName);
 				if (user.getTopics().contains(topic)) {
@@ -156,15 +158,18 @@ public class AccountUserService {
 			return Response.status(Status.UNAUTHORIZED).build();
 		} else {
 			if (login.equals(new String(Base64.getDecoder().decode(token), StandardCharsets.UTF_8.toString())
-					.split("+101+")[0])) {
+					.split("@101@")[0])) {
 				AccountUser user = Database.getUser(login);
 				Topic topic = Database.getTopic(invitation.getTopicName());
 				if (user.getTopics().contains(topic)) {
-					for (String inviteeLogin : invitation.getLogins()) {
-						Database.getUser(inviteeLogin).subscribeToTopic(topic);
+					if (Database.getUser(invitation.getLogin()).subscribeToTopic(topic)) {
+						return Response.ok().build();
+					} else {
+						return Response.status(Status.BAD_REQUEST).build();
 					}
+				} else {
+					return Response.status(418, "You cannot invite users to a topic you haven't subscribed to").build();
 				}
-				return Response.status(418, "You cannot invite users to a topic you haven't subscribed to").build();
 			} else {
 				return Response.status(Status.FORBIDDEN).build();
 			}

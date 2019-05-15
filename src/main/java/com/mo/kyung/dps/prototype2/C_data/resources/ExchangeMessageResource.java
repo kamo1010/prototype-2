@@ -1,4 +1,4 @@
-package com.mo.kyung.dps.prototype2.data.resources;
+package com.mo.kyung.dps.prototype2.C_data.resources;
 
 public class ExchangeMessageResource {
 	private String topic;

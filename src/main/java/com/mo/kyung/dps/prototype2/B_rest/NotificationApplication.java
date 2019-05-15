@@ -1,4 +1,4 @@
-package com.mo.kyung.dps.prototype2.rest;
+package com.mo.kyung.dps.prototype2.B_rest;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -6,8 +6,8 @@ import java.util.Set;
 
 import javax.ws.rs.core.Application;
 
-import com.mo.kyung.dps.prototype2.rest.services.AuthenticationService;
-import com.mo.kyung.dps.prototype2.rest.services.AccountUserService;
+import com.mo.kyung.dps.prototype2.B_rest.services.AccountUserService;
+import com.mo.kyung.dps.prototype2.B_rest.services.AuthenticationService;
 
 public class NotificationApplication extends Application {
 	private Set<Class<?>> classes = new HashSet<Class<?>>();
