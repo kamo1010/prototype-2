@@ -101,14 +101,17 @@ public class Database {
 		}
 		return null;//user does not exist
 	}
-	public static boolean addConnectedUser(AccountUser connectedUser, String token) {
-		if (!connectedUsers.containsValue(connectedUser)) {
-			connectedUsers.put(token, connectedUser);
+	public static boolean addConnectedUser(AccountUser user) {
+		if (!connectedUsers.containsValue(user)) {
+			user.logIn();
+			connectedUsers.put(user.getToken(), user);
 			return true;
 		}
 		return false;
 	}
-	public static boolean removeConnectedUser(AccountUser user, String token) {
+	public static boolean removeConnectedUser(AccountUser user) {
+		String token = user.getToken();
+		user.logOut();
 		return connectedUsers.remove(token, user);
 	}
 	public static Set<ExchangeMessage> getUploadedMessages() {

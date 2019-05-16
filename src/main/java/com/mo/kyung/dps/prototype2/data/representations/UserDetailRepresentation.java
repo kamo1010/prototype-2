@@ -1,10 +1,20 @@
-package com.mo.kyung.dps.prototype2.data.resources;
+package com.mo.kyung.dps.prototype2.data.representations;
 
 import java.util.Set;
 
-public class UserDetailResource {
+public class UserDetailRepresentation {
 	private String firstName, lastName, login;
 	private Set<String> topicsNames;
+	public UserDetailRepresentation() {
+		super();
+	}
+	public UserDetailRepresentation(String firstName, String lastName, String login, Set<String> topicsNames) {
+		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.login = login;
+		this.topicsNames = topicsNames;
+	}
 	public String getFirstName() {
 		return firstName;
 	}
@@ -27,16 +37,6 @@ public class UserDetailResource {
 		return topicsNames;
 	}
 	public void setTopics(Set<String> topicsNames) {
-		this.topicsNames = topicsNames;
-	}
-	public UserDetailResource() {
-		super();
-	}
-	public UserDetailResource(String firstName, String lastName, String login, Set<String> topicsNames) {
-		super();
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.login = login;
 		this.topicsNames = topicsNames;
 	}
 }

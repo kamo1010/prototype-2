@@ -1,10 +1,12 @@
-package com.mo.kyung.dps.prototype2.data.resources;
+package com.mo.kyung.dps.prototype2.data.representations;
 
-public class ExchangeMessageResource {
+public class ExchangeMessageRepresentation {
 	private String topic;
 	private String payload;
-
-	public ExchangeMessageResource(String topic, String payload) {
+	public ExchangeMessageRepresentation() {
+		super();
+	}
+	public ExchangeMessageRepresentation(String topic, String payload) {
 		this.topic = topic;
 		this.payload = payload;
 	}
@@ -19,8 +21,5 @@ public class ExchangeMessageResource {
 	}
 	public void setPayload(String payload) {
 		this.payload = payload;
-	}
-	public ExchangeMessageResource() {
-		super();
 	}
 }

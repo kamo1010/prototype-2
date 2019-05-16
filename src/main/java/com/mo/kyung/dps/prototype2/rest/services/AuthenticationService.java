@@ -13,7 +13,7 @@ import javax.ws.rs.core.Response;
 
 import com.mo.kyung.dps.prototype2.data.Database;
 import com.mo.kyung.dps.prototype2.data.datatypes.AccountUser;
-import com.mo.kyung.dps.prototype2.data.resources.AccountUserResource;
+import com.mo.kyung.dps.prototype2.data.representations.AccountUserRepresentation;
 
 
 //this service is ok
@@ -22,7 +22,7 @@ public class AuthenticationService {
 	@POST
 	@Path("in")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response logIn(AccountUserResource credentials) throws UnsupportedEncodingException {
+	public Response logIn(AccountUserRepresentation credentials) throws UnsupportedEncodingException {
 		for (AccountUser user : Database.getUsers().values()) {
 			if (user.getLogin().equals(credentials.getLogin()) && user.getPassword().equals(credentials.getPassword())) {
 				if (!user.isConnected()) {

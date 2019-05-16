@@ -6,9 +6,9 @@ import javax.websocket.DecodeException;
 import javax.websocket.Decoder;
 import javax.websocket.EndpointConfig;
 
-import com.mo.kyung.dps.prototype2.data.resources.ExchangeMessageResource;
+import com.mo.kyung.dps.prototype2.data.representations.ExchangeMessageRepresentation;
 
-public class NotificationDecoder implements Decoder.Text<ExchangeMessageResource>{
+public class NotificationDecoder implements Decoder.Text<ExchangeMessageRepresentation>{
 
 	@Override
 	public void init(EndpointConfig config) {
@@ -19,9 +19,9 @@ public class NotificationDecoder implements Decoder.Text<ExchangeMessageResource
 	}
 
 	@Override
-	public ExchangeMessageResource decode(String message) throws DecodeException {
+	public ExchangeMessageRepresentation decode(String message) throws DecodeException {
 		try {
-            return Constants.getMapper().readValue(message, ExchangeMessageResource.class);
+            return Constants.getMapper().readValue(message, ExchangeMessageRepresentation.class);
         } catch (IOException e) {
             throw new DecodeException(message, "Unable to decode text to Message", e);
         }

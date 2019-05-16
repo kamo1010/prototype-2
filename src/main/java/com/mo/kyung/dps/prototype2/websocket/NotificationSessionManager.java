@@ -10,7 +10,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import javax.websocket.CloseReason;
 import javax.websocket.CloseReason.CloseCodes;
 
-import com.mo.kyung.dps.prototype2.data.resources.ExchangeMessageResource;
+import com.mo.kyung.dps.prototype2.data.representations.ExchangeMessageRepresentation;
 
 import javax.websocket.EncodeException;
 import javax.websocket.Session;
@@ -24,7 +24,7 @@ public class NotificationSessionManager {
         throw new IllegalStateException(Constants.getInstantiationNotAllowed());
     }
 
-    static void publish(final ExchangeMessageResource message, final Session origin) {
+    static void publish(final ExchangeMessageRepresentation message, final Session origin) {
         assert !Objects.isNull(message) && !Objects.isNull(origin);
         SESSIONS.stream().filter(session -> !session.equals(origin)).forEach(session -> {
             try {

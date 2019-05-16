@@ -1,15 +1,15 @@
-package com.mo.kyung.dps.prototype2.data.resources;
+package com.mo.kyung.dps.prototype2.data.representations;
 
-public class AccountUserResource {
+public class AccountUserRepresentation {
 	private String login;
 	private String password;
-	public AccountUserResource(String login, String password) {
+	public AccountUserRepresentation() {
+		super();
+	}
+	public AccountUserRepresentation(String login, String password) {
 		super();
 		this.login = login;
 		this.password = password;
-	}
-	public AccountUserResource() {
-		super();
 	}
 	public String getLogin() {
 		return login;
