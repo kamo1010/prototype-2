@@ -278,6 +278,7 @@
             if (typeof event.data === "string") {
 
                 var webSocketMessage = JSON.parse(event.data);
+                displayMessage(webSocketMessage)
 //                 switch (webSocketMessage.type) {
 
 //                     case "welcomeUser":
