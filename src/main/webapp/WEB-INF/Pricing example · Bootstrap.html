@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<!-- saved from url=(0051)https://getbootstrap.com/docs/4.3/examples/pricing/ -->
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <style class="darkreader darkreader--fallback" media="screen"></style>
+    <style class="darkreader darkreader--text" media="screen"></style>
+    <style class="darkreader darkreader--invert" media="screen"></style>
+    <style class="darkreader darkreader--inline" media="screen">
+        [data-darkreader-inline-bgcolor] {
+            background-color: var(--darkreader-inline-bgcolor) !important;
+        }
+        
+        [data-darkreader-inline-bgimage] {
+            background-image: var(--darkreader-inline-bgimage) !important;
+        }
+        
+        [data-darkreader-inline-border] {
+            border-color: var(--darkreader-inline-border) !important;
+        }
+        
+        [data-darkreader-inline-border-bottom] {
+            border-bottom-color: var(--darkreader-inline-border-bottom) !important;
+        }
+        
+        [data-darkreader-inline-border-left] {
+            border-left-color: var(--darkreader-inline-border-left) !important;
+        }
+        
+        [data-darkreader-inline-border-right] {
+            border-right-color: var(--darkreader-inline-border-right) !important;
+        }
+        
+        [data-darkreader-inline-border-top] {
+            border-top-color: var(--darkreader-inline-border-top) !important;
+        }
+        
+        [data-darkreader-inline-boxshadow] {
+            box-shadow: var(--darkreader-inline-boxshadow) !important;
+        }
+        
+        [data-darkreader-inline-color] {
+            color: var(--darkreader-inline-color) !important;
+        }
+        
+        [data-darkreader-inline-fill] {
+            fill: var(--darkreader-inline-fill) !important;
+        }
+        
+        [data-darkreader-inline-stroke] {
+            stroke: var(--darkreader-inline-stroke) !important;
+        }
+        
+        [data-darkreader-inline-outline] {
+            outline-color: var(--darkreader-inline-outline) !important;
+        }
+    </style>
+    <style class="darkreader darkreader--user-agent" media="screen">
+        html {
+            background-color: #181a1b !important;
+        }
+        
+        html,
+        body,
+        input,
+        textarea,
+        select,
+        button {
+            background-color: #181a1b;
+        }
+        
+        html,
+        body,
+        input,
+        textarea,
+        select,
+        button {
+            border-color: #575757;
+            color: #e8e6e3;
+        }
+        
+        a {
+            color: #3391ff;
+        }
+        
+        table {
+            border-color: #4c4c4c;
+        }
+        
+         ::placeholder {
+            color: #bab5ab;
+        }
+        
+         ::selection {
+            background-color: #005ccc;
+            color: #ffffff;
+        }
+        
+         ::-moz-selection {
+            background-color: #005ccc;
+            color: #ffffff;
+        }
+        
+        input:-webkit-autofill,
+        textarea:-webkit-autofill,
+        select:-webkit-autofill {
+            background-color: #545b00 !important;
+            color: #e8e6e3 !important;
+        }
+        
+         ::-webkit-scrollbar {
+            background-color: #1c1e1f;
+            color: #c5c1b9;
+        }
+        
+         ::-webkit-scrollbar-thumb {
+            background-color: #2a2c2e;
+        }
+        
+         ::-webkit-scrollbar-thumb:hover {
+            background-color: #323537;
+        }
+        
+         ::-webkit-scrollbar-thumb:active {
+            background-color: #3d4043;
+        }
+        
+         ::-webkit-scrollbar-corner {
+            background-color: #181a1b;
+        }
+        
+        * {
+            scrollbar-color: #2a2c2e #1c1e1f;
+        }
+    </style>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v3.8.5">
+    <title>Pricing example · Bootstrap</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/pricing/">
+
+    <!-- Bootstrap core CSS -->
+    <link href="./Pricing example · Bootstrap_files/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style class="darkreader darkreader--sync" media="screen"></style>
+
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+    <style class="darkreader darkreader--sync" media="screen"></style>
+    <!-- Custom styles for this template -->
+    <link href="./Pricing example · Bootstrap_files/pricing.css" rel="stylesheet">
+    <style class="darkreader darkreader--sync" media="screen"></style>
+    <style class="darkreader darkreader--override" media="screen">
+        .jfk-bubble {
+            background-color: #000000 !important;
+        }
+        
+        .vimvixen-hint {
+            background-color: #7b5300 !important;
+            border-color: #d8b013 !important;
+            color: #f3e8c8 !important;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+        <h5 class="my-0 mr-md-auto font-weight-normal">Company name</h5>
+        <nav class="my-2 my-md-0 mr-md-3">
+            <a class="p-2 text-dark" href="https://getbootstrap.com/docs/4.3/examples/pricing/#">Features</a>
+            <a class="p-2 text-dark" href="https://getbootstrap.com/docs/4.3/examples/pricing/#">Enterprise</a>
+            <a class="p-2 text-dark" href="https://getbootstrap.com/docs/4.3/examples/pricing/#">Support</a>
+            <a class="p-2 text-dark" href="https://getbootstrap.com/docs/4.3/examples/pricing/#">Pricing</a>
+        </nav>
+        <a class="btn btn-outline-primary" href="https://getbootstrap.com/docs/4.3/examples/pricing/#">Sign up</a>
+    </div>
+
+    <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+        <h1 class="display-4">Pricing</h1>
+        <p class="lead">Quickly build an effective pricing table for your potential customers with this Bootstrap example. It’s built with default Bootstrap components and utilities with little customization.</p>
+    </div> -->
+    <div class="container-fluid">
+        <div class="card mb-6 shadow-sm">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal">Account Management</h4>
+            </div>
+            <div class="card-body">
+                <div class="card-deck mb-3 text-center">
+                    <div class="card mb-6 shadow-sm">
+                        <div class="card-header">
+                            <h4 class="my-0 font-weight-normal">Properties</h4>
+                        </div>
+                        <div class="card-body text-left">
+                            <p class="font-weight-bold">First Name: </p>
+                            <p class="font-weight-bold">Last Name : </p>
+                            <p class="font-weight-bold">Login : </p>
+                            <p class="font-weight-bold">Subscribed Topics : </p>
+                            <ul></ul>
+                        </div>
+                    </div>
+                    <div class="card mb-6 shadow-sm">
+                        <div class="card-header">
+                            <h4 class="my-0 font-weight-normal">Create Account</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="input-group input-group-sm mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="first_name">First Name</span>
+                                </div>
+                                <input type="text" class="form-control" placeholder="First Name" aria-label="first_name" aria-describedby="first_name">
+                            </div>
+                            <div class="input-group input-group-sm mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="last_name">Last Name</span>
+                                </div>
+                                <input type="text" class="form-control" placeholder="Last Name" aria-label="last_name" aria-describedby="last_name">
+                            </div>
+                            <button type="button" class="btn btn-lg btn-block btn-outline-primary">Create Account</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-6 shadow-sm">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal">Topic Management</h4>
+            </div>
+            <div class="card-body">
+                <div class="card-deck mb-3 text-center">
+                    <div class="card mb-6 shadow-sm">
+                        <div class="card-header">
+                            <h4 class="my-0 font-weight-normal">Create Topic</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="input-group input-group-sm mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="last_name">Topic Name</span>
+                                </div>
+                                <input type="text" class="form-control" placeholder="Topic Name" aria-label="topic_name" aria-describedby="topic_name">
+                            </div>
+                            <button type="button" class="btn btn-lg btn-block btn-outline-primary">Create Topic</button>
+                        </div>
+                    </div>
+                    <div class="card mb-6 shadow-sm">
+                        <div class="card-header">
+                            <h4 class="my-0 font-weight-normal">Invite User</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="input-group input-group-sm mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="first_name">Topic Name</span>
+                                </div>
+                                <input type="text" class="form-control" placeholder="Topic Name" aria-label="topic_name" aria-describedby="topic_name">
+                            </div>
+                            <div class="input-group input-group-sm mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="last_name">User Login</span>
+                                </div>
+                                <input type="text" class="form-control" placeholder="Invitee's Login" aria-label="user_login" aria-describedby="user_login">
+                            </div>
+                            <button type="button" class="btn btn-lg btn-block btn-outline-primary">Create Account</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card mb-6 shadow-sm">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal">Post message</h4>
+            </div>
+            <div class="card-body">
+                <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="last_name">Topic Name</span>
+                    </div>
+                    <input type="text" class="form-control" placeholder="Topic Name" aria-label="topic_name" aria-describedby="topic_name">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Type your message here</span>
+                    </div>
+                    <textarea class="form-control" aria-label="message"></textarea>
+                </div>
+                <div class="input-group">
+                    <button type="button" class="btn btn-lg btn-block btn-primary">Post</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- <footer class="pt-4 my-md-5 pt-md-5 border-top">
+        <div class="row">
+            <div class="col-12 col-md">
+                <img class="mb-2" src="./Pricing example · Bootstrap_files/bootstrap-solid.svg" alt="" width="24" height="24">
+                <small class="d-block mb-3 text-muted">© 2017-2019</small>
+            </div>
+            <div class="col-6 col-md">
+                <h5>Features</h5>
+                <ul class="list-unstyled text-small">
+                    <li><a class="text-muted" href="https://getbootstrap.com/docs/4.3/examples/pricing/#">Cool stuff</a></li>
+                    <li><a class="text-muted" href="https://getbootstrap.com/docs/4.3/examples/pricing/#">Random feature</a>
+                    </li>
+                    <li><a class="text-muted" href="https://getbootstrap.com/docs/4.3/examples/pricing/#">Team feature</a></li>
+                    <li><a class="text-muted" href="https://getbootstrap.com/docs/4.3/examples/pricing/#">Stuff for
+              developers</a></li>
+                    <li><a class="text-muted" href="https://getbootstrap.com/docs/4.3/examples/pricing/#">Another one</a></li>
+                    <li><a class="text-muted" href="https://getbootstrap.com/docs/4.3/examples/pricing/#">Last time</a></li>
+                </ul>
+            </div>
+            <div class="col-6 col-md">
+                <h5>Resources</h5>
+                <ul class="list-unstyled text-small">
+                    <li><a class="text-muted" href="https://getbootstrap.com/docs/4.3/examples/pricing/#">Resource</a></li>
+                    <li><a class="text-muted" href="https://getbootstrap.com/docs/4.3/examples/pricing/#">Resource name</a></li>
+                    <li><a class="text-muted" href="https://getbootstrap.com/docs/4.3/examples/pricing/#">Another resource</a>
+                    </li>
+                    <li><a class="text-muted" href="https://getbootstrap.com/docs/4.3/examples/pricing/#">Final resource</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-6 col-md">
+                <h5>About</h5>
+                <ul class="list-unstyled text-small">
+                    <li><a class="text-muted" href="https://getbootstrap.com/docs/4.3/examples/pricing/#">Team</a></li>
+                    <li><a class="text-muted" href="https://getbootstrap.com/docs/4.3/examples/pricing/#">Locations</a></li>
+                    <li><a class="text-muted" href="https://getbootstrap.com/docs/4.3/examples/pricing/#">Privacy</a></li>
+                    <li><a class="text-muted" href="https://getbootstrap.com/docs/4.3/examples/pricing/#">Terms</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer> -->
+    </div>
+
+
+</body>
+
+</html>
