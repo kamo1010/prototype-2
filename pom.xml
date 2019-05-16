@@ -46,6 +46,7 @@
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
+<<<<<<< HEAD
 <!-- 
 	<build>
 		<finalName>prototype</finalName>
@@ -100,4 +101,8 @@
 			</plugin>
 		</plugins>
 	</build> -->
+=======
+
+
+>>>>>>> d8c6cb0a950381eb7eefdd1dd43ba3b020bd05bd
 </project>

@@ -1,4 +1,4 @@
-package com.mo.kyung.dps.prototype2.C_data;
+package com.mo.kyung.dps.prototype2.data;
 
 import java.util.Collections;
 import java.util.Map;
@@ -6,16 +6,17 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import com.mo.kyung.dps.prototype2.C_data.datatypes.AccountUser;
-import com.mo.kyung.dps.prototype2.C_data.datatypes.ExchangeMessage;
-import com.mo.kyung.dps.prototype2.C_data.datatypes.Topic;
+import com.mo.kyung.dps.prototype2.data.datatypes.AccountUser;
+import com.mo.kyung.dps.prototype2.data.datatypes.ExchangeMessage;
+import com.mo.kyung.dps.prototype2.data.datatypes.Topic;
 
 public class Database {
-	private static Map<String, AccountUser> users = new TreeMap<String, AccountUser>();
-	private static Map<String, Topic> topics = new TreeMap<String, Topic>();
+	private static Set<AccountUser> users = new TreeSet<AccountUser>();
+	private static Set<Topic> topics = new TreeSet<Topic>();
+	private static Map<String, AccountUser> connectedUsers = new TreeMap<String, AccountUser>(); //String is for the token
 	private static Set<ExchangeMessage> uploadedMessages = new TreeSet<ExchangeMessage>();
-	
 	static {
+		addUser(new AccountUser("admin", "admin", "admin", "admin"));
 		addUser(new AccountUser("Patrick", "GRIMBERG", "patrick", "grimberg"));
 		addUser(new AccountUser("Jérôme", "DAZIANO", "jerome", "daziano"));
 		addUser(new AccountUser("Maud", "CADORET", "maud", "cadoret"));
@@ -34,6 +35,7 @@ public class Database {
 		addUser(new AccountUser("Antoine", "MUNCK", "antoine", "munck"));
 		
 		addTopic(new Topic("Administrator"));
+		addTopic(new Topic("General"));
 		addTopic(new Topic("Karren"));
 		addTopic(new Topic("Stagiaires"));
 		
@@ -50,38 +52,75 @@ public class Database {
 		getUser("kyungmo").subscribeToTopic(getTopic("Stagiaires"));
 		getUser("jerome").subscribeToTopic(getTopic("Karren"));
 	}
-	
-	public static AccountUser addUser(AccountUser user) {
-		return users.put(user.getLogin(), user);
-	}
-	public static Topic addTopic(Topic topic) {
-		return topics.put(topic.getName(), topic);
-	}
-	public static boolean addMessage(ExchangeMessage message) {
-		return uploadedMessages.add(message);
-	}
-	public static boolean removeUser(AccountUser user) {
-		return users.remove(user.getLogin(), user);
-	}
-	public static boolean removeTopic(Topic topic) {
-		return topics.remove(topic.getName(), topic);
-	}
-	public static boolean removeMessage(ExchangeMessage message) {
-		return uploadedMessages.remove(message);
+	public static Set<AccountUser> getUsers() {
+		return Collections.unmodifiableSet(users);
 	}
 	public static AccountUser getUser(String login) {
-		return users.get(login);
+		for (AccountUser user : users) {
+			if (user.getLogin().equals(login)) {
+				return user;
+			}
+		}
+		return null;//user does not exist
 	}
-	public static Topic getTopic(String topic) {
-		return topics.get(topic);
+	public static boolean addUser(AccountUser user) {
+		if (users.add(user)) {
+			user.subscribeToTopic(getTopic("Administration"));
+			return true;
+		}
+		return false;
 	}
-	public static Map<String, AccountUser> getUsers() {
-		return Collections.unmodifiableMap(users);
+	public static boolean removeUser(AccountUser user) {
+		return users.remove(user);
 	}
-	public static Map<String, Topic> getTopics() {
-		return Collections.unmodifiableMap(topics);
+	public static Set<Topic> getTopics() {
+		return Collections.unmodifiableSet(topics);
+	}
+	public static Topic getTopic(String topicName) {
+		for (Topic topic : topics) {
+			if (topic.getName().equals(topicName)) {
+				return topic;
+			}
+		}
+		return null; //topic does not exist
+	}
+	public static boolean addTopic(Topic topic) {
+		return topics.add(topic);
+	}
+	public static boolean removeTopic(Topic topic) {
+		return topics.remove(topic);
+	}
+	public static Map<String, AccountUser> getConnectedUsers() {
+		return Collections.unmodifiableMap(connectedUsers);
+	}
+	public static AccountUser getConnectedUser(String login) {
+		for (AccountUser user : connectedUsers.values()) {
+			if (user.getLogin().equals(login)) {
+				return user;
+			}
+		}
+		return null;//user does not exist
+	}
+	public static boolean addConnectedUser(AccountUser user) {
+		if (!connectedUsers.containsValue(user)) {
+			user.logIn();
+			connectedUsers.put(user.getToken(), user);
+			return true;
+		}
+		return false;
+	}
+	public static boolean removeConnectedUser(AccountUser user) {
+		String token = user.getToken();
+		user.logOut();
+		return connectedUsers.remove(token, user);
 	}
 	public static Set<ExchangeMessage> getUploadedMessages() {
 		return Collections.unmodifiableSet(uploadedMessages);
+	}
+	public static boolean uploadMessaage(ExchangeMessage message) {
+		return uploadedMessages.add(message);
+	}
+	public static boolean deletedMessage(ExchangeMessage message) {
+		return uploadedMessages.remove(message);
 	}
 }

@@ -1,11 +1,15 @@
-package com.mo.kyung.dps.prototype2.C_data.datatypes;
+package com.mo.kyung.dps.prototype2.data.datatypes;
 
+import java.util.Collections;
 import java.util.Set;
 import java.util.TreeSet;
 
 public class Topic {
 	private String name;
 	private Set<AccountUser> subscribers;
+	public Topic() {
+		super();
+	}
 	public Topic(String name) {
 		super();
 		this.name = name;
@@ -21,12 +25,6 @@ public class Topic {
 		return this.subscribers.remove(subscriber);
 	}
 	public Set<AccountUser> getSubscribers() {
-		return subscribers;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public Topic() {
-		super();
+		return Collections.unmodifiableSet(subscribers);
 	}
 }

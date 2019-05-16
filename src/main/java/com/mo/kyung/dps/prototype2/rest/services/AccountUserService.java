@@ -1,4 +1,4 @@
-package com.mo.kyung.dps.prototype2.B_rest.services;
+package com.mo.kyung.dps.prototype2.rest.services;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
@@ -21,13 +21,13 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import com.mo.kyung.dps.prototype2.C_data.Database;
-import com.mo.kyung.dps.prototype2.C_data.datatypes.AccountUser;
-import com.mo.kyung.dps.prototype2.C_data.datatypes.ExchangeMessage;
-import com.mo.kyung.dps.prototype2.C_data.datatypes.Topic;
-import com.mo.kyung.dps.prototype2.C_data.resources.ExchangeMessageReceiveResource;
-import com.mo.kyung.dps.prototype2.C_data.resources.ExchangeMessageResource;
-import com.mo.kyung.dps.prototype2.C_data.resources.InvitationResource;
+import com.mo.kyung.dps.prototype2.data.Database;
+import com.mo.kyung.dps.prototype2.data.datatypes.AccountUser;
+import com.mo.kyung.dps.prototype2.data.datatypes.ExchangeMessage;
+import com.mo.kyung.dps.prototype2.data.datatypes.Topic;
+import com.mo.kyung.dps.prototype2.data.representations.ReceivedMessageRepresentation;
+import com.mo.kyung.dps.prototype2.data.representations.SentMessageRepresentation;
+import com.mo.kyung.dps.prototype2.data.representations.InvitationRepresentation;
 
 @Path("{login}")
 public class AccountUserService {
@@ -49,7 +49,7 @@ public class AccountUserService {
 	@POST
 	@Path("post")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response postAMessage(@PathParam(value = "login") String login, ExchangeMessageResource message,
+	public Response postAMessage(@PathParam(value = "login") String login, SentMessageRepresentation message,
 			@HeaderParam(value = "token") String token) throws URISyntaxException, UnsupportedEncodingException {
 		if (token.isEmpty()) {
 			return Response.status(Status.UNAUTHORIZED).build();
@@ -75,7 +75,7 @@ public class AccountUserService {
 			if (login.equals(new String(Base64.getDecoder().decode(token), StandardCharsets.UTF_8.toString())
 					.split("@101@")[0])) {
 				AccountUser user = Database.getUser(login);
-				List<ExchangeMessageReceiveResource> messages = new ArrayList<ExchangeMessageReceiveResource>();
+				List<ReceivedMessageRepresentation> messages = new ArrayList<ReceivedMessageRepresentation>();
 				for (ExchangeMessage exchangeMessage : Database.getUploadedMessages()) {
 					if (user.isInterestedIn(exchangeMessage.getTopic())) {
 						messages.add(exchangeMessage.buildReceiveResource());
@@ -153,7 +153,7 @@ public class AccountUserService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response inviteUser(@PathParam(value = "login") String login,
 			@HeaderParam(value = "token") String token,
-			InvitationResource invitation) throws UnsupportedEncodingException, URISyntaxException {
+			InvitationRepresentation invitation) throws UnsupportedEncodingException, URISyntaxException {
 		if (token.isEmpty()) {
 			return Response.status(Status.UNAUTHORIZED).build();
 		} else {

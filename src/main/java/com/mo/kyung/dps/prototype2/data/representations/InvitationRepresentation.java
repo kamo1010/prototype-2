@@ -1,11 +1,11 @@
-package com.mo.kyung.dps.prototype2.C_data.resources;
+package com.mo.kyung.dps.prototype2.data.representations;
 
-public class InvitationResource {
+public class InvitationRepresentation {
 	private String topicName;
 	private String login;
-	public InvitationResource() {
+	public InvitationRepresentation() {
 	}
-	public InvitationResource(String topicName, String login) {
+	public InvitationRepresentation(String topicName, String login) {
 		super();
 		this.topicName = topicName;
 		this.login = login;

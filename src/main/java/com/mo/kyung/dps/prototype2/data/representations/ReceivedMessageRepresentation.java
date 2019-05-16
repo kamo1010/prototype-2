@@ -1,10 +1,20 @@
-package com.mo.kyung.dps.prototype2.C_data.resources;
+package com.mo.kyung.dps.prototype2.data.representations;
 
-public class ExchangeMessageReceiveResource {
+public class ReceivedMessageRepresentation {
 	private String author;
 	private String topic;
 	private String payload;
 	private String editionDate;
+	public ReceivedMessageRepresentation() {
+		super();
+	}
+	public ReceivedMessageRepresentation(String author, String topic, String payload, String editionDate) {
+		super();
+		this.author = author;
+		this.topic = topic;
+		this.payload = payload;
+		this.editionDate = editionDate;
+	}
 	public String getAuthor() {
 		return author;
 	}
@@ -27,16 +37,6 @@ public class ExchangeMessageReceiveResource {
 		return editionDate;
 	}
 	public void setEditionDate(String editionDate) {
-		this.editionDate = editionDate;
-	}
-	public ExchangeMessageReceiveResource() {
-		super();
-	}
-	public ExchangeMessageReceiveResource(String author, String topic, String payload, String editionDate) {
-		super();
-		this.author = author;
-		this.topic = topic;
-		this.payload = payload;
 		this.editionDate = editionDate;
 	}
 }

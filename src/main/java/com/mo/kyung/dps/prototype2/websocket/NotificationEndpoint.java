@@ -1,4 +1,4 @@
-package com.mo.kyung.dps.prototype2.A_websocket;
+package com.mo.kyung.dps.prototype2.websocket;
 
 import java.util.Objects;
 
@@ -11,9 +11,9 @@ import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
-import com.mo.kyung.dps.prototype2.C_data.Database;
-import com.mo.kyung.dps.prototype2.C_data.datatypes.AccountUser;
-import com.mo.kyung.dps.prototype2.C_data.resources.ExchangeMessageResource;
+import com.mo.kyung.dps.prototype2.data.Database;
+import com.mo.kyung.dps.prototype2.data.datatypes.AccountUser;
+import com.mo.kyung.dps.prototype2.data.representations.SentMessageRepresentation;
 
 @ServerEndpoint(value = "/{login}",
 				encoders = NotificationEncoder.class,
@@ -29,7 +29,7 @@ public class NotificationEndpoint {
                 System.out.printf("Session opened for %s\n", login);
                 AccountUser user = Database.getUser(login);
                 NotificationSessionManager.publish(
-                		new ExchangeMessageResource(
+                		new SentMessageRepresentation(
                 				"Administrator",
                 				new StringBuilder(user.getFirstName()).append(" ").append(user.getLastName()).append("***connected to the server***").toString()),
                 		session);
@@ -47,7 +47,7 @@ public class NotificationEndpoint {
     }
 
     @OnMessage
-    public void onMessage(final ExchangeMessageResource message, final Session session) {
+    public void onMessage(final SentMessageRepresentation message, final Session session) {
         NotificationSessionManager.publish(message, session);
     }
 
@@ -57,7 +57,7 @@ public class NotificationEndpoint {
         	AccountUser user = Database.getUser(Constants.getUserNameKey());
             System.out.printf("Session closed for %s\n", session.getUserProperties().get(Constants.getUserNameKey()));
             NotificationSessionManager.publish(
-            		new ExchangeMessageResource(
+            		new SentMessageRepresentation(
             				"Administrator",
             				new StringBuilder(user.getFirstName()).append(" ").append(user.getLastName()).append("***logged out of the server***").toString()),
             		session);

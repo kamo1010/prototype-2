@@ -1,4 +1,4 @@
-package com.mo.kyung.dps.prototype2.B_rest.services;
+package com.mo.kyung.dps.prototype2.rest.services;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
@@ -11,23 +11,22 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.mo.kyung.dps.prototype2.C_data.Database;
-import com.mo.kyung.dps.prototype2.C_data.datatypes.AccountUser;
-import com.mo.kyung.dps.prototype2.C_data.resources.AccountUserResource;
+import com.mo.kyung.dps.prototype2.data.Database;
+import com.mo.kyung.dps.prototype2.data.datatypes.AccountUser;
+import com.mo.kyung.dps.prototype2.data.representations.LogInRepresentation;
 
 
-//this service is ok
+//this service is not ok
 @Path("auth")
 public class AuthenticationService {
 	@POST
 	@Path("in")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response logIn(AccountUserResource credentials) throws UnsupportedEncodingException {
-		for (AccountUser user : Database.getUsers().values()) {
+	public Response logIn(LogInRepresentation credentials) throws UnsupportedEncodingException {
+		for (AccountUser user : Database.getUsers()) {
 			if (user.getLogin().equals(credentials.getLogin()) && user.getPassword().equals(credentials.getPassword())) {
-				if (user.isConnected()) {
-					StringBuilder builder = new StringBuilder(credentials.getLogin()).append("@101@").append(credentials.getPassword());
-					user.setToken(Base64.getEncoder().encodeToString(builder.toString().getBytes(StandardCharsets.UTF_8.toString())));
+				if (!user.isConnected()) {
+					Database.addConnectedUser(user);
 					return Response.ok(user.getToken()).build();
 				} else {
 					return Response.status(418).build();
@@ -41,7 +40,7 @@ public class AuthenticationService {
 	public Response logOut(@HeaderParam(value = "token") String token) throws UnsupportedEncodingException {
 		String login = new String(Base64.getDecoder().decode(token), StandardCharsets.UTF_8.toString()).split("@101@")[0];
 		if (Database.getUser(login).isConnected()) {
-			Database.getUser(login).setToken(null);
+			Database.getUser(login).setToken("");;
 			return Response.ok().build();
 		}
 		return Response.status(418).build();
