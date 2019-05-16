@@ -1,20 +1,15 @@
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
-<<<<<<< HEAD:src/main/webapp/index.html
     <title>Prototype-2</title>
     <meta name="description" content="RESTful Websocket Notification Application">
-=======
-    <title>RESTful Websocket Notification Application2</title>
-    <meta name="description" payload="Sample chat application">
-    <meta name="author" payload="Cassio Mazzochi Molin">
->>>>>>> d8c6cb0a950381eb7eefdd1dd43ba3b020bd05bd:src/main/webapp/index.html
+    <meta name="author" payload="Yang Kyung Mo">
 
     <style>
-
         /* Common */
-
+        
         * {
             margin: 0;
             padding: 0;
@@ -22,19 +17,19 @@
             font-size: 13px;
             outline: 0;
         }
-
+        
         .error {
             color: #F04823;
             font-size: 12px;
         }
-
+        
         input[type="text"],
         input[type="password"] {
             border-radius: 20px;
             padding: 10px;
             border: 2px solid gainsboro;
         }
-
+        
         button {
             border-radius: 20px;
             padding: 10px;
@@ -43,42 +38,39 @@
             width: 6em;
             border: 2px solid #0084FF;
         }
-
+        
         button:hover,
         button:focus {
             background-color: #0966ff;
             border-color: #0966ff;
             cursor: pointer;
         }
-
         /* Authentication */
-
+        
         #authentication {
             margin-top: 100px;
         }
-
+        
         #authentication * {
             display: block;
             margin-left: auto;
             margin-right: auto;
             margin-bottom: 10px;
         }
-
+        
         #authentication .error {
             text-align: center;
         }
-
         /* Title Bar */
-
+        
         #title {
             background-color: #0084FF;
             font-size: 20px;
             padding: 10px 20px 10px 20px;
             color: #fff;
         }
-
         /* Contact list */
-
+        
         #contacts {
             float: left;
             width: 120px;
@@ -88,7 +80,7 @@
             max-height: calc(100vh - 85px);
             display: none;
         }
-
+        
         #contacts .contact .status {
             background-color: #13CF13;
             width: 20px;
@@ -97,31 +89,30 @@
             display: inline-block;
             margin-right: 10px;
         }
-
+        
         #contacts .contact .name {
             line-height: 40px;
             vertical-align: super;
         }
-
         /* Chat */
-
+        
         #chat {
             float: right;
             width: calc(100% - 160px);
             display: none;
         }
-
+        
         #messages {
             min-height: calc(100vh - 130px);
             max-height: calc(100vh - 130px);
             padding: 20px 20px 0 20px;
             overflow-y: auto;
         }
-
+        
         #messages .message {
             margin-bottom: 3px;
         }
-
+        
         #messages .message .payload {
             min-width: 20px;
             max-width: 250px;
@@ -129,7 +120,7 @@
             padding: 10px;
             display: table;
         }
-
+        
         #messages .message.event .payload {
             background-color: #FF7E29;
             color: #fff;
@@ -138,27 +129,27 @@
             font-size: 10px;
             padding: 7px;
         }
-
+        
         #messages .message.received {
             left: 0;
             text-align: left;
         }
-
+        
         #messages .message.received .payload {
             background-color: gainsboro;
             border-radius: 0 20px 20px;
         }
-
+        
         #messages .message.received .sender {
             color: dimgrey;
             font-size: 10px;
         }
-
+        
         #messages .message.sent {
             right: 0;
             text-align: right;
         }
-
+        
         #messages .message.sent .payload {
             background-color: #0084FF;
             margin-left: auto;
@@ -167,278 +158,256 @@
             text-align: right;
             border-radius: 20px 0 20px 20px;
         }
-
+        
         #messages .message.sent .sender {
             color: #0084FF;
             font-size: 10px;
         }
-
+        
         #chat-controls {
             height: 40px;
             padding: 20px 20px 0 20px;
         }
-
+        
         #chat-controls button {
             float: right;
         }
-
+        
         #chat-controls input[type="text"] {
             width: calc(100% - 9em);
         }
-
+        
         #messages .message.sent.same-sender-previous-message .sender,
         #messages .message.received.same-sender-previous-message .sender {
             display: none;
         }
-
+        
         #messages .message:not(.same-sender-previous-message) {
             margin-top: 10px;
         }
-
     </style>
 
 </head>
+
 <body>
 
-<div id="title">Chat</div>
+    <div id="title">Chat</div>
 
-<form id="authentication" onsubmit="return false;">
-<<<<<<< HEAD:src/main/webapp/index.html
-    <input type="text" id="login" placeholder="Username" autofocus/>
-    <input type="password" id="password" placeholder="Password"/>
-    <button class="button" onclick="signIn()">Log In</button>
-=======
-    <input type="text" id="login" placeholder="Login" autofocus/>
-    <input type="password" id="password" placeholder="Password"/>
-    <button class="button" onclick="logIn()">Log in</button>
->>>>>>> d8c6cb0a950381eb7eefdd1dd43ba3b020bd05bd:src/main/webapp/index.html
-    <span class="error" id="authentication-error"></span>
-</form>
-
-<div id="contacts"></div>
-
-<div id="chat">
-    <div id="messages"></div>
-    <form id="chat-controls" onsubmit="return false;">
-        <input type="text" id="message" placeholder="Enter a message"/>
-        <button class="button" onclick="sendMessage()">Send</button>
+    <form id="authentication" onsubmit="return false;">
+        <input type="text" id="login" placeholder="Login" autofocus/>
+        <input type="password" id="password" placeholder="Password" />
+        <button class="button" onclick="logIn()">Log in</button>
+        <span class="error" id="authentication-error"></span>
     </form>
-</div>
 
-<script>
+    <div id="contacts"></div>
 
-    var socket;
-    var currentUser;
+    <div id="chat">
+        <div id="messages"></div>
+        <form id="chat-controls" onsubmit="return false;">
+            <input type="text" id="message" placeholder="Enter a message" />
+            <button class="button" onclick="sendMessage()">Send</button>
+        </form>
+    </div>
 
-    function logIn() {
+    <script>
+        var socket;
+        var currentUser;
 
-        var credentials = {
-            login: document.getElementById("login").value,
-            password: document.getElementById("password").value
-        };
-        console.log(JSON.stringify(credentials));
+        function logIn() {
 
-        var request = new XMLHttpRequest();
-<<<<<<< HEAD:src/main/webapp/index.html
-        request.open("POST", "http://" + window.location.hostname + ":8080/auth/in");
-        request.setRequestHeader("Content-Type", "application/json");
-=======
-        request.open("POST", "http://" + window.location.hostname + ":8080/prototype-two/rest/auth/in");
-        request.setRequestHeader("payload-Type", "application/json");
->>>>>>> d8c6cb0a950381eb7eefdd1dd43ba3b020bd05bd:src/main/webapp/index.html
+            var credentials = {
+                login: document.getElementById("login").value,
+                password: document.getElementById("password").value
+            };
+            console.log(JSON.stringify(credentials));
 
-        request.onreadystatechange = function () {
+            var request = new XMLHttpRequest();
+            request.open("POST", "http://" + window.location.hostname + ":8080/prototype-two/rest/auth/in");
+            request.setRequestHeader("payload-Type", "application/json");
 
-            if (request.readyState === XMLHttpRequest.DONE) {
+            request.onreadystatechange = function() {
 
-                switch (request.status) {
+                if (request.readyState === XMLHttpRequest.DONE) {
 
-                    case 200:
-                        currentUser = credentials.login;
-<<<<<<< HEAD:src/main/webapp/index.html
-                        var webSocketAccessToken = JSON.parse(request.responseText);
-                        openSocket(webSocketAccessToken.token);
-=======
-                        var webSocketAccessToken = request.responseText;
-                        openSocket(webSocketAccessToken);
->>>>>>> d8c6cb0a950381eb7eefdd1dd43ba3b020bd05bd:src/main/webapp/index.html
-                        break;
+                    switch (request.status) {
 
-                    case 403:
-                        currentUser = null;
-                        document.getElementById("authentication-error").innerHTML = "Oops... These credentials are invalid.";
-                        break;
+                        case 200:
+                            currentUser = credentials.login;
+                            var webSocketAccessToken = request.responseText;
+                            openSocket(webSocketAccessToken);
+                            break;
 
-                    default:
-                        document.getElementById("authentication-error").innerHTML = "Oops... Looks like something is broken.";
+                        case 403:
+                            currentUser = null;
+                            document.getElementById("authentication-error").innerHTML = "Oops... These credentials are invalid.";
+                            break;
+
+                        default:
+                            document.getElementById("authentication-error").innerHTML = "Oops... Looks like something is broken.";
+                    }
                 }
+            };
+
+            request.send(JSON.stringify(credentials));
+        }
+
+        function openSocket(accessToken) {
+
+            if (socket) {
+                socket.close();
             }
-        };
+            console.log(document.getElementById("login").value);
+            socket = new WebSocket("ws://" + window.location.hostname + ":8080/prototype-two/" + document.getElementById("login").value);
 
-        request.send(JSON.stringify(credentials));
-    }
+            socket.onopen = function(event) {
+                document.getElementById("authentication").style.display = "none";
+                document.getElementById("contacts").style.display = "block";
+                document.getElementById("chat").style.display = "block";
+                document.getElementById("message").focus();
+            };
 
-    function openSocket(accessToken) {
+            socket.onmessage = function(event) {
 
-        if (socket) {
-            socket.close();
+                if (typeof event.data === "string") {
+
+                    var webSocketMessage = JSON.parse(event.data);
+                    displayMessage(webSocketMessage)
+                        //                 switch (webSocketMessage.type) {
+
+                    //                     case "welcomeUser":
+                    //                         displayConnectedUserMessage(webSocketMessage.exchangeMessage.login);
+                    //                         break;
+
+                    //                     case "broadcastTextMessage":
+                    //                         displayMessage(webSocketMessage.exchangeMessage.login, webSocketMessage.exchangeMessage.payload);
+                    //                         break;
+
+                    //                     case "broadcastConnectedUser":
+                    //                         displayConnectedUserMessage(webSocketMessage.exchangeMessage.login);
+                    //                         break;
+
+                    //                     case "broadcastDisconnectedUser":
+                    //                         displayDisconnectedUserMessage(webSocketMessage.exchangeMessage.login);
+                    //                         break;
+
+                    //                     case "broadcastAvailableUsers":
+                    //                         cleanAvailableUsers();
+                    //                         for (var i = 0; i < webSocketMessage.exchangeMessage.logins.length; i++) {
+                    //                             addAvailableUsers(webSocketMessage.exchangeMessage.logins[i]);
+                    //                         }
+                    //                         break;
+                    //                 }
+                }
+            };
         }
-        console.log(document.getElementById("login").value);
 
-<<<<<<< HEAD:src/main/webapp/index.html
-        socket = new WebSocket("ws://" + window.location.hostname + ":8080/chat?access-token=" + accessToken);
-=======
-        socket = new WebSocket("ws://" + window.location.hostname + ":8080/prototype-two/" + document.getElementById("login").value);
->>>>>>> d8c6cb0a950381eb7eefdd1dd43ba3b020bd05bd:src/main/webapp/index.html
+        function sendMessage() {
+            var text = document.getElementById("message").value;
+            if (text != "") {
+                document.getElementById("message").value = "";
 
-        socket.onopen = function (event) {
-            document.getElementById("authentication").style.display = "none";
-            document.getElementById("contacts").style.display = "block";
-            document.getElementById("chat").style.display = "block";
-            document.getElementById("message").focus();
-        };
+                var exchangeMessage = {
+                    topic: "Administrator",
+                    payload: text
+                };
 
-        socket.onmessage = function (event) {
+                var webSocketMessage = {
+                    type: "sendTextMessage"
+                };
 
-            if (typeof event.data === "string") {
+                webSocketMessage.exchangeMessage = exchangeMessage;
 
-                var webSocketMessage = JSON.parse(event.data);
-                displayMessage(webSocketMessage)
-//                 switch (webSocketMessage.type) {
-
-//                     case "welcomeUser":
-//                         displayConnectedUserMessage(webSocketMessage.exchangeMessage.login);
-//                         break;
-
-//                     case "broadcastTextMessage":
-//                         displayMessage(webSocketMessage.exchangeMessage.login, webSocketMessage.exchangeMessage.payload);
-//                         break;
-
-//                     case "broadcastConnectedUser":
-//                         displayConnectedUserMessage(webSocketMessage.exchangeMessage.login);
-//                         break;
-
-//                     case "broadcastDisconnectedUser":
-//                         displayDisconnectedUserMessage(webSocketMessage.exchangeMessage.login);
-//                         break;
-
-//                     case "broadcastAvailableUsers":
-//                         cleanAvailableUsers();
-//                         for (var i = 0; i < webSocketMessage.exchangeMessage.logins.length; i++) {
-//                             addAvailableUsers(webSocketMessage.exchangeMessage.logins[i]);
-//                         }
-//                         break;
-//                 }
+                socket.send(JSON.stringify(exchangeMessage));
             }
-        };
-    }
-
-    function sendMessage() {
-        var text = document.getElementById("message").value;
-		if (text != ""){
-	        document.getElementById("message").value = "";
-
-	        var exchangeMessage = {
-	        	topic: "Administrator",
-	            payload: text
-	        };
-
-	        var webSocketMessage = {
-	            type: "sendTextMessage"
-	        };
-
-	        webSocketMessage.exchangeMessage = exchangeMessage;
-
-	        socket.send(JSON.stringify(exchangeMessage));
-		}
-    }
-
-    function displayMessage(login, text) {
-
-        var sentByCurrentUer = currentUser === login;
-
-        var message = document.createElement("div");
-        message.setAttribute("class", sentByCurrentUer === true ? "message sent" : "message received");
-        message.dataset.sender = login;
-
-        var sender = document.createElement("span");
-        sender.setAttribute("class", "sender");
-        sender.appendChild(document.createTextNode(sentByCurrentUer === true ? "You" : login));
-        message.appendChild(sender);
-
-        var payload = document.createElement("span");
-        payload.setAttribute("class", "payload");
-        payload.appendChild(document.createTextNode(text));
-        message.appendChild(payload);
-
-        var messages = document.getElementById("messages");
-        var lastMessage = messages.lastChild;
-        if (lastMessage && lastMessage.dataset.sender && lastMessage.dataset.sender === login) {
-            message.className += " same-sender-previous-message";
         }
 
-        messages.appendChild(message);
-        messages.scrollTop = messages.scrollHeight;
-    }
+        function displayMessage(login, text) {
 
-    function displayConnectedUserMessage(login) {
+            var sentByCurrentUer = currentUser === login;
 
-        var sentByCurrentUer = currentUser === login;
+            var message = document.createElement("div");
+            message.setAttribute("class", sentByCurrentUer === true ? "message sent" : "message received");
+            message.dataset.sender = login;
 
-        var message = document.createElement("div");
-        message.setAttribute("class", "message event");
+            var sender = document.createElement("span");
+            sender.setAttribute("class", "sender");
+            sender.appendChild(document.createTextNode(sentByCurrentUer === true ? "You" : login));
+            message.appendChild(sender);
 
-        var text = sentByCurrentUer === true ? "Welcome " + login : login + " joined the chat";
-        var payload = document.createElement("span");
-        payload.setAttribute("class", "payload");
-        payload.appendChild(document.createTextNode(text));
-        message.appendChild(payload);
+            var payload = document.createElement("span");
+            payload.setAttribute("class", "payload");
+            payload.appendChild(document.createTextNode(text));
+            message.appendChild(payload);
 
-        var messages = document.getElementById("messages");
-        messages.appendChild(message);
-    }
+            var messages = document.getElementById("messages");
+            var lastMessage = messages.lastChild;
+            if (lastMessage && lastMessage.dataset.sender && lastMessage.dataset.sender === login) {
+                message.className += " same-sender-previous-message";
+            }
 
-    function displayDisconnectedUserMessage(login) {
-
-        var message = document.createElement("div");
-        message.setAttribute("class", "message event");
-
-        var text = login + " left the chat";
-        var payload = document.createElement("span");
-        payload.setAttribute("class", "payload");
-        payload.appendChild(document.createTextNode(text));
-        message.appendChild(payload);
-
-        var messages = document.getElementById("messages");
-        messages.appendChild(message);
-    }
-
-    function addAvailableUsers(login) {
-
-        var contact = document.createElement("div");
-        contact.setAttribute("class", "contact");
-
-        var status = document.createElement("div");
-        status.setAttribute("class", "status");
-        contact.appendChild(status);
-
-        var payload = document.createElement("span");
-        payload.setAttribute("class", "name");
-        payload.appendChild(document.createTextNode(login));
-        contact.appendChild(payload);
-
-        var contacts = document.getElementById("contacts");
-        contacts.appendChild(contact);
-    }
-
-    function cleanAvailableUsers() {
-        var contacts = document.getElementById("contacts");
-        while (contacts.hasChildNodes()) {
-            contacts.removeChild(contacts.lastChild);
+            messages.appendChild(message);
+            messages.scrollTop = messages.scrollHeight;
         }
-    }
 
-</script>
+        function displayConnectedUserMessage(login) {
+
+            var sentByCurrentUer = currentUser === login;
+
+            var message = document.createElement("div");
+            message.setAttribute("class", "message event");
+
+            var text = sentByCurrentUer === true ? "Welcome " + login : login + " joined the chat";
+            var payload = document.createElement("span");
+            payload.setAttribute("class", "payload");
+            payload.appendChild(document.createTextNode(text));
+            message.appendChild(payload);
+
+            var messages = document.getElementById("messages");
+            messages.appendChild(message);
+        }
+
+        function displayDisconnectedUserMessage(login) {
+
+            var message = document.createElement("div");
+            message.setAttribute("class", "message event");
+
+            var text = login + " left the chat";
+            var payload = document.createElement("span");
+            payload.setAttribute("class", "payload");
+            payload.appendChild(document.createTextNode(text));
+            message.appendChild(payload);
+
+            var messages = document.getElementById("messages");
+            messages.appendChild(message);
+        }
+
+        function addAvailableUsers(login) {
+
+            var contact = document.createElement("div");
+            contact.setAttribute("class", "contact");
+
+            var status = document.createElement("div");
+            status.setAttribute("class", "status");
+            contact.appendChild(status);
+
+            var payload = document.createElement("span");
+            payload.setAttribute("class", "name");
+            payload.appendChild(document.createTextNode(login));
+            contact.appendChild(payload);
+
+            var contacts = document.getElementById("contacts");
+            contacts.appendChild(contact);
+        }
+
+        function cleanAvailableUsers() {
+            var contacts = document.getElementById("contacts");
+            while (contacts.hasChildNodes()) {
+                contacts.removeChild(contacts.lastChild);
+            }
+        }
+    </script>
 
 </body>
+
 </html>
