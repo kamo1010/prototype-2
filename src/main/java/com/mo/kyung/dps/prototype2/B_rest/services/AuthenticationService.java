@@ -12,8 +12,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.mo.kyung.dps.prototype2.C_data.Database;
-import com.mo.kyung.dps.prototype2.C_data.datatypes.AccountUser;
-import com.mo.kyung.dps.prototype2.C_data.resources.AccountUserResource;
+import com.mo.kyung.dps.prototype2.C_data.a_resources.AccountUserResource;
+import com.mo.kyung.dps.prototype2.C_data.b_datatypes.AccountUser;
 
 
 //this service is ok

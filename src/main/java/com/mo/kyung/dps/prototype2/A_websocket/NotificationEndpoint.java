@@ -12,8 +12,8 @@ import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
 import com.mo.kyung.dps.prototype2.C_data.Database;
-import com.mo.kyung.dps.prototype2.C_data.datatypes.AccountUser;
-import com.mo.kyung.dps.prototype2.C_data.resources.ExchangeMessageResource;
+import com.mo.kyung.dps.prototype2.C_data.a_resources.ExchangeMessageResource;
+import com.mo.kyung.dps.prototype2.C_data.b_datatypes.AccountUser;
 
 @ServerEndpoint(value = "/{login}",
 				encoders = NotificationEncoder.class,

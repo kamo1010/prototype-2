@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Chat</title>
+    <title>RESTful Websocket Notification Application2</title>
     <meta name="description" content="Sample chat application">
     <meta name="author" content="Cassio Mazzochi Molin">
 
@@ -198,9 +198,9 @@
 <div id="title">Chat</div>
 
 <form id="authentication" onsubmit="return false;">
-    <input type="text" id="username" placeholder="Username" autofocus/>
+    <input type="text" id="login" placeholder="Login" autofocus/>
     <input type="password" id="password" placeholder="Password"/>
-    <button class="button" onclick="signIn()">Sign In</button>
+    <button class="button" onclick="logIn()">Log in</button>
     <span class="error" id="authentication-error"></span>
 </form>
 
@@ -219,26 +219,27 @@
     var socket;
     var currentUser;
 
-    function signIn() {
+    function logIn() {
 
         var credentials = {
-            username: document.getElementById("username").value,
+            login: document.getElementById("login").value,
             password: document.getElementById("password").value
         };
+        console.log(JSON.stringify(credentials));
 
         var request = new XMLHttpRequest();
-        request.open("POST", "http://technetium:9797/auth");
+        request.open("POST", "http://" + window.location.hostname + ":8080/prototype-two/auth/in");
         request.setRequestHeader("Content-Type", "application/json");
 
-        request.onreadystatechange = function () {+
+        request.onreadystatechange = function () {
 
             if (request.readyState === XMLHttpRequest.DONE) {
 
                 switch (request.status) {
 
                     case 200:
-                        currentUser = credentials.username;
-                        var webSocketAccessToken = JSON.parse(request.responseText);
+                        currentUser = credentials.login;
+                        var webSocketAccessToken = request.responseText;
                         openSocket(webSocketAccessToken.token);
                         break;
 
@@ -264,7 +265,7 @@
         
         var ip = '<%=request.getRemoteHost();%>'; 
 
-        socket = new WebSocket("ws://technetium:9797/chat?access-token=" + accessToken);
+        socket = new WebSocket("ws://technetium:8080/chat?access-token=" + accessToken);
 
         socket.onopen = function (event) {
             document.getElementById("authentication").style.display = "none";
@@ -281,25 +282,25 @@
                 switch (webSocketMessage.type) {
 
                     case "welcomeUser":
-                        displayConnectedUserMessage(webSocketMessage.payload.username);
+                        displayConnectedUserMessage(webSocketMessage.payload.login);
                         break;
 
                     case "broadcastTextMessage":
-                        displayMessage(webSocketMessage.payload.username, webSocketMessage.payload.content);
+                        displayMessage(webSocketMessage.payload.login, webSocketMessage.payload.content);
                         break;
 
                     case "broadcastConnectedUser":
-                        displayConnectedUserMessage(webSocketMessage.payload.username);
+                        displayConnectedUserMessage(webSocketMessage.payload.login);
                         break;
 
                     case "broadcastDisconnectedUser":
-                        displayDisconnectedUserMessage(webSocketMessage.payload.username);
+                        displayDisconnectedUserMessage(webSocketMessage.payload.login);
                         break;
 
                     case "broadcastAvailableUsers":
                         cleanAvailableUsers();
-                        for (var i = 0; i < webSocketMessage.payload.usernames.length; i++) {
-                            addAvailableUsers(webSocketMessage.payload.usernames[i]);
+                        for (var i = 0; i < webSocketMessage.payload.logins.length; i++) {
+                            addAvailableUsers(webSocketMessage.payload.logins[i]);
                         }
                         break;
                 }
@@ -325,17 +326,17 @@
         socket.send(JSON.stringify(webSocketMessage));
     }
 
-    function displayMessage(username, text) {
+    function displayMessage(login, text) {
 
-        var sentByCurrentUer = currentUser === username;
+        var sentByCurrentUer = currentUser === login;
 
         var message = document.createElement("div");
         message.setAttribute("class", sentByCurrentUer === true ? "message sent" : "message received");
-        message.dataset.sender = username;
+        message.dataset.sender = login;
 
         var sender = document.createElement("span");
         sender.setAttribute("class", "sender");
-        sender.appendChild(document.createTextNode(sentByCurrentUer === true ? "You" : username));
+        sender.appendChild(document.createTextNode(sentByCurrentUer === true ? "You" : login));
         message.appendChild(sender);
 
         var content = document.createElement("span");
@@ -345,7 +346,7 @@
 
         var messages = document.getElementById("messages");
         var lastMessage = messages.lastChild;
-        if (lastMessage && lastMessage.dataset.sender && lastMessage.dataset.sender === username) {
+        if (lastMessage && lastMessage.dataset.sender && lastMessage.dataset.sender === login) {
             message.className += " same-sender-previous-message";
         }
 
@@ -353,14 +354,14 @@
         messages.scrollTop = messages.scrollHeight;
     }
 
-    function displayConnectedUserMessage(username) {
+    function displayConnectedUserMessage(login) {
 
-        var sentByCurrentUer = currentUser === username;
+        var sentByCurrentUer = currentUser === login;
 
         var message = document.createElement("div");
         message.setAttribute("class", "message event");
 
-        var text = sentByCurrentUer === true ? "Welcome " + username : username + " joined the chat";
+        var text = sentByCurrentUer === true ? "Welcome " + login : login + " joined the chat";
         var content = document.createElement("span");
         content.setAttribute("class", "content");
         content.appendChild(document.createTextNode(text));
@@ -370,12 +371,12 @@
         messages.appendChild(message);
     }
 
-    function displayDisconnectedUserMessage(username) {
+    function displayDisconnectedUserMessage(login) {
 
         var message = document.createElement("div");
         message.setAttribute("class", "message event");
 
-        var text = username + " left the chat";
+        var text = login + " left the chat";
         var content = document.createElement("span");
         content.setAttribute("class", "content");
         content.appendChild(document.createTextNode(text));
@@ -385,7 +386,7 @@
         messages.appendChild(message);
     }
 
-    function addAvailableUsers(username) {
+    function addAvailableUsers(login) {
 
         var contact = document.createElement("div");
         contact.setAttribute("class", "contact");
@@ -396,7 +397,7 @@
 
         var content = document.createElement("span");
         content.setAttribute("class", "name");
-        content.appendChild(document.createTextNode(username));
+        content.appendChild(document.createTextNode(login));
         contact.appendChild(content);
 
         var contacts = document.getElementById("contacts");

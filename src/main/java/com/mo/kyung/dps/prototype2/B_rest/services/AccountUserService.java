@@ -22,12 +22,12 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import com.mo.kyung.dps.prototype2.C_data.Database;
-import com.mo.kyung.dps.prototype2.C_data.datatypes.AccountUser;
-import com.mo.kyung.dps.prototype2.C_data.datatypes.ExchangeMessage;
-import com.mo.kyung.dps.prototype2.C_data.datatypes.Topic;
-import com.mo.kyung.dps.prototype2.C_data.resources.ExchangeMessageReceiveResource;
-import com.mo.kyung.dps.prototype2.C_data.resources.ExchangeMessageResource;
-import com.mo.kyung.dps.prototype2.C_data.resources.InvitationResource;
+import com.mo.kyung.dps.prototype2.C_data.a_resources.ExchangeMessageReceiveResource;
+import com.mo.kyung.dps.prototype2.C_data.a_resources.ExchangeMessageResource;
+import com.mo.kyung.dps.prototype2.C_data.a_resources.InvitationResource;
+import com.mo.kyung.dps.prototype2.C_data.b_datatypes.AccountUser;
+import com.mo.kyung.dps.prototype2.C_data.b_datatypes.ExchangeMessage;
+import com.mo.kyung.dps.prototype2.C_data.b_datatypes.Topic;
 
 @Path("{login}")
 public class AccountUserService {

@@ -1,11 +1,11 @@
-package com.mo.kyung.dps.prototype2.C_data.datatypes;
+package com.mo.kyung.dps.prototype2.C_data.b_datatypes;
 
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 import com.mo.kyung.dps.prototype2.C_data.Database;
-import com.mo.kyung.dps.prototype2.C_data.resources.UserDetailResource;
+import com.mo.kyung.dps.prototype2.C_data.a_resources.UserDetailResource;
 
 public class AccountUser implements Comparable<AccountUser> {
 	private String firstName, lastName, login, password;

@@ -5,7 +5,7 @@ import javax.websocket.Encoder;
 import javax.websocket.EndpointConfig;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.mo.kyung.dps.prototype2.C_data.resources.ExchangeMessageResource;
+import com.mo.kyung.dps.prototype2.C_data.a_resources.ExchangeMessageResource;
 
 public class NotificationEncoder implements Encoder.Text<ExchangeMessageResource> {
 
