@@ -13,21 +13,20 @@ import javax.ws.rs.core.Response;
 
 import com.mo.kyung.dps.prototype2.data.Database;
 import com.mo.kyung.dps.prototype2.data.datatypes.AccountUser;
-import com.mo.kyung.dps.prototype2.data.representations.AccountUserRepresentation;
+import com.mo.kyung.dps.prototype2.data.representations.LogInRepresentation;
 
 
-//this service is ok
+//this service is not ok
 @Path("auth")
 public class AuthenticationService {
 	@POST
 	@Path("in")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response logIn(AccountUserRepresentation credentials) throws UnsupportedEncodingException {
-		for (AccountUser user : Database.getUsers().values()) {
+	public Response logIn(LogInRepresentation credentials) throws UnsupportedEncodingException {
+		for (AccountUser user : Database.getUsers()) {
 			if (user.getLogin().equals(credentials.getLogin()) && user.getPassword().equals(credentials.getPassword())) {
 				if (!user.isConnected()) {
-					StringBuilder builder = new StringBuilder(credentials.getLogin()).append("@101@").append(credentials.getPassword());
-					user.setToken(Base64.getEncoder().encodeToString(builder.toString().getBytes(StandardCharsets.UTF_8.toString())));
+					Database.addConnectedUser(user);
 					return Response.ok(user.getToken()).build();
 				} else {
 					return Response.status(418).build();

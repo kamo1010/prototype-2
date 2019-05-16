@@ -1,12 +1,12 @@
 package com.mo.kyung.dps.prototype2.data.representations;
 
-public class AccountUserRepresentation {
+public class LogInRepresentation {
 	private String login;
 	private String password;
-	public AccountUserRepresentation() {
+	public LogInRepresentation() {
 		super();
 	}
-	public AccountUserRepresentation(String login, String password) {
+	public LogInRepresentation(String login, String password) {
 		super();
 		this.login = login;
 		this.password = password;

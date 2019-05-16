@@ -1,12 +1,12 @@
 package com.mo.kyung.dps.prototype2.data.representations;
 
-public class ExchangeMessageRepresentation {
+public class SentMessageRepresentation {
 	private String topic;
 	private String payload;
-	public ExchangeMessageRepresentation() {
+	public SentMessageRepresentation() {
 		super();
 	}
-	public ExchangeMessageRepresentation(String topic, String payload) {
+	public SentMessageRepresentation(String topic, String payload) {
 		this.topic = topic;
 		this.payload = payload;
 	}

@@ -2,13 +2,13 @@ package com.mo.kyung.dps.prototype2.data.representations;
 
 import java.util.Set;
 
-public class UserDetailRepresentation {
+public class UserPropertiesRepresentation {
 	private String firstName, lastName, login;
 	private Set<String> topicsNames;
-	public UserDetailRepresentation() {
+	public UserPropertiesRepresentation() {
 		super();
 	}
-	public UserDetailRepresentation(String firstName, String lastName, String login, Set<String> topicsNames) {
+	public UserPropertiesRepresentation(String firstName, String lastName, String login, Set<String> topicsNames) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;

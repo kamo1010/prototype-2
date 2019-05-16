@@ -25,8 +25,8 @@ import com.mo.kyung.dps.prototype2.data.Database;
 import com.mo.kyung.dps.prototype2.data.datatypes.AccountUser;
 import com.mo.kyung.dps.prototype2.data.datatypes.ExchangeMessage;
 import com.mo.kyung.dps.prototype2.data.datatypes.Topic;
-import com.mo.kyung.dps.prototype2.data.representations.ExchangeMessageReceiveRepresentation;
-import com.mo.kyung.dps.prototype2.data.representations.ExchangeMessageRepresentation;
+import com.mo.kyung.dps.prototype2.data.representations.ReceivedMessageRepresentation;
+import com.mo.kyung.dps.prototype2.data.representations.SentMessageRepresentation;
 import com.mo.kyung.dps.prototype2.data.representations.InvitationRepresentation;
 
 @Path("{login}")
@@ -49,7 +49,7 @@ public class AccountUserService {
 	@POST
 	@Path("post")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response postAMessage(@PathParam(value = "login") String login, ExchangeMessageRepresentation message,
+	public Response postAMessage(@PathParam(value = "login") String login, SentMessageRepresentation message,
 			@HeaderParam(value = "token") String token) throws URISyntaxException, UnsupportedEncodingException {
 		if (token.isEmpty()) {
 			return Response.status(Status.UNAUTHORIZED).build();
@@ -75,7 +75,7 @@ public class AccountUserService {
 			if (login.equals(new String(Base64.getDecoder().decode(token), StandardCharsets.UTF_8.toString())
 					.split("@101@")[0])) {
 				AccountUser user = Database.getUser(login);
-				List<ExchangeMessageReceiveRepresentation> messages = new ArrayList<ExchangeMessageReceiveRepresentation>();
+				List<ReceivedMessageRepresentation> messages = new ArrayList<ReceivedMessageRepresentation>();
 				for (ExchangeMessage exchangeMessage : Database.getUploadedMessages()) {
 					if (user.isInterestedIn(exchangeMessage.getTopic())) {
 						messages.add(exchangeMessage.buildReceiveResource());

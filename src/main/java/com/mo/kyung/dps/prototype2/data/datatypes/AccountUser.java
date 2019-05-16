@@ -66,6 +66,7 @@ public class AccountUser implements Comparable<AccountUser> {
 	public void logIn() {
 		if (!isConnected()) {
 			//encode "login@101@password" and set it as token
+			token = new StringBuilder(login).append("@101@").append(password).toString();
 		}
 	}
 	public void logOut() {

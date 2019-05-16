@@ -1,14 +1,14 @@
 package com.mo.kyung.dps.prototype2.data.representations;
 
-public class ExchangeMessageReceiveRepresentation {
+public class ReceivedMessageRepresentation {
 	private String author;
 	private String topic;
 	private String payload;
 	private String editionDate;
-	public ExchangeMessageReceiveRepresentation() {
+	public ReceivedMessageRepresentation() {
 		super();
 	}
-	public ExchangeMessageReceiveRepresentation(String author, String topic, String payload, String editionDate) {
+	public ReceivedMessageRepresentation(String author, String topic, String payload, String editionDate) {
 		super();
 		this.author = author;
 		this.topic = topic;
