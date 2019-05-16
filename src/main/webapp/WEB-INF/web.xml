@@ -1,21 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<<<<<<< HEAD:WebContent/WEB-INF/web.xml
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 xmlns="http://java.sun.com/xml/ns/javaee" 
 xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" 
 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
 http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" 
 id="WebApp_ID" version="2.5">
-
-  <welcome-file-list>
-    <welcome-file>welcome.html</welcome-file>
-  </welcome-file-list>
-  
-=======
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
-	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
-	version="4.0">
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>
@@ -38,5 +27,4 @@ id="WebApp_ID" version="2.5">
 		<servlet-name>resteasy-servlet</servlet-name>
 		<url-pattern>/rest/*</url-pattern>
 	</servlet-mapping>
->>>>>>> d8c6cb0a950381eb7eefdd1dd43ba3b020bd05bd:src/main/webapp/WEB-INF/web.xml
 </web-app>

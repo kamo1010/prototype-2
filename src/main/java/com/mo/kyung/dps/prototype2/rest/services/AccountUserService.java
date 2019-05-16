@@ -6,7 +6,6 @@ import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
-import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -27,7 +26,8 @@ import com.mo.kyung.dps.prototype2.data.datatypes.ExchangeMessage;
 import com.mo.kyung.dps.prototype2.data.datatypes.Topic;
 import com.mo.kyung.dps.prototype2.data.representations.ReceivedMessageRepresentation;
 import com.mo.kyung.dps.prototype2.data.representations.SentMessageRepresentation;
-import com.mo.kyung.dps.prototype2.data.representations.InvitationRepresentation;
+import com.mo.kyung.dps.prototype2.data.representations.TopicCreationRepresentation;
+import com.mo.kyung.dps.prototype2.data.representations.UserPropertiesRepresentation;
 
 @Path("{login}")
 public class AccountUserService {
@@ -40,7 +40,7 @@ public class AccountUserService {
 		} else {
 			if (login.equals(new String(Base64.getDecoder().decode(token), StandardCharsets.UTF_8.toString())
 					.split("@101@")[0])) {
-				return Response.ok(Database.getUser(login).buildUserDetailResource()).build();
+				return Response.ok(new UserPropertiesRepresentation(Database.getUser(login))).build();
 			} else {
 				return Response.status(Status.FORBIDDEN).build();
 			}
@@ -56,8 +56,8 @@ public class AccountUserService {
 		} else {
 			if (login.equals(new String(Base64.getDecoder().decode(token), StandardCharsets.UTF_8.toString())
 					.split("@101@")[0])) {
-				Database.addMessage(new ExchangeMessage(login, message, new Date()));
-				StringBuilder builder = new StringBuilder(login).append("notifications");
+				Database.uploadMessaage(new ExchangeMessage(Database.getUser(login), Database.getTopic(message.getTopic()), message.getPayload()));
+				StringBuilder builder = new StringBuilder(login).append("/notifications");
 				return Response.created(new URI(builder.toString())).build();
 			} else {
 				return Response.status(Status.FORBIDDEN).build();
@@ -76,9 +76,9 @@ public class AccountUserService {
 					.split("@101@")[0])) {
 				AccountUser user = Database.getUser(login);
 				List<ReceivedMessageRepresentation> messages = new ArrayList<ReceivedMessageRepresentation>();
-				for (ExchangeMessage exchangeMessage : Database.getUploadedMessages()) {
-					if (user.isInterestedIn(exchangeMessage.getTopic())) {
-						messages.add(exchangeMessage.buildReceiveResource());
+				for (ExchangeMessage message : Database.getUploadedMessages()) {
+					if (user.isInterestedIn(message.getTopic())) {
+						messages.add(new ReceivedMessageRepresentation(message.getAuthor(), message.getTopic(), message.getPayload(), message.getEditionDate()));
 					}
 				}
 				return Response.ok(messages).build();
@@ -104,20 +104,21 @@ public class AccountUserService {
 	}
 	@POST
 	@Path("topics")
+	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createNewTopic(@PathParam(value = "login") String login,
 			@HeaderParam(value = "token") String token,
-			@HeaderParam(value = "topic_name") String topicName) throws URISyntaxException, UnsupportedEncodingException {
+			TopicCreationRepresentation newTopic) throws URISyntaxException, UnsupportedEncodingException {
 		if (token.isEmpty()) {
 			return Response.status(Status.UNAUTHORIZED).build();
 		} else {
 			if (login.equals(new String(Base64.getDecoder().decode(token), StandardCharsets.UTF_8.toString())
 					.split("@101@")[0])) {
-				if (!Database.getTopics().containsKey(topicName)) {
-					Topic topic = new Topic(topicName);
+				if (Database.getTopic(newTopic.getTopicName()) != null) {
+					Topic topic = new Topic(newTopic.getTopicName(), newTopic.isPublik());
 					AccountUser user = Database.getUser(login);
 					Database.addTopic(topic);
 					user.subscribeToTopic(topic);
-					StringBuilder builder = new StringBuilder(login).append("/topics/").append(topicName);
+					StringBuilder builder = new StringBuilder(login).append("/topics/").append(newTopic.getTopicName());
 					return Response.created(new URI(builder.toString())).build();
 				}
 				return Response.status(418).build();
@@ -149,20 +150,20 @@ public class AccountUserService {
 		}
 	}
 	@PUT
-	@Path("invite")
+	@Path("subscribe")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response inviteUser(@PathParam(value = "login") String login,
+	public Response subscribe(@PathParam(value = "login") String login,
 			@HeaderParam(value = "token") String token,
-			InvitationRepresentation invitation) throws UnsupportedEncodingException, URISyntaxException {
+			String topicName) throws UnsupportedEncodingException, URISyntaxException {
 		if (token.isEmpty()) {
 			return Response.status(Status.UNAUTHORIZED).build();
 		} else {
 			if (login.equals(new String(Base64.getDecoder().decode(token), StandardCharsets.UTF_8.toString())
 					.split("@101@")[0])) {
 				AccountUser user = Database.getUser(login);
-				Topic topic = Database.getTopic(invitation.getTopicName());
+				Topic topic = Database.getTopic(topicName);
 				if (user.getTopics().contains(topic)) {
-					if (Database.getUser(invitation.getLogin()).subscribeToTopic(topic)) {
+					if (user.subscribeToTopic(topic)) {
 						return Response.ok().build();
 					} else {
 						return Response.status(Status.BAD_REQUEST).build();

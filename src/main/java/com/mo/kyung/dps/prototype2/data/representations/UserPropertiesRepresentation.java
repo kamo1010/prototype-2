@@ -1,6 +1,10 @@
 package com.mo.kyung.dps.prototype2.data.representations;
 
 import java.util.Set;
+import java.util.TreeSet;
+
+import com.mo.kyung.dps.prototype2.data.datatypes.AccountUser;
+import com.mo.kyung.dps.prototype2.data.datatypes.Topic;
 
 public class UserPropertiesRepresentation {
 	private String firstName, lastName, login;
@@ -14,6 +18,16 @@ public class UserPropertiesRepresentation {
 		this.lastName = lastName;
 		this.login = login;
 		this.topicsNames = topicsNames;
+	}
+	public UserPropertiesRepresentation(AccountUser user) {
+		super();
+		this.firstName = user.getFirstName();
+		this.lastName = user.getLastName();
+		this.login = user.getLogin();
+		this.topicsNames = new TreeSet<String>();
+		for (Topic topic : user.getTopics()) {
+			topicsNames.add(topic.getName());
+		}
 	}
 	public String getFirstName() {
 		return firstName;

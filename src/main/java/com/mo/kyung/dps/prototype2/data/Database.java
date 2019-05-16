@@ -17,40 +17,44 @@ public class Database {
 	private static Set<ExchangeMessage> uploadedMessages = new TreeSet<ExchangeMessage>();
 	static {
 		addUser(new AccountUser("admin", "admin", "admin", "admin"));
-		addUser(new AccountUser("Patrick", "GRIMBERG", "patrick", "grimberg"));
-		addUser(new AccountUser("Jérôme", "DAZIANO", "jerome", "daziano"));
-		addUser(new AccountUser("Maud", "CADORET", "maud", "cadoret"));
-		addUser(new AccountUser("Hamza", "OUCHEIKH", "hamza", "oucheikh"));
-		addUser(new AccountUser("Abdoulaye", "SOW", "abdoulaye", "sow"));
-		addUser(new AccountUser("Pascal", "REINA", "pascal", "reina"));
-		addUser(new AccountUser("Mohamad", "YASSINE", "mohamad", "yassine"));
-		addUser(new AccountUser("Frédéric", "GANTOIS", "frederic", "gantois"));
-		addUser(new AccountUser("Alexis", "LE ROY", "alexis", "leroy"));
-		addUser(new AccountUser("Kyung Mo", "YANG", "kyungmo", "yang"));
-		addUser(new AccountUser("Amar", "LANKRI", "amar", "lankri"));
-		addUser(new AccountUser("Syed Farath", "SAYEED", "syedfarath", "sayeed"));
-		addUser(new AccountUser("Benoît", "GRASSET", "benoit", "grasset"));
-		addUser(new AccountUser("Nathan", "MARGUET", "nathan", "marguet"));
-		addUser(new AccountUser("Didier", "TERRIER", "didier", "terrier"));
-		addUser(new AccountUser("Antoine", "MUNCK", "antoine", "munck"));
+		/*
+		 * addUser(new AccountUser("Patrick", "GRIMBERG", "patrick", "grimberg"));
+		 * addUser(new AccountUser("JÃ©rÃ´me", "DAZIANO", "jerome", "daziano"));
+		 * addUser(new AccountUser("Maud", "CADORET", "maud", "cadoret")); addUser(new
+		 * AccountUser("Hamza", "OUCHEIKH", "hamza", "oucheikh")); addUser(new
+		 * AccountUser("Abdoulaye", "SOW", "abdoulaye", "sow")); addUser(new
+		 * AccountUser("Pascal", "REINA", "pascal", "reina")); addUser(new
+		 * AccountUser("Mohamad", "YASSINE", "mohamad", "yassine")); addUser(new
+		 * AccountUser("FrÃ©dÃ©ric", "GANTOIS", "frederic", "gantois")); addUser(new
+		 * AccountUser("Alexis", "LE ROY", "alexis", "leroy")); addUser(new
+		 * AccountUser("Kyung Mo", "YANG", "kyungmo", "yang")); addUser(new
+		 * AccountUser("Amar", "LANKRI", "amar", "lankri")); addUser(new
+		 * AccountUser("Syed Farath", "SAYEED", "syedfarath", "sayeed")); addUser(new
+		 * AccountUser("BenoÃ®t", "GRASSET", "benoit", "grasset")); addUser(new
+		 * AccountUser("Nathan", "MARGUET", "nathan", "marguet")); addUser(new
+		 * AccountUser("Didier", "TERRIER", "didier", "terrier")); addUser(new
+		 * AccountUser("Antoine", "MUNCK", "antoine", "munck"));
+		 */
 		
-		addTopic(new Topic("Administrator"));
-		addTopic(new Topic("General"));
-		addTopic(new Topic("Karren"));
-		addTopic(new Topic("Stagiaires"));
+		addTopic(new Topic("Administration", true));
+		addTopic(new Topic("Connexion", true));
+		addTopic(new Topic("Subscription", true));
+		addTopic(new Topic("New Topic", true));
 		
-		getUser("abdoulaye").subscribeToTopic(getTopic("Administrator"));
-		getUser("abdoulaye").subscribeToTopic(getTopic("Stagiaires"));
-		getUser("abdoulaye").subscribeToTopic(getTopic("Karren"));
-		getUser("abdoulaye").subscribeToTopic(getTopic("Administrator"));
-		getUser("didier").subscribeToTopic(getTopic("Administrator"));
-		getUser("antoine").subscribeToTopic(getTopic("Administrator"));
-		getUser("patrick").subscribeToTopic(getTopic("Administrator"));
-		getUser("maud").subscribeToTopic(getTopic("Stagiaires"));
-		getUser("alexis").subscribeToTopic(getTopic("Stagiaires"));
-		getUser("hamza").subscribeToTopic(getTopic("Stagiaires"));
-		getUser("kyungmo").subscribeToTopic(getTopic("Stagiaires"));
-		getUser("jerome").subscribeToTopic(getTopic("Karren"));
+		/*
+		 * getUser("abdoulaye").subscribeToTopic(getTopic("Administrator"));
+		 * getUser("abdoulaye").subscribeToTopic(getTopic("Stagiaires"));
+		 * getUser("abdoulaye").subscribeToTopic(getTopic("Karren"));
+		 * getUser("abdoulaye").subscribeToTopic(getTopic("Administrator"));
+		 * getUser("didier").subscribeToTopic(getTopic("Administrator"));
+		 * getUser("antoine").subscribeToTopic(getTopic("Administrator"));
+		 * getUser("patrick").subscribeToTopic(getTopic("Administrator"));
+		 * getUser("maud").subscribeToTopic(getTopic("Stagiaires"));
+		 * getUser("alexis").subscribeToTopic(getTopic("Stagiaires"));
+		 * getUser("hamza").subscribeToTopic(getTopic("Stagiaires"));
+		 * getUser("kyungmo").subscribeToTopic(getTopic("Stagiaires"));
+		 * getUser("jerome").subscribeToTopic(getTopic("Karren"));
+		 */
 	}
 	public static Set<AccountUser> getUsers() {
 		return Collections.unmodifiableSet(users);
@@ -120,7 +124,10 @@ public class Database {
 	public static boolean uploadMessaage(ExchangeMessage message) {
 		return uploadedMessages.add(message);
 	}
-	public static boolean deletedMessage(ExchangeMessage message) {
+	public static boolean deleteMessage(ExchangeMessage message) {
 		return uploadedMessages.remove(message);
+	}
+	public static boolean applySubscription(String login, String topicName) {
+		return getUser(login).subscribeToTopic(getTopic(topicName));
 	}
 }

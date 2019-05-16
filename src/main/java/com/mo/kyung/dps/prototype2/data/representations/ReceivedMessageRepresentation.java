@@ -1,5 +1,10 @@
 package com.mo.kyung.dps.prototype2.data.representations;
 
+import java.util.Date;
+
+import com.mo.kyung.dps.prototype2.data.datatypes.AccountUser;
+import com.mo.kyung.dps.prototype2.data.datatypes.Topic;
+
 public class ReceivedMessageRepresentation {
 	private String author;
 	private String topic;
@@ -8,12 +13,12 @@ public class ReceivedMessageRepresentation {
 	public ReceivedMessageRepresentation() {
 		super();
 	}
-	public ReceivedMessageRepresentation(String author, String topic, String payload, String editionDate) {
+	public ReceivedMessageRepresentation(AccountUser accountUser, Topic topic, String payload, Date date) {
 		super();
-		this.author = author;
-		this.topic = topic;
+		this.author = accountUser.getLogin();
+		this.topic = topic.getName();
 		this.payload = payload;
-		this.editionDate = editionDate;
+		this.editionDate = date.toString();
 	}
 	public String getAuthor() {
 		return author;
