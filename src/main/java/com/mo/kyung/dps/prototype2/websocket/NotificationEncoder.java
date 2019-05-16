@@ -5,9 +5,9 @@ import javax.websocket.Encoder;
 import javax.websocket.EndpointConfig;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.mo.kyung.dps.prototype2.data.resources.ExchangeMessageResource;
+import com.mo.kyung.dps.prototype2.data.resources.ExchangeMessageReceiveResource;
 
-public class NotificationEncoder implements Encoder.Text<ExchangeMessageResource> {
+public class NotificationEncoder implements Encoder.Text<ExchangeMessageReceiveResource> {
 
 	@Override
 	public void init(EndpointConfig config) {
@@ -18,7 +18,7 @@ public class NotificationEncoder implements Encoder.Text<ExchangeMessageResource
 	}
 
 	@Override
-	public String encode(ExchangeMessageResource message) throws EncodeException {
+	public String encode(ExchangeMessageReceiveResource message) throws EncodeException {
 		try {
             return Constants.getMapper().writeValueAsString(message);
         } catch (JsonProcessingException e) {

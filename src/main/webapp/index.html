@@ -3,8 +3,8 @@
 <head>
     <meta charset="utf-8">
     <title>RESTful Websocket Notification Application2</title>
-    <meta name="description" content="Sample chat application">
-    <meta name="author" content="Cassio Mazzochi Molin">
+    <meta name="description" payload="Sample chat application">
+    <meta name="author" payload="Cassio Mazzochi Molin">
 
     <style>
 
@@ -117,7 +117,7 @@
             margin-bottom: 3px;
         }
 
-        #messages .message .content {
+        #messages .message .payload {
             min-width: 20px;
             max-width: 250px;
             border-radius: 20px;
@@ -125,7 +125,7 @@
             display: table;
         }
 
-        #messages .message.event .content {
+        #messages .message.event .payload {
             background-color: #FF7E29;
             color: #fff;
             margin-left: auto;
@@ -139,7 +139,7 @@
             text-align: left;
         }
 
-        #messages .message.received .content {
+        #messages .message.received .payload {
             background-color: gainsboro;
             border-radius: 0 20px 20px;
         }
@@ -154,7 +154,7 @@
             text-align: right;
         }
 
-        #messages .message.sent .content {
+        #messages .message.sent .payload {
             background-color: #0084FF;
             margin-left: auto;
             margin-right: 0;
@@ -228,8 +228,8 @@
         console.log(JSON.stringify(credentials));
 
         var request = new XMLHttpRequest();
-        request.open("POST", "http://" + window.location.hostname + ":8080/prototype-two/auth/in");
-        request.setRequestHeader("Content-Type", "application/json");
+        request.open("POST", "http://" + window.location.hostname + ":8080/prototype-two/rest/auth/in");
+        request.setRequestHeader("payload-Type", "application/json");
 
         request.onreadystatechange = function () {
 
@@ -240,7 +240,7 @@
                     case 200:
                         currentUser = credentials.login;
                         var webSocketAccessToken = request.responseText;
-                        openSocket(webSocketAccessToken.token);
+                        openSocket(webSocketAccessToken);
                         break;
 
                     case 403:
@@ -262,10 +262,9 @@
         if (socket) {
             socket.close();
         }
-        
-        var ip = '<%=request.getRemoteHost();%>'; 
+        console.log(document.getElementById("login").value);
 
-        socket = new WebSocket("ws://technetium:8080/chat?access-token=" + accessToken);
+        socket = new WebSocket("ws://" + window.location.hostname + ":8080/prototype-two/" + document.getElementById("login").value);
 
         socket.onopen = function (event) {
             document.getElementById("authentication").style.display = "none";
@@ -279,51 +278,53 @@
             if (typeof event.data === "string") {
 
                 var webSocketMessage = JSON.parse(event.data);
-                switch (webSocketMessage.type) {
+//                 switch (webSocketMessage.type) {
 
-                    case "welcomeUser":
-                        displayConnectedUserMessage(webSocketMessage.payload.login);
-                        break;
+//                     case "welcomeUser":
+//                         displayConnectedUserMessage(webSocketMessage.exchangeMessage.login);
+//                         break;
 
-                    case "broadcastTextMessage":
-                        displayMessage(webSocketMessage.payload.login, webSocketMessage.payload.content);
-                        break;
+//                     case "broadcastTextMessage":
+//                         displayMessage(webSocketMessage.exchangeMessage.login, webSocketMessage.exchangeMessage.payload);
+//                         break;
 
-                    case "broadcastConnectedUser":
-                        displayConnectedUserMessage(webSocketMessage.payload.login);
-                        break;
+//                     case "broadcastConnectedUser":
+//                         displayConnectedUserMessage(webSocketMessage.exchangeMessage.login);
+//                         break;
 
-                    case "broadcastDisconnectedUser":
-                        displayDisconnectedUserMessage(webSocketMessage.payload.login);
-                        break;
+//                     case "broadcastDisconnectedUser":
+//                         displayDisconnectedUserMessage(webSocketMessage.exchangeMessage.login);
+//                         break;
 
-                    case "broadcastAvailableUsers":
-                        cleanAvailableUsers();
-                        for (var i = 0; i < webSocketMessage.payload.logins.length; i++) {
-                            addAvailableUsers(webSocketMessage.payload.logins[i]);
-                        }
-                        break;
-                }
+//                     case "broadcastAvailableUsers":
+//                         cleanAvailableUsers();
+//                         for (var i = 0; i < webSocketMessage.exchangeMessage.logins.length; i++) {
+//                             addAvailableUsers(webSocketMessage.exchangeMessage.logins[i]);
+//                         }
+//                         break;
+//                 }
             }
         };
     }
 
     function sendMessage() {
-
         var text = document.getElementById("message").value;
-        document.getElementById("message").value = "";
+		if (text != ""){
+	        document.getElementById("message").value = "";
 
-        var payload = {
-            content: text
-        };
+	        var exchangeMessage = {
+	        	topic: "Administrator",
+	            payload: text
+	        };
 
-        var webSocketMessage = {
-            type: "sendTextMessage"
-        };
+	        var webSocketMessage = {
+	            type: "sendTextMessage"
+	        };
 
-        webSocketMessage.payload = payload;
+	        webSocketMessage.exchangeMessage = exchangeMessage;
 
-        socket.send(JSON.stringify(webSocketMessage));
+	        socket.send(JSON.stringify(exchangeMessage));
+		}
     }
 
     function displayMessage(login, text) {
@@ -339,10 +340,10 @@
         sender.appendChild(document.createTextNode(sentByCurrentUer === true ? "You" : login));
         message.appendChild(sender);
 
-        var content = document.createElement("span");
-        content.setAttribute("class", "content");
-        content.appendChild(document.createTextNode(text));
-        message.appendChild(content);
+        var payload = document.createElement("span");
+        payload.setAttribute("class", "payload");
+        payload.appendChild(document.createTextNode(text));
+        message.appendChild(payload);
 
         var messages = document.getElementById("messages");
         var lastMessage = messages.lastChild;
@@ -362,10 +363,10 @@
         message.setAttribute("class", "message event");
 
         var text = sentByCurrentUer === true ? "Welcome " + login : login + " joined the chat";
-        var content = document.createElement("span");
-        content.setAttribute("class", "content");
-        content.appendChild(document.createTextNode(text));
-        message.appendChild(content);
+        var payload = document.createElement("span");
+        payload.setAttribute("class", "payload");
+        payload.appendChild(document.createTextNode(text));
+        message.appendChild(payload);
 
         var messages = document.getElementById("messages");
         messages.appendChild(message);
@@ -377,10 +378,10 @@
         message.setAttribute("class", "message event");
 
         var text = login + " left the chat";
-        var content = document.createElement("span");
-        content.setAttribute("class", "content");
-        content.appendChild(document.createTextNode(text));
-        message.appendChild(content);
+        var payload = document.createElement("span");
+        payload.setAttribute("class", "payload");
+        payload.appendChild(document.createTextNode(text));
+        message.appendChild(payload);
 
         var messages = document.getElementById("messages");
         messages.appendChild(message);
@@ -395,10 +396,10 @@
         status.setAttribute("class", "status");
         contact.appendChild(status);
 
-        var content = document.createElement("span");
-        content.setAttribute("class", "name");
-        content.appendChild(document.createTextNode(login));
-        contact.appendChild(content);
+        var payload = document.createElement("span");
+        payload.setAttribute("class", "name");
+        payload.appendChild(document.createTextNode(login));
+        contact.appendChild(payload);
 
         var contacts = document.getElementById("contacts");
         contacts.appendChild(contact);

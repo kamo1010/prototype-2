@@ -17,7 +17,7 @@
 			org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher</servlet-class>
 		<init-param>
 			<param-name>javax.ws.rs.Application</param-name>
-			<param-value>com.mo.kyung.dps.prototype2.B_rest.NotificationApplication
+			<param-value>com.mo.kyung.dps.prototype2.rest.NotificationApplication
 			</param-value>
 		</init-param>
 	</servlet>

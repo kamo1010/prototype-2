@@ -54,9 +54,7 @@ public class AccountUser implements Comparable<AccountUser> {
 		this.token = token;
 	}
 	public boolean isConnected() {
-		if (token.isEmpty()) {
-			return true;
-		} return false;
+		return !token.isEmpty();
 	}
 	public AccountUser() {
 		super();
@@ -69,7 +67,7 @@ public class AccountUser implements Comparable<AccountUser> {
 		this.password = password;
 		this.topics = new HashSet<Topic>();
 		this.topics.add(Database.getTopic("Administration"));
-		this.token = null;
+		this.token = "";
 	}
 	public boolean isInterestedIn(Topic topic) {
 		return topics.contains(topic);

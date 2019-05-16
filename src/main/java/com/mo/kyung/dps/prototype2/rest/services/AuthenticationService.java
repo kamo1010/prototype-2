@@ -25,7 +25,7 @@ public class AuthenticationService {
 	public Response logIn(AccountUserResource credentials) throws UnsupportedEncodingException {
 		for (AccountUser user : Database.getUsers().values()) {
 			if (user.getLogin().equals(credentials.getLogin()) && user.getPassword().equals(credentials.getPassword())) {
-				if (user.isConnected()) {
+				if (!user.isConnected()) {
 					StringBuilder builder = new StringBuilder(credentials.getLogin()).append("@101@").append(credentials.getPassword());
 					user.setToken(Base64.getEncoder().encodeToString(builder.toString().getBytes(StandardCharsets.UTF_8.toString())));
 					return Response.ok(user.getToken()).build();
@@ -41,7 +41,7 @@ public class AuthenticationService {
 	public Response logOut(@HeaderParam(value = "token") String token) throws UnsupportedEncodingException {
 		String login = new String(Base64.getDecoder().decode(token), StandardCharsets.UTF_8.toString()).split("@101@")[0];
 		if (Database.getUser(login).isConnected()) {
-			Database.getUser(login).setToken(null);
+			Database.getUser(login).setToken("");;
 			return Response.ok().build();
 		}
 		return Response.status(418).build();
