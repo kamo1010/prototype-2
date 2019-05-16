@@ -10,6 +10,10 @@
 	<url>http://maven.apache.org</url>
 
 	<properties>
+		<maven.war.plugin>3.2.0</maven.war.plugin>
+		<cargo.maven.plugin>1.6.4</cargo.maven.plugin>
+		<tomcat.version>8.5.23</tomcat.version>
+
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
@@ -42,5 +46,58 @@
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
-
+<!-- 
+	<build>
+		<finalName>prototype</finalName>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-war-plugin</artifactId>
+					<version>${maven.war.plugin}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.cargo</groupId>
+					<artifactId>cargo-maven2-plugin</artifactId>
+					<version>${cargo.maven.plugin}</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.cargo</groupId>
+				<artifactId>cargo-maven2-plugin</artifactId>
+				<configuration>
+					<container>
+						<containerId>tomcat8x</containerId>
+						<artifactInstaller>
+							<groupId>org.apache.tomcat</groupId>
+							<artifactId>tomcat</artifactId>
+							<version>${tomcat.version}</version>
+						</artifactInstaller>
+					</container>
+					<configuration>
+						<type>standalone</type>
+						<home>
+							${project.build.directory}/apache-tomcat-${tomcat.version}
+						</home>
+						<properties>
+							<cargo.servlet.port>8080</cargo.servlet.port>
+							<cargo.logging>high</cargo.logging>
+						</properties>
+					</configuration>
+					<deployables>
+						<deployable>
+							<groupId>${project.groupId}</groupId>
+							<artifactId>${project.artifactId}</artifactId>
+							<type>war</type>
+							<properties>
+								<context>/prototype</context>
+							</properties>
+						</deployable>
+					</deployables>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build> -->
 </project>

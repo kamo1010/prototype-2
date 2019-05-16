@@ -2,9 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Chat</title>
-    <meta name="description" content="Sample chat application">
-    <meta name="author" content="Cassio Mazzochi Molin">
+    <title>Prototype-2</title>
+    <meta name="description" content="RESTful Websocket Notification Application">
 
     <style>
 
@@ -198,9 +197,9 @@
 <div id="title">Chat</div>
 
 <form id="authentication" onsubmit="return false;">
-    <input type="text" id="username" placeholder="Username" autofocus/>
+    <input type="text" id="login" placeholder="Username" autofocus/>
     <input type="password" id="password" placeholder="Password"/>
-    <button class="button" onclick="signIn()">Sign In</button>
+    <button class="button" onclick="signIn()">Log In</button>
     <span class="error" id="authentication-error"></span>
 </form>
 
@@ -222,12 +221,12 @@
     function signIn() {
 
         var credentials = {
-            username: document.getElementById("username").value,
+            login: document.getElementById("login").value,
             password: document.getElementById("password").value
         };
 
         var request = new XMLHttpRequest();
-        request.open("POST", "http://technetium:9797/auth");
+        request.open("POST", "http://" + window.location.hostname + ":8080/auth/in");
         request.setRequestHeader("Content-Type", "application/json");
 
         request.onreadystatechange = function () {+
@@ -237,7 +236,7 @@
                 switch (request.status) {
 
                     case 200:
-                        currentUser = credentials.username;
+                        currentUser = credentials.login;
                         var webSocketAccessToken = JSON.parse(request.responseText);
                         openSocket(webSocketAccessToken.token);
                         break;
@@ -264,7 +263,7 @@
         
         var ip = '<%=request.getRemoteHost();%>'; 
 
-        socket = new WebSocket("ws://technetium:9797/chat?access-token=" + accessToken);
+        socket = new WebSocket("ws://" + window.location.hostname + ":8080/chat?access-token=" + accessToken);
 
         socket.onopen = function (event) {
             document.getElementById("authentication").style.display = "none";
