@@ -1,4 +1,4 @@
-package com.mo.kyung.dps.prototype2.A_websocket;
+package com.mo.kyung.dps.prototype2.websocket;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -10,7 +10,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import javax.websocket.CloseReason;
 import javax.websocket.CloseReason.CloseCodes;
 
-import com.mo.kyung.dps.prototype2.C_data.a_resources.ExchangeMessageResource;
+import com.mo.kyung.dps.prototype2.data.resources.ExchangeMessageResource;
 
 import javax.websocket.EncodeException;
 import javax.websocket.Session;

@@ -1,4 +1,4 @@
-package com.mo.kyung.dps.prototype2.B_rest.services;
+package com.mo.kyung.dps.prototype2.rest.services;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
@@ -11,9 +11,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.mo.kyung.dps.prototype2.C_data.Database;
-import com.mo.kyung.dps.prototype2.C_data.a_resources.AccountUserResource;
-import com.mo.kyung.dps.prototype2.C_data.b_datatypes.AccountUser;
+import com.mo.kyung.dps.prototype2.data.Database;
+import com.mo.kyung.dps.prototype2.data.datatypes.AccountUser;
+import com.mo.kyung.dps.prototype2.data.resources.AccountUserResource;
 
 
 //this service is ok

@@ -1,10 +1,10 @@
-package com.mo.kyung.dps.prototype2.C_data.b_datatypes;
+package com.mo.kyung.dps.prototype2.data.datatypes;
 
 import java.util.Date;
 
-import com.mo.kyung.dps.prototype2.C_data.Database;
-import com.mo.kyung.dps.prototype2.C_data.a_resources.ExchangeMessageReceiveResource;
-import com.mo.kyung.dps.prototype2.C_data.a_resources.ExchangeMessageResource;
+import com.mo.kyung.dps.prototype2.data.Database;
+import com.mo.kyung.dps.prototype2.data.resources.ExchangeMessageReceiveResource;
+import com.mo.kyung.dps.prototype2.data.resources.ExchangeMessageResource;
 
 public class ExchangeMessage implements Comparable<ExchangeMessage>{
 	private AccountUser author;

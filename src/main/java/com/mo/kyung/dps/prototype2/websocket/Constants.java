@@ -1,4 +1,4 @@
-package com.mo.kyung.dps.prototype2.A_websocket;
+package com.mo.kyung.dps.prototype2.websocket;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 

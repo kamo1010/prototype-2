@@ -1,4 +1,4 @@
-package com.mo.kyung.dps.prototype2.C_data.b_datatypes;
+package com.mo.kyung.dps.prototype2.data.datatypes;
 
 import java.util.Set;
 import java.util.TreeSet;

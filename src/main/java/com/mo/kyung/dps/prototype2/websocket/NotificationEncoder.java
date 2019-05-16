@@ -1,11 +1,11 @@
-package com.mo.kyung.dps.prototype2.A_websocket;
+package com.mo.kyung.dps.prototype2.websocket;
 
 import javax.websocket.EncodeException;
 import javax.websocket.Encoder;
 import javax.websocket.EndpointConfig;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.mo.kyung.dps.prototype2.C_data.a_resources.ExchangeMessageResource;
+import com.mo.kyung.dps.prototype2.data.resources.ExchangeMessageResource;
 
 public class NotificationEncoder implements Encoder.Text<ExchangeMessageResource> {
 

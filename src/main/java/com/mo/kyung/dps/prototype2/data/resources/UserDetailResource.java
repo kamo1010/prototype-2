@@ -1,4 +1,4 @@
-package com.mo.kyung.dps.prototype2.C_data.a_resources;
+package com.mo.kyung.dps.prototype2.data.resources;
 
 import java.util.Set;
 

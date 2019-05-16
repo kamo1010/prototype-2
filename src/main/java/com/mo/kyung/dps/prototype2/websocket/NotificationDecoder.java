@@ -1,4 +1,4 @@
-package com.mo.kyung.dps.prototype2.A_websocket;
+package com.mo.kyung.dps.prototype2.websocket;
 
 import java.io.IOException;
 
@@ -6,7 +6,7 @@ import javax.websocket.DecodeException;
 import javax.websocket.Decoder;
 import javax.websocket.EndpointConfig;
 
-import com.mo.kyung.dps.prototype2.C_data.a_resources.ExchangeMessageResource;
+import com.mo.kyung.dps.prototype2.data.resources.ExchangeMessageResource;
 
 public class NotificationDecoder implements Decoder.Text<ExchangeMessageResource>{
 

@@ -1,4 +1,4 @@
-package com.mo.kyung.dps.prototype2.C_data;
+package com.mo.kyung.dps.prototype2.data;
 
 import java.util.Collections;
 import java.util.Map;
@@ -6,9 +6,9 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import com.mo.kyung.dps.prototype2.C_data.b_datatypes.AccountUser;
-import com.mo.kyung.dps.prototype2.C_data.b_datatypes.ExchangeMessage;
-import com.mo.kyung.dps.prototype2.C_data.b_datatypes.Topic;
+import com.mo.kyung.dps.prototype2.data.datatypes.AccountUser;
+import com.mo.kyung.dps.prototype2.data.datatypes.ExchangeMessage;
+import com.mo.kyung.dps.prototype2.data.datatypes.Topic;
 
 public class Database {
 	private static Map<String, AccountUser> users = new TreeMap<String, AccountUser>();

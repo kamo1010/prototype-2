@@ -1,4 +1,4 @@
-package com.mo.kyung.dps.prototype2.A_websocket;
+package com.mo.kyung.dps.prototype2.websocket;
 
 import java.util.Objects;
 
@@ -11,9 +11,9 @@ import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
-import com.mo.kyung.dps.prototype2.C_data.Database;
-import com.mo.kyung.dps.prototype2.C_data.a_resources.ExchangeMessageResource;
-import com.mo.kyung.dps.prototype2.C_data.b_datatypes.AccountUser;
+import com.mo.kyung.dps.prototype2.data.Database;
+import com.mo.kyung.dps.prototype2.data.datatypes.AccountUser;
+import com.mo.kyung.dps.prototype2.data.resources.ExchangeMessageResource;
 
 @ServerEndpoint(value = "/{login}",
 				encoders = NotificationEncoder.class,
