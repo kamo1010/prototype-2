@@ -25,7 +25,10 @@ document.getElementById("signOut").addEventListener("click", logOut);
 document.getElementById("signOut").addEventListener("click", logOut);
 document.getElementById("signOut").addEventListener("click", logOut);
 document.getElementById("signOut").addEventListener("click", logOut);
-
+/*ajouter les gens qui se connectent dans la barre de côté
+ajouter les topics abbonés qand on s'abonne
+envoyer message quand on crée topic, s'abonne, crée un user, et post message
+*/
 
 function logIn() {
     if (token === undefined) {
