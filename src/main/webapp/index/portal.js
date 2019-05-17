@@ -4,6 +4,27 @@ var credentials;
 var token;
 
 document.getElementById("signOut").addEventListener("click", logOut);
+document.getElementById("signOut").addEventListener("click", logOut);
+document.getElementById("signOut").addEventListener("click", logOut);
+document.getElementById("signOut").addEventListener("click", logOut);
+document.getElementById("signOut").addEventListener("click", logOut);
+document.getElementById("signOut").addEventListener("click", logOut);
+document.getElementById("signOut").addEventListener("click", logOut);
+document.getElementById("signOut").addEventListener("click", logOut);
+document.getElementById("signOut").addEventListener("click", logOut);
+document.getElementById("signOut").addEventListener("click", logOut);
+document.getElementById("signOut").addEventListener("click", logOut);
+document.getElementById("signOut").addEventListener("click", logOut);
+document.getElementById("signOut").addEventListener("click", logOut);
+document.getElementById("signOut").addEventListener("click", logOut);
+document.getElementById("signOut").addEventListener("click", logOut);
+document.getElementById("signOut").addEventListener("click", logOut);
+document.getElementById("signOut").addEventListener("click", logOut);
+document.getElementById("signOut").addEventListener("click", logOut);
+document.getElementById("signOut").addEventListener("click", logOut);
+document.getElementById("signOut").addEventListener("click", logOut);
+document.getElementById("signOut").addEventListener("click", logOut);
+document.getElementById("signOut").addEventListener("click", logOut);
 
 
 function logIn() {
@@ -23,7 +44,6 @@ function logIn() {
                     case 200:
                         currentUser = credentials.login;
                         token = request.responseText;
-                        console.log(token);
                         openSocket();
                         break;
                     case 403:
@@ -52,11 +72,11 @@ function openSocket() {
         socket.close();
     }
     socket = new WebSocket("ws://" + window.location.hostname + ":8080/prototype-two/" + credentials.login);
-    socket.onopen = function(event) {
+    socket.onopen = function(data) {
         document.getElementById("truc").style.display = "none";
         document.getElementById("dashboard").style.display = "block";
     };
-    socket.onmessage = function(event) {
+    socket.onmessage = function(data) {
         if (typeof event.data === "string") {
             var webSocketMessage = JSON.parse(event.data);
             switch (webSocketMessage.type) {
