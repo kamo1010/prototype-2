@@ -18,8 +18,7 @@ public class Database {
 	private static Set<ExchangeMessage> uploadedMessages = new TreeSet<ExchangeMessage>();
 	static {
 		addTopic(new Topic("Administration", true));
-		addTopic(new Topic("Connexion", true));
-		addTopic(new Topic("Subscription", true));
+		addTopic(new Topic("Connection", true));
 		addTopic(new Topic("New Topic", true));
 
 		addUser(new AccountUser("admin", "admin", "admin", "admin"));
@@ -36,7 +35,7 @@ public class Database {
 		addUser(new AccountUser("Kyung Mo", "YANG", "kyungmo", "yang"));
 		addUser(new AccountUser("Amar", "LANKRI", "amar", "lankri"));
 		addUser(new AccountUser("Syed Farath", "SAYEED", "syedfarath", "sayeed"));
-		addUser(new AccountUser("Benoît", "GRASSET", "benoit", "grasset"));
+		addUser(new AccountUser("Benoï¿½t", "GRASSET", "benoit", "grasset"));
 		addUser(new AccountUser("Nathan", "MARGUET", "nathan", "marguet"));
 		addUser(new AccountUser("Didier", "TERRIER", "didier", "terrier"));
 		addUser(new AccountUser("Antoine", "MUNCK", "antoine", "munck"));

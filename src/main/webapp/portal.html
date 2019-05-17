@@ -80,7 +80,8 @@
                 <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
                 <input type="Login" id="login" class="form-control" placeholder="Login" required autofocus>
                 <input type="password" id="password" class="form-control" placeholder="Password" required="">
-                <button class="btn btn-lg btn-primary btn-block" id="login_button" type="submit" onclick="logIn()">Log in</button>
+                <button class="btn btn-lg btn-primary btn-block" id="login_button" type="submit" onclick="logIn()">Log
+                    in</button>
                 <span class="error" id="authentication_error"></span>
             </form>
         </div>
@@ -98,14 +99,14 @@
         <div class="row">
             <nav class="col-md-2 d-none d-md-block bg-light sidebar">
                 <div class="sidebar-sticky">
-                    <div id="connected_users_title" class="nav-link active">
+                    <div class="nav-link active">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home" data-darkreader-inline-fill="" data-darkreader-inline-stroke=""
                             style="--darkreader-inline-fill:none; --darkreader-inline-stroke:currentColor;">
-                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                  <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                </svg> <b>Connected Users</b> <span class="sr-only">(current)</span>
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg> <b>Connected Users</b> <span class="sr-only">(current)</span>
                     </div>
-                    <ul class="nav flex-column">
+                    <ul class="nav flex-column" id="connected_users_title">
                         <!-- <li class="nav-item">
                             <a class="nav-link" href="https://getbootstrap.com/docs/4.3/examples/dashboard/#">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file" data-darkreader-inline-fill="" data-darkreader-inline-stroke=""
@@ -173,7 +174,7 @@
                                         <input type="text" class="form-control" placeholder="Last Name" aria-label="last_name" aria-describedby="last_name">
                                     </div>
                                     <button type="button" class="btn btn-lg btn-block btn-outline-primary" id="create_account_btn">Create
-                                                Account</button>
+                                        Account</button>
                                 </div>
                             </div>
                         </div>
@@ -198,7 +199,7 @@
                                         <input type="text" class="form-control" placeholder="Topic Name" aria-label="topic_name" aria-describedby="topic_name">
                                     </div>
                                     <button type="button" class="btn btn-lg btn-block btn-outline-primary" id="creat_topic_btn">Create
-                                                Topic</button>
+                                        Topic</button>
                                 </div>
                             </div>
                             <div class="card mb-6 shadow-sm">
@@ -208,12 +209,13 @@
                                 <div class="card-body">
                                     <div class="input-group input-group-sm mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text" id="subscription_topic_name">Topic Name</span>
+                                            <span class="input-group-text" id="subscription_topic_name">Topic
+                                                Name</span>
                                         </div>
                                         <input type="text" class="form-control" placeholder="Topic Name" aria-label="topic_name" aria-describedby="topic_name">
                                     </div>
                                     <button type="button" class="btn btn-lg btn-block btn-outline-primary" id="subscription_topic_btn">Create
-                                                Account</button>
+                                        Account</button>
                                 </div>
                             </div>
                         </div>
@@ -226,9 +228,9 @@
                     <div class="card-body">
                         <div class="input-group input-group-sm mb-3">
                             <div class="input-group-prepend">
-                                <span class="input-group-text" id="last_name">Topic Name</span>
+                                <span class="input-group-text">Topic Name</span>
                             </div>
-                            <input type="text" class="form-control" placeholder="Topic Name" aria-label="topic_name" aria-describedby="topic_name">
+                            <input type="text" class="form-control" placeholder="Topic Name" aria-label="topic_name" aria-describedby="topic_name" id="message_topic">
                         </div>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">

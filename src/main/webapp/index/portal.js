@@ -75,32 +75,25 @@ function openSocket() {
         socket.close();
     }
     socket = new WebSocket("ws://" + window.location.hostname + ":8080/prototype-two/" + credentials.login);
-    socket.onopen = function(data) {
+    socket.onopen = function(event) {
         document.getElementById("truc").style.display = "none";
         document.getElementById("dashboard").style.display = "block";
     };
-    socket.onmessage = function(data) {
+    socket.onmessage = function(event) {
         if (typeof event.data === "string") {
             var webSocketMessage = JSON.parse(event.data);
-            switch (webSocketMessage.type) {
-                case "welcomeUser":
-                    displayConnectedUserMessage(webSocketMessage.payload.username);
+            switch (webSocketMessage.topic) {
+                case "Administration":
+                    displayNewMessage(webSocketMessage);
                     break;
-                case "broadcastTextMessage":
-                    displayMessage(webSocketMessage.payload.username, webSocketMessage.payload.content);
+                case "Connection":
+                    displayConnection(webSocketMessage);
                     break;
-                case "broadcastConnectedUser":
-                    displayConnectedUserMessage(webSocketMessage.payload.username);
+                case "New Topic":
+                    displayTopicCreation(webSocketMessage)
                     break;
-                case "broadcastDisconnectedUser":
-                    displayDisconnectedUserMessage(webSocketMessage.payload.username);
-                    break;
-                case "broadcastAvailableUsers":
-                    cleanAvailableUsers();
-                    for (var i = 0; i < webSocketMessage.payload.usernames.length; i++) {
-                        addAvailableUsers(webSocketMessage.payload.usernames[i]);
-                    }
-                    break;
+                default:
+                    displayNewMessage(webSocketMessage);
             }
         }
     };
@@ -120,32 +113,23 @@ function logOut() {
             document.getElementById("dashboard").style.display = "none";
         }
     }
-    console.log("coucou");
 }
 
 function sendMessage() {
     var messageToSend = {
-        topic: document.getElementById("login").value,
-        payload: document.getElementById("password").value
+        topic: document.getElementById("message_topic").value,
+        payload: document.getElementById("message_payload").value
     };
-    var topic = document.getElementById("topic_name").value;
-    var text = document.getElementById("message").value;
-    if (text != "") {
-        document.getElementById("message").value = "";
+    if (messageToSend.topic !== "") {
+        if (messageToSend.payload !== "") {
+            document.getElementById("message_topic").value = "";
+            document.getElementById("message_payload").value = "";
 
-        var exchangeMessage = {
-            topic: "Administrator",
-            payload: text
-        };
-
-        var webSocketMessage = {
-            type: "sendTextMessage"
-        };
-
-        webSocketMessage.exchangeMessage = exchangeMessage;
-
-        socket.send(JSON.stringify(exchangeMessage));
+            socket.send(JSON.stringify(messageToSend));
+            return;
+        }
     }
+    return;
 }
 
 function displayMessage(login, text) {
