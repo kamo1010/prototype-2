@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class Topic {
+public class Topic implements Comparable<Topic> {
 	private String name;
 	private boolean publik;
 	private Set<AccountUser> subscribers;
@@ -30,5 +30,9 @@ public class Topic {
 	}
 	public Set<AccountUser> getSubscribers() {
 		return Collections.unmodifiableSet(subscribers);
+	}
+	@Override
+	public int compareTo(Topic anotherTopic) {
+		return getName().compareTo(anotherTopic.getName());//alphabetical order
 	}
 }

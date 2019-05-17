@@ -1,413 +1,53 @@
 <!doctype html>
-<html lang="en">
+<html class="gr__getbootstrap_com" lang="en">
 
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Prototype-2</title>
     <meta name="description" content="RESTful Websocket Notification Application">
     <meta name="author" content="Yang Kyung Mo">
+    <meta name="generator" content="Jekyll v3.8.5">
+    <!-- Bootstrap core CSS -->
+    <link href="index/bootstrap.css" rel="stylesheet">
 
     <style>
-        /* Common */
-        
-        * {
-            margin: 0;
-            padding: 0;
-            font-family: sans-serif;
-            font-size: 13px;
-            outline: 0;
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
         
-        .error {
-            color: #F04823;
-            font-size: 12px;
-        }
-        
-        input[type="text"],
-        input[type="password"] {
-            border-radius: 20px;
-            padding: 10px;
-            border: 2px solid gainsboro;
-        }
-        
-        button {
-            border-radius: 20px;
-            padding: 10px;
-            background-color: #0084FF;
-            color: #fff;
-            width: 6em;
-            border: 2px solid #0084FF;
-        }
-        
-        button:hover,
-        button:focus {
-            background-color: #0966ff;
-            border-color: #0966ff;
-            cursor: pointer;
-        }
-        /* Authentication */
-        
-        #authentication {
-            margin-top: 100px;
-        }
-        
-        #authentication * {
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-            margin-bottom: 10px;
-        }
-        
-        #authentication .error {
-            text-align: center;
-        }
-        /* Title Bar */
-        
-        #title {
-            background-color: #0084FF;
-            font-size: 20px;
-            padding: 10px 20px 10px 20px;
-            color: #fff;
-        }
-        /* Contact list */
-        
-        #contacts {
-            float: left;
-            width: 120px;
-            padding: 20px;
-            background-color: aliceblue;
-            min-height: calc(100vh - 85px);
-            max-height: calc(100vh - 85px);
-            display: none;
-        }
-        
-        #contacts .contact .status {
-            background-color: #13CF13;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            display: inline-block;
-            margin-right: 10px;
-        }
-        
-        #contacts .contact .name {
-            line-height: 40px;
-            vertical-align: super;
-        }
-        /* Chat */
-        
-        #chat {
-            float: right;
-            width: calc(100% - 160px);
-            display: none;
-        }
-        
-        #messages {
-            min-height: calc(100vh - 130px);
-            max-height: calc(100vh - 130px);
-            padding: 20px 20px 0 20px;
-            overflow-y: auto;
-        }
-        
-        #messages .message {
-            margin-bottom: 3px;
-        }
-        
-        #messages .message .payload {
-            min-width: 20px;
-            max-width: 250px;
-            border-radius: 20px;
-            padding: 10px;
-            display: table;
-        }
-        
-        #messages .message.event .payload {
-            background-color: #FF7E29;
-            color: #fff;
-            margin-left: auto;
-            margin-right: auto;
-            font-size: 10px;
-            padding: 7px;
-        }
-        
-        #messages .message.received {
-            left: 0;
-            text-align: left;
-        }
-        
-        #messages .message.received .payload {
-            background-color: gainsboro;
-            border-radius: 0 20px 20px;
-        }
-        
-        #messages .message.received .sender {
-            color: dimgrey;
-            font-size: 10px;
-        }
-        
-        #messages .message.sent {
-            right: 0;
-            text-align: right;
-        }
-        
-        #messages .message.sent .payload {
-            background-color: #0084FF;
-            margin-left: auto;
-            margin-right: 0;
-            color: #fff;
-            text-align: right;
-            border-radius: 20px 0 20px 20px;
-        }
-        
-        #messages .message.sent .sender {
-            color: #0084FF;
-            font-size: 10px;
-        }
-        
-        #chat-controls {
-            height: 40px;
-            padding: 20px 20px 0 20px;
-        }
-        
-        #chat-controls button {
-            float: right;
-        }
-        
-        #chat-controls input[type="text"] {
-            width: calc(100% - 9em);
-        }
-        
-        #messages .message.sent.same-sender-previous-message .sender,
-        #messages .message.received.same-sender-previous-message .sender {
-            display: none;
-        }
-        
-        #messages .message:not(.same-sender-previous-message) {
-            margin-top: 10px;
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
         }
     </style>
+    <!-- Custom styles for this template -->
+    <link href="index/signin.css" rel="stylesheet">
 
 </head>
 
 <body>
 
-    <div id="title">Chat</div>
-
-    <form id="authentication" onsubmit="return false;">
-        <input type="text" id="login" placeholder="Login" autofocus/>
-        <input type="password" id="password" placeholder="Password" />
-        <button class="button" onclick="logIn()">Log in</button>
-        <span class="error" id="authentication-error"></span>
-    </form>
-
-    <div id="contacts"></div>
-
-    <div id="chat">
-        <div id="messages"></div>
-        <form id="chat-controls" onsubmit="return false;">
-            <input type="text" id="message" placeholder="Enter a message" />
-            <button class="button" onclick="sendMessage()">Send</button>
-        </form>
+    <div class="container-fluid">
+        <div class="text-center">
+            <form class="form-signin" onsubmit="return false;">
+                <img class="mb-4" src="index/bootstrap-solid.svg" alt="" width="72" height="72">
+                <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+                <input type="Login" id="login" class="form-control" placeholder="Login" required autofocus>
+                <input type="password" id="password" class="form-control" placeholder="Password" required="">
+                <button class="btn btn-lg btn-primary btn-block" id="login_button" type="submit" onclick="logIn()">Log in</button>
+                <span class="error" id="authentication_error"></span>
+            </form>
+        </div>
     </div>
-
-    <script>
-        var socket;
-        var currentUser;
-
-        function logIn() {
-
-            var credentials = {
-                login: document.getElementById("login").value,
-                password: document.getElementById("password").value
-            };
-            console.log(JSON.stringify(credentials));
-
-            var request = new XMLHttpRequest();
-            request.open("POST", "http://" + window.location.hostname + ":8080/prototype-two/rest/auth/in");
-            request.setRequestHeader("payload-Type", "application/json");
-
-            request.onreadystatechange = function() {
-
-                if (request.readyState === XMLHttpRequest.DONE) {
-
-                    switch (request.status) {
-
-                        case 200:
-                            currentUser = credentials.login;
-                            var webSocketAccessToken = request.responseText;
-                            openSocket(webSocketAccessToken);
-                            break;
-
-                        case 403:
-                            currentUser = null;
-                            document.getElementById("authentication-error").innerHTML = "Oops... These credentials are invalid.";
-                            break;
-
-                        default:
-                            document.getElementById("authentication-error").innerHTML = "Oops... Looks like something is broken.";
-                    }
-                }
-            };
-
-            request.send(JSON.stringify(credentials));
-        }
-
-        function openSocket(accessToken) {
-
-            if (socket) {
-                socket.close();
-            }
-            console.log(document.getElementById("login").value);
-            socket = new WebSocket("ws://" + window.location.hostname + ":8080/prototype-two/" + document.getElementById("login").value);
-
-            socket.onopen = function(event) {
-                document.getElementById("authentication").style.display = "none";
-                document.getElementById("contacts").style.display = "block";
-                document.getElementById("chat").style.display = "block";
-                document.getElementById("message").focus();
-            };
-
-            socket.onmessage = function(event) {
-
-                if (typeof event.data === "string") {
-
-                    var webSocketMessage = JSON.parse(event.data);
-                    displayMessage(webSocketMessage)
-                        //                 switch (webSocketMessage.type) {
-
-                    //                     case "welcomeUser":
-                    //                         displayConnectedUserMessage(webSocketMessage.exchangeMessage.login);
-                    //                         break;
-
-                    //                     case "broadcastTextMessage":
-                    //                         displayMessage(webSocketMessage.exchangeMessage.login, webSocketMessage.exchangeMessage.payload);
-                    //                         break;
-
-                    //                     case "broadcastConnectedUser":
-                    //                         displayConnectedUserMessage(webSocketMessage.exchangeMessage.login);
-                    //                         break;
-
-                    //                     case "broadcastDisconnectedUser":
-                    //                         displayDisconnectedUserMessage(webSocketMessage.exchangeMessage.login);
-                    //                         break;
-
-                    //                     case "broadcastAvailableUsers":
-                    //                         cleanAvailableUsers();
-                    //                         for (var i = 0; i < webSocketMessage.exchangeMessage.logins.length; i++) {
-                    //                             addAvailableUsers(webSocketMessage.exchangeMessage.logins[i]);
-                    //                         }
-                    //                         break;
-                    //                 }
-                }
-            };
-        }
-
-        function sendMessage() {
-            var text = document.getElementById("message").value;
-            if (text != "") {
-                document.getElementById("message").value = "";
-
-                var exchangeMessage = {
-                    topic: "Administrator",
-                    payload: text
-                };
-
-                var webSocketMessage = {
-                    type: "sendTextMessage"
-                };
-
-                webSocketMessage.exchangeMessage = exchangeMessage;
-
-                socket.send(JSON.stringify(exchangeMessage));
-            }
-        }
-
-        function displayMessage(login, text) {
-
-            var sentByCurrentUer = currentUser === login;
-
-            var message = document.createElement("div");
-            message.setAttribute("class", sentByCurrentUer === true ? "message sent" : "message received");
-            message.dataset.sender = login;
-
-            var sender = document.createElement("span");
-            sender.setAttribute("class", "sender");
-            sender.appendChild(document.createTextNode(sentByCurrentUer === true ? "You" : login));
-            message.appendChild(sender);
-
-            var payload = document.createElement("span");
-            payload.setAttribute("class", "payload");
-            payload.appendChild(document.createTextNode(text));
-            message.appendChild(payload);
-
-            var messages = document.getElementById("messages");
-            var lastMessage = messages.lastChild;
-            if (lastMessage && lastMessage.dataset.sender && lastMessage.dataset.sender === login) {
-                message.className += " same-sender-previous-message";
-            }
-
-            messages.appendChild(message);
-            messages.scrollTop = messages.scrollHeight;
-        }
-
-        function displayConnectedUserMessage(login) {
-
-            var sentByCurrentUer = currentUser === login;
-
-            var message = document.createElement("div");
-            message.setAttribute("class", "message event");
-
-            var text = sentByCurrentUer === true ? "Welcome " + login : login + " joined the chat";
-            var payload = document.createElement("span");
-            payload.setAttribute("class", "payload");
-            payload.appendChild(document.createTextNode(text));
-            message.appendChild(payload);
-
-            var messages = document.getElementById("messages");
-            messages.appendChild(message);
-        }
-
-        function displayDisconnectedUserMessage(login) {
-
-            var message = document.createElement("div");
-            message.setAttribute("class", "message event");
-
-            var text = login + " left the chat";
-            var payload = document.createElement("span");
-            payload.setAttribute("class", "payload");
-            payload.appendChild(document.createTextNode(text));
-            message.appendChild(payload);
-
-            var messages = document.getElementById("messages");
-            messages.appendChild(message);
-        }
-
-        function addAvailableUsers(login) {
-
-            var contact = document.createElement("div");
-            contact.setAttribute("class", "contact");
-
-            var status = document.createElement("div");
-            status.setAttribute("class", "status");
-            contact.appendChild(status);
-
-            var payload = document.createElement("span");
-            payload.setAttribute("class", "name");
-            payload.appendChild(document.createTextNode(login));
-            contact.appendChild(payload);
-
-            var contacts = document.getElementById("contacts");
-            contacts.appendChild(contact);
-        }
-
-        function cleanAvailableUsers() {
-            var contacts = document.getElementById("contacts");
-            while (contacts.hasChildNodes()) {
-                contacts.removeChild(contacts.lastChild);
-            }
-        }
-    </script>
-
+    <script src="index/index.js"></script>
 </body>
 
 </html>

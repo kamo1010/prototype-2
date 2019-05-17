@@ -1,5 +1,8 @@
 package com.mo.kyung.dps.prototype2.data.datatypes;
 
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -63,10 +66,10 @@ public class AccountUser implements Comparable<AccountUser> {
 	public void changePassword(String newPassword) {
 		setPassword(newPassword);
 	}
-	public void logIn() {
+	public void logIn() throws UnsupportedEncodingException {
 		if (!isConnected()) {
 			//encode "login@101@password" and set it as token
-			token = new StringBuilder(login).append("@101@").append(password).toString();
+			token = Base64.getEncoder().encodeToString(new StringBuilder(login).append("@101@").append(password).toString().getBytes(StandardCharsets.UTF_8.toString()));
 		}
 	}
 	public void logOut() {

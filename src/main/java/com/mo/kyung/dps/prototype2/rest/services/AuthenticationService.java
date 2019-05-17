@@ -7,6 +7,7 @@ import java.util.Base64;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -35,14 +36,17 @@ public class AuthenticationService {
 		}
 		return Response.status(400, "Login not found.").build();
 	}
-	@POST
+	@PUT
 	@Path("out")
 	public Response logOut(@HeaderParam(value = "token") String token) throws UnsupportedEncodingException {
 		String login = new String(Base64.getDecoder().decode(token), StandardCharsets.UTF_8.toString()).split("@101@")[0];
 		if (Database.getUser(login).isConnected()) {
-			Database.getUser(login).setToken("");;
-			return Response.ok().build();
+			Database.removeConnectedUser(Database.getUser(login));
+			return Response.status(200).build();
 		}
 		return Response.status(418).build();
 	}
 }
+
+
+
