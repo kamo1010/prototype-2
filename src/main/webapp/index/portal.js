@@ -87,7 +87,10 @@ function openSocket() {
                     displayNewMessage(webSocketMessage);
                     break;
                 case "Connection":
-                    displayConnection(webSocketMessage);
+                    var beforeStatus = document.getElementById("connected_users_title").value;
+                    cleanAvailableUsers();
+                    document.getElementById("connected_users_title").appendChild(beforeStatus);
+                    addAvailableUsers(webSocketMessage.login);
                     break;
                 case "New Topic":
                     displayTopicCreation(webSocketMessage)
@@ -193,25 +196,28 @@ function displayDisconnectedUserMessage(login) {
 }
 
 function addAvailableUsers(login) {
+    var contact = document.createElement("li");
+    contact.setAttribute("class", "nav-item");
 
-    var contact = document.createElement("div");
-    contact.setAttribute("class", "contact");
+    var icon = document.createElement("div");
+    icon.setAttribute("class", "contact");
+    contact.appendChild(icon);
 
     var status = document.createElement("div");
     status.setAttribute("class", "status");
-    contact.appendChild(status);
+    icon.appendChild(status);
 
     var payload = document.createElement("span");
     payload.setAttribute("class", "name");
     payload.appendChild(document.createTextNode(login));
     contact.appendChild(payload);
 
-    var contacts = document.getElementById("contacts");
+    var contacts = document.getElementById("connected_users_title");
     contacts.appendChild(contact);
 }
 
 function cleanAvailableUsers() {
-    var contacts = document.getElementById("contacts");
+    var contacts = document.getElementById("connected_users_title");
     while (contacts.hasChildNodes()) {
         contacts.removeChild(contacts.lastChild);
     }

@@ -18,7 +18,7 @@ import javax.websocket.Session;
 public class NotificationSessionManager {
 	private static final Lock LOCK = new ReentrantLock();
     private static final Set<Session> SESSIONS = new CopyOnWriteArraySet<>();
-    private static final int openSessionLimitNumber = 5;
+    private static final int openSessionLimitNumber = 15;
 
     private NotificationSessionManager() {
         throw new IllegalStateException(Constants.getInstantiationNotAllowed());
@@ -42,7 +42,7 @@ public class NotificationSessionManager {
         try {
             LOCK.lock();
 
-            result = !SESSIONS.contains(session) && SESSIONS.size()<= openSessionLimitNumber && !SESSIONS.stream()
+            result = !SESSIONS.contains(session) && SESSIONS.size()< openSessionLimitNumber && !SESSIONS.stream()
                     .filter(elem -> ((String) elem.getUserProperties().get(Constants.getUserNameKey())).equals((String) session.getUserProperties().get(Constants.getUserNameKey())))
                     .findFirst().isPresent() && SESSIONS.add(session);
         } finally {

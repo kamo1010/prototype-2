@@ -1,4 +1,4 @@
-package com.mo.kyung.dps.prototype2.rest.services;
+package com.mo.kyung.dps.prototype2.rest.resources;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
@@ -30,7 +30,7 @@ import com.mo.kyung.dps.prototype2.data.representations.TopicCreationRepresentat
 import com.mo.kyung.dps.prototype2.data.representations.UserPropertiesRepresentation;
 
 @Path("{login}")
-public class AccountUserService {
+public class AccountUserResource {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getPersonalDetails(@PathParam(value = "login") String login,

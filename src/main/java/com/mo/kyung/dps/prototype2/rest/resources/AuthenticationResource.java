@@ -1,4 +1,4 @@
-package com.mo.kyung.dps.prototype2.rest.services;
+package com.mo.kyung.dps.prototype2.rest.resources;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
@@ -19,7 +19,7 @@ import com.mo.kyung.dps.prototype2.data.representations.LogInRepresentation;
 
 //this service is not ok
 @Path("auth")
-public class AuthenticationService {
+public class AuthenticationResource {
 	@POST
 	@Path("in")
 	@Consumes(MediaType.APPLICATION_JSON)

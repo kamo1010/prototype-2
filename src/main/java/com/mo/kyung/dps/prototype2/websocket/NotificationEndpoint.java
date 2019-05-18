@@ -48,7 +48,7 @@ public class NotificationEndpoint {
 
     @OnMessage
     public void onMessage(final SentMessageRepresentation message, final Session session) {
-        NotificationSessionManager.publish(message, session);
+        System.out.println("New message incoming..");
     }
 
     @OnClose
