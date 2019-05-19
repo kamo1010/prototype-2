@@ -14,6 +14,7 @@ public class Topic implements Comparable<Topic> {
 	public Topic(String name, boolean publik) {
 		super();
 		this.name = name;
+		this.publik = publik;
 		this.subscribers = new TreeSet<AccountUser>();
 	}
 	public final String getName() {

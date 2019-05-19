@@ -2,236 +2,246 @@
 <html class="gr__getbootstrap_com" lang="en">
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Prototype-2</title>
-    <meta name="description" content="RESTful Websocket Notification Application">
-    <meta name="author" content="Yang Kyung Mo">
-    <meta name="generator" content="Jekyll v3.8.5">
-    <!-- Bootstrap core CSS -->
-    <link href="index/bootstrap.css" rel="stylesheet">
-    <link href="index/portal.css" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="index/dashboard.css" rel="stylesheet">
-    <style type="text/css">
-        /* Chart.js */
-        
-        @-webkit-keyframes chartjs-render-animation {
-            from {
-                opacity: 0.99
-            }
-            to {
-                opacity: 1
-            }
-        }
-        
-        @keyframes chartjs-render-animation {
-            from {
-                opacity: 0.99
-            }
-            to {
-                opacity: 1
-            }
-        }
-        
-        .chartjs-render-monitor {
-            -webkit-animation: chartjs-render-animation 0.001s;
-            animation: chartjs-render-animation 0.001s;
-        }
-    </style>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Prototype-2</title>
+<meta name="description"
+	content="RESTful Websocket Notification Application">
+<meta name="author" content="Yang Kyung Mo">
+<meta name="generator" content="Jekyll v3.8.5">
+<!-- Bootstrap core CSS -->
+<link href="index/bootstrap.css" rel="stylesheet">
+<link href="index/portal.css" rel="stylesheet">
+<link href="index/offcanvas.css" rel="stylesheet">
+<!-- Custom styles for this template -->
+<link href="index/dashboard.css" rel="stylesheet">
 </head>
 
 <body>
-    <div id="truc" class="container-fluid">
-        <div class="text-center">
-            <form class="form-signin" onsubmit="return false;">
-                <img class="mb-4" src="index/bootstrap-solid.svg" alt="" width="72" height="72">
-                <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-                <input type="Login" id="login" class="form-control" placeholder="Login" required autofocus>
-                <input type="password" id="password" class="form-control" placeholder="Password" required="">
-                <button class="btn btn-lg btn-primary btn-block" id="login_btn" type="submit">Log in</button>
-                <span class="error" id="authentication_error"></span>
-            </form>
-        </div>
-    </div>
-    <nav id="machin" class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-        <button type="button" class="btn btn-link navbar-brand col-sm-3 col-md-2 mr-0">Welcome!</button>
-        <ul class="navbar-nav px-3">
-            <li class="nav-item text-nowrap">
-                <button type="button" class="btn btn-link nav-link" id="log_out_btn">Log Out</button>
-            </li>
-        </ul>
-    </nav>
-    <!--ok so far-->
-    <div id="dashboard" class="container-fluid">
-        <div class="row">
-            <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-                <div class="sidebar-sticky">
-                    <div class="nav-link active">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home" data-darkreader-inline-fill="" data-darkreader-inline-stroke=""
-                            style="--darkreader-inline-fill:none; --darkreader-inline-stroke:currentColor;">
-                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+	<div id="truc" class="container-fluid">
+		<div class="text-center">
+			<form class="form-signin" onsubmit="return false;">
+				<img class="mb-4" src="index/bootstrap-solid.svg" alt="" width="72"
+					height="72">
+				<h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+				<input type="Login" id="login" class="form-control"
+					placeholder="Login" required autofocus> <input
+					type="password" id="password" class="form-control"
+					placeholder="Password" required>
+				<button class="btn btn-lg btn-primary btn-block" id="login_btn"
+					type="submit">Log in</button>
+				<span class="error" id="authentication_error"></span>
+			</form>
+		</div>
+	</div>
+	<nav id="machin"
+		class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+		<button type="button"
+			class="btn btn-link navbar-brand col-sm-3 col-md-2 mr-0">Welcome!</button>
+		<ul class="navbar-nav px-3">
+			<li class="nav-item text-nowrap">
+				<button type="button" class="btn btn-link nav-link" id="log_out_btn">Log
+					Out</button>
+			</li>
+		</ul>
+	</nav>
+	<!--ok so far-->
+	<div id="dashboard" class="container-fluid">
+		<div class="row">
+			<nav class="col-md-2 d-none d-md-block bg-light sidebar">
+				<div class="sidebar-sticky">
+					<div class="nav-link active">
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+							viewBox="0 0 24 24" fill="none" stroke="currentColor"
+							stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+							class="feather feather-home" data-darkreader-inline-fill=""
+							data-darkreader-inline-stroke=""
+							style="-darkreader-inline-fill: none; - -darkreader-inline-stroke: currentColor;">
+                            <path
+								d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
                             <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                        </svg> <b>Connected Users</b> <span class="sr-only">(current)</span>
-                    </div>
-                    <ul class="nav flex-column" id="connected_users_title">
-                        <li class="nav-item">
-                            <div class="contact">
-                                <svg class="bd-placeholder-img mr-2 rounded" width="16" height="16">
-                                    <rect width="100%" height="100%" fill="#007bff">
-                                    </rect>
-                                </svg>
-                                <span>
-                                    bonjour
-                                </span>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-                <div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;">
-                    <div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
-                        <div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div>
-                    </div>
-                    <div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
-                        <div style="position:absolute;width:200%;height:200%;left:0; top:0"></div>
-                    </div>
-                </div>
-                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1>Dashboard</h1>
+                        </svg>
+						<b>Connected Users</b> <span class="sr-only">(current)</span>
+					</div>
+					<ul class="nav flex-column" id="connected_users_title">
+						<li class="nav-item">
+							<div class="contact">
+								<svg class="bd-placeholder-img mr-2 rounded" width="32" height="32" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 32x32"><title>Placeholder</title><rect width="100%" height="100%" fill="#6f42c1"></rect><text x="50%" y="50%" fill="#6f42c1" dy=".3em">32x32</text></svg>
+								<span> bonjour </span>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</nav>
+			<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+			<div class="chartjs-size-monitor"
+				style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;">
+				<div class="chartjs-size-monitor-expand"
+					style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;">
+					<div
+						style="position: absolute; width: 1000000px; height: 1000000px; left: 0; top: 0"></div>
+				</div>
+				<div class="chartjs-size-monitor-shrink"
+					style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;">
+					<div
+						style="position: absolute; width: 200%; height: 200%; left: 0; top: 0"></div>
+				</div>
+			</div>
+			<div
+				class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+				<h1>Dashboard</h1>
 
-                </div>
-                <h2>Quick functions</h2>
-                <div class="card mb-6 shadow-sm">
-                    <div class="card-header">
-                        <h4 class="my-0 font-weight-normal">Account Management</h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-deck mb-3 text-center">
-                            <div class="card mb-6 shadow-sm">
-                                <div class="card-header">
-                                    <h4 class="my-0 font-weight-normal">Properties</h4>
-                                </div>
-                                <div class="card-body text-left">
-                                    <p class="font-weight-bold" id="properties_first_name">First Name: </p>
-                                    <p class="font-weight-bold" id="properties_last_name">Last Name : </p>
-                                    <p class="font-weight-bold" id="properties_login">Login : </p>
-                                    <p class="font-weight-bold">Subscribed Topics : </p>
-                                    <ul class="list-group" id="properties_subscriber_topics_list">
-                                        <!-- <li class="list-group-item d-flex justify-content-between align-items-center">
+			</div>
+			<h2>Quick functions</h2>
+			<div class="card mb-6 shadow-sm">
+				<div class="card-header">
+					<h4 class="my-0 font-weight-normal">Account Management</h4>
+				</div>
+				<div class="card-body">
+					<div class="card-deck mb-3 text-center">
+						<div class="card mb-6 shadow-sm">
+							<div class="card-header">
+								<h4 class="my-0 font-weight-normal">Properties</h4>
+							</div>
+							<div class="card-body text-left">
+								<p class="font-weight-bold" id="properties_first_name">First
+									Name:</p>
+								<p class="font-weight-bold" id="properties_last_name">Last
+									Name :</p>
+								<p class="font-weight-bold" id="properties_login">Login :</p>
+								<p class="font-weight-bold">Subscribed Topics :</p>
+								<ul class="list-group" id="properties_subscriber_topics_list">
+									<!-- <li class="list-group-item d-flex justify-content-between align-items-center">
                                             Cras justo odio
                                             <span class="badge badge-primary badge-pill">14</span>
                                         </li> -->
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="card mb-6 shadow-sm">
-                                <div class="card-header">
-                                    <h4 class="my-0 font-weight-normal">Create Account</h4>
-                                </div>
-                                <div class="card-body">
-                                    <div class="input-group input-group-sm mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" id="new_account_first_name">First Name</span>
-                                        </div>
-                                        <input type="text" class="form-control" placeholder="First Name" aria-label="first_name" aria-describedby="first_name">
-                                    </div>
-                                    <div class="input-group input-group-sm mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" id="new_account_last_name">Last Name</span>
-                                        </div>
-                                        <input type="text" class="form-control" placeholder="Last Name" aria-label="last_name" aria-describedby="last_name">
-                                    </div>
-                                    <button type="button" class="btn btn-lg btn-block btn-outline-primary" id="create_account_btn">Create
-                                        Account</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+								</ul>
+							</div>
+						</div>
+						<div class="card mb-6 shadow-sm">
+							<div class="card-header">
+								<h4 class="my-0 font-weight-normal">Create Account</h4>
+							</div>
+							<div class="card-body">
+								<div class="input-group input-group-sm mb-3">
+									<div class="input-group-prepend">
+										<span class="input-group-text" id="new_account_first_name">First
+											Name</span>
+									</div>
+									<input type="text" class="form-control"
+										placeholder="First Name" aria-label="first_name"
+										aria-describedby="first_name">
+								</div>
+								<div class="input-group input-group-sm mb-3">
+									<div class="input-group-prepend">
+										<span class="input-group-text" id="new_account_last_name">Last
+											Name</span>
+									</div>
+									<input type="text" class="form-control" placeholder="Last Name"
+										aria-label="last_name" aria-describedby="last_name">
+								</div>
+								<button type="button"
+									class="btn btn-lg btn-block btn-outline-primary"
+									id="create_account_btn">Create Account</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 
-                <div class="card mb-6 shadow-sm">
-                    <div class="card-header">
-                        <h4 class="my-0 font-weight-normal">Topic Management</h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-deck mb-3 text-center">
-                            <div class="card mb-6 shadow-sm">
-                                <div class="card-header">
-                                    <h4 class="my-0 font-weight-normal">Create Topic</h4>
-                                </div>
-                                <div class="card-body">
-                                    <div class="input-group input-group-sm mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" id="new_topic_name">Topic Name</span>
-                                        </div>
-                                        <input type="text" class="form-control" placeholder="Topic Name" aria-label="topic_name" aria-describedby="topic_name">
-                                    </div>
-                                    <button type="button" class="btn btn-lg btn-block btn-outline-primary" id="creat_topic_btn">Create
-                                        Topic</button>
-                                </div>
-                            </div>
-                            <div class="card mb-6 shadow-sm">
-                                <div class="card-header">
-                                    <h4 class="my-0 font-weight-normal">Subscribe to Topic</h4>
-                                </div>
-                                <div class="card-body">
-                                    <div class="input-group input-group-sm mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" id="subscription_topic_name">Topic
-                                                Name</span>
-                                        </div>
-                                        <input type="text" class="form-control" placeholder="Topic Name" aria-label="topic_name" aria-describedby="topic_name">
-                                    </div>
-                                    <button type="button" class="btn btn-lg btn-block btn-outline-primary" id="subscription_topic_btn">Subscribe to Topic</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card mb-6 shadow-sm">
-                    <div class="card-header">
-                        <h4 class="my-0 font-weight-normal">Post message</h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="input-group input-group-sm mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">Topic Name</span>
-                            </div>
-                            <input type="text" class="form-control" placeholder="Topic Name" aria-label="topic_name" aria-describedby="topic_name" id="message_topic">
-                        </div>
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">Type your message here</span>
-                            </div>
-                            <textarea class="form-control" aria-label="message" id="message_payload"></textarea>
-                        </div>
-                        <div class="input-group">
-                            <button type="button" class="btn btn-lg btn-block btn-primary" id="post_message_btn">Post</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="card mb-6 shadow-sm">
-                    <div class="card-header">
-                        <h4 class="my-0 font-weight-normal">Messages</h4>
-                    </div>
-                    <div class="card-body" id="message_list">
-                        <!-- <div class="media text-muted pt-3">
+			<div class="card mb-6 shadow-sm">
+				<div class="card-header">
+					<h4 class="my-0 font-weight-normal">Topic Management</h4>
+				</div>
+				<div class="card-body">
+					<div class="card-deck mb-3 text-center">
+						<div class="card mb-6 shadow-sm">
+							<div class="card-header">
+								<h4 class="my-0 font-weight-normal">Create Topic</h4>
+							</div>
+							<div class="card-body">
+								<div class="input-group input-group-sm mb-3">
+									<div class="input-group-prepend">
+										<span class="input-group-text" id="new_topic_name">Topic
+											Name</span>
+									</div>
+									<input type="text" class="form-control"
+										placeholder="Topic Name" aria-label="topic_name"
+										aria-describedby="topic_name">
+								</div>
+								<button type="button"
+									class="btn btn-lg btn-block btn-outline-primary"
+									id="creat_topic_btn">Create Topic</button>
+							</div>
+						</div>
+						<div class="card mb-6 shadow-sm">
+							<div class="card-header">
+								<h4 class="my-0 font-weight-normal">Subscribe to Topic</h4>
+							</div>
+							<div class="card-body">
+								<div class="input-group input-group-sm mb-3">
+									<div class="input-group-prepend">
+										<span class="input-group-text" id="subscription_topic_name">Topic
+											Name</span>
+									</div>
+									<input type="text" class="form-control"
+										placeholder="Topic Name" aria-label="topic_name"
+										aria-describedby="topic_name">
+								</div>
+								<button type="button"
+									class="btn btn-lg btn-block btn-outline-primary"
+									id="subscription_topic_btn">Subscribe to Topic</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="card mb-6 shadow-sm">
+				<div class="card-header">
+					<h4 class="my-0 font-weight-normal">Post message</h4>
+				</div>
+				<div class="card-body">
+					<div class="input-group input-group-sm mb-3">
+						<div class="input-group-prepend">
+							<span class="input-group-text">Topic Name</span>
+						</div>
+						<input type="text" class="form-control" placeholder="Topic Name"
+							aria-label="topic_name" aria-describedby="topic_name"
+							id="message_topic">
+					</div>
+					<div class="input-group mb-3">
+						<div class="input-group-prepend">
+							<span class="input-group-text">Type your message here</span>
+						</div>
+						<textarea class="form-control" aria-label="message"
+							id="message_payload"></textarea>
+					</div>
+					<div class="input-group">
+						<button type="button" class="btn btn-lg btn-block btn-primary"
+							id="post_message_btn">Post</button>
+					</div>
+				</div>
+			</div>
+			<div class="card mb-6 shadow-sm">
+				<div class="card-header">
+					<h4 class="my-0 font-weight-normal">Messages</h4>
+				</div>
+				<div class="card-body" id="message_list">
+					<!-- <div class="media text-muted pt-3">
                             <svg class="bd-placeholder-img mr-2 rounded" width="32" height="32" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 32x32"><title>Placeholder</title><rect width="100%" height="100%" fill="#007bff"></rect><text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text></svg>
                             <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
                                 <strong class="d-block text-gray-dark">@username</strong> Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.
                             </p>
                         </div> -->
-                    </div>
-                </div>
-            </main>
-        </div>
-    </div>
+				</div>
+			</div>
+			</main>
+		</div>
+	</div>
 
-    <script src="index/portal.js"></script>
+	<script src="index/portal.js"></script>
 </body>
 
 </html>

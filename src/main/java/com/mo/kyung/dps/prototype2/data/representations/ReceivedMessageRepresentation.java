@@ -5,6 +5,9 @@ import java.util.Date;
 import com.mo.kyung.dps.prototype2.data.datatypes.AccountUser;
 import com.mo.kyung.dps.prototype2.data.datatypes.Topic;
 
+/*
+ * representation of messages when received by users
+ */
 public class ReceivedMessageRepresentation {
 	private String author;
 	private String topic;

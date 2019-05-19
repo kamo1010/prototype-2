@@ -2,6 +2,7 @@ package com.mo.kyung.dps.prototype2.data;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -13,33 +14,35 @@ import com.mo.kyung.dps.prototype2.data.datatypes.Topic;
 import com.mo.kyung.dps.prototype2.websocket.Constants;
 
 public class Database {
+	private static AccountUser admin = new AccountUser("admin", "admin", "admin", "admin");
 	private static Set<AccountUser> users = new TreeSet<AccountUser>();
 	private static Set<Topic> topics = new TreeSet<Topic>();
 	private static Map<String, AccountUser> connectedUsers = new TreeMap<String, AccountUser>(); // String is for the token
 	private static Set<ExchangeMessage> uploadedMessages = new TreeSet<ExchangeMessage>();
 	static {
+		System.out.println("bonjour");
 		addTopic(new Topic(Constants.getAdministrationTopic(), true));
 		addTopic(new Topic(Constants.getConnectionTopic(), true));
 		addTopic(new Topic(Constants.getNewTopicTopic(), true));
+		
+		addUser(admin);
 
-		addUser(new AccountUser("admin", "admin", "admin", "admin"));
-
-		addUser(new AccountUser("Patrick", "GRIMBERG", "patrick", "grimberg"));
-		addUser(new AccountUser("Jerome", "DAZIANO", "jerome", "daziano"));
-		addUser(new AccountUser("Maud", "CADORET", "maud", "cadoret"));
-		addUser(new AccountUser("Hamza", "OUCHEIKH", "hamza", "oucheikh"));
-		addUser(new AccountUser("Abdoulaye", "SOW", "abdoulaye", "sow"));
-		addUser(new AccountUser("Pascal", "REINA", "pascal", "reina"));
-		addUser(new AccountUser("Mohamad", "YASSINE", "mohamad", "yassine"));
-		addUser(new AccountUser("Frederic", "GANTOIS", "frederic", "gantois"));
-		addUser(new AccountUser("Alexis", "LE ROY", "alexis", "leroy"));
-		addUser(new AccountUser("Kyung Mo", "YANG", "kyungmo", "yang"));
-		addUser(new AccountUser("Amar", "LANKRI", "amar", "lankri"));
-		addUser(new AccountUser("Syed Farath", "SAYEED", "syedfarath", "sayeed"));
-		addUser(new AccountUser("Beno�t", "GRASSET", "benoit", "grasset"));
-		addUser(new AccountUser("Nathan", "MARGUET", "nathan", "marguet"));
-		addUser(new AccountUser("Didier", "TERRIER", "didier", "terrier"));
-		addUser(new AccountUser("Antoine", "MUNCK", "antoine", "munck"));
+//		addUser(new AccountUser("Patrick", "GRIMBERG", "patrick", "grimberg"));
+//		addUser(new AccountUser("Jerome", "DAZIANO", "jerome", "daziano"));
+//		addUser(new AccountUser("Maud", "CADORET", "maud", "cadoret"));
+//		addUser(new AccountUser("Hamza", "OUCHEIKH", "hamza", "oucheikh"));
+//		addUser(new AccountUser("Abdoulaye", "SOW", "abdoulaye", "sow"));
+//		addUser(new AccountUser("Pascal", "REINA", "pascal", "reina"));
+//		addUser(new AccountUser("Mohamad", "YASSINE", "mohamad", "yassine"));
+//		addUser(new AccountUser("Frederic", "GANTOIS", "frederic", "gantois"));
+//		addUser(new AccountUser("Alexis", "LE ROY", "alexis", "leroy"));
+//		addUser(new AccountUser("Kyung Mo", "YANG", "kyungmo", "yang"));
+//		addUser(new AccountUser("Amar", "LANKRI", "amar", "lankri"));
+//		addUser(new AccountUser("Syed Farath", "SAYEED", "syedfarath", "sayeed"));
+//		addUser(new AccountUser("Benoit", "GRASSET", "benoit", "grasset"));
+//		addUser(new AccountUser("Nathan", "MARGUET", "nathan", "marguet"));
+//		addUser(new AccountUser("Didier", "TERRIER", "didier", "terrier"));
+//		addUser(new AccountUser("Antoine", "MUNCK", "antoine", "munck"));
 
 		/*
 		 * getUser("abdoulaye").subscribeToTopic(getTopic("Administrator"));
@@ -157,5 +160,13 @@ public class Database {
 			connectesUsersLogin.add(user.getLogin());
 		}
 		return connectesUsersLogin;
+	}
+
+	public static Set<String> getConnectedUsersAsString() {
+		Set<String> logins =new HashSet<>();
+		for (AccountUser user : connectedUsers.values()) {
+			logins.add(user.getLogin());
+		}
+		return logins;
 	}
 }

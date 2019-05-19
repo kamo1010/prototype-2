@@ -1,5 +1,8 @@
 package com.mo.kyung.dps.prototype2.data.representations;
 
+/*
+ * representation of messages resulting of actions done by the user
+ */
 public class SentMessageRepresentation {
 	private String topic;
 	private String payload;
