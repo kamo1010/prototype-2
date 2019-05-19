@@ -11,27 +11,26 @@ import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mo.kyung.dps.prototype2.data.Database;
 import com.mo.kyung.dps.prototype2.data.datatypes.AccountUser;
 import com.mo.kyung.dps.prototype2.data.representations.SentMessageRepresentation;
 
-@ServerEndpoint(value = "/{login}",
-				encoders = NotificationEncoder.class,
-				decoders = NotificationDecoder.class)
+@ServerEndpoint(value = "/{login}", encoders = NotificationEncoder.class, decoders = NotificationDecoder.class)
 public class NotificationEndpoint {
-	@OnOpen
-    public void onOpen(@PathParam("login") final String login, final Session session) throws RegistrationFailedException {
+    @OnOpen
+    public void onOpen(@PathParam("login") final String login, final Session session)
+            throws RegistrationFailedException, JsonProcessingException {
         if (Objects.isNull(login) || login.isEmpty()) {
             throw new RegistrationFailedException("User name is required");
         } else {
             session.getUserProperties().put(Constants.getUserNameKey(), login);
             if (NotificationSessionManager.register(session)) {
                 System.out.printf("Session opened for %s\n", login);
-                AccountUser user = Database.getUser(login);
                 NotificationSessionManager.publish(
                 		new SentMessageRepresentation(
-                				"Administrator",
-                				new StringBuilder(user.getFirstName()).append(" ").append(user.getLastName()).append("***connected to the server***").toString()),
+                				"Connection",
+                				Constants.getMapper().writeValueAsString(Database.getConnectedUsersLogin())),
                 		session);
             } else {
                 throw new RegistrationFailedException("Unable to register, username already exists, try another");

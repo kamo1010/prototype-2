@@ -11,37 +11,8 @@
     <meta name="generator" content="Jekyll v3.8.5">
     <!-- Bootstrap core CSS -->
     <link href="index/bootstrap.css" rel="stylesheet">
+    <link href="index/portal.css" rel="stylesheet">
 
-    <style>
-        #truc {
-            padding-top: 25%;
-            max-width: 600px;
-            display: none
-        }
-        
-        #connected_users_title {
-            margin: 10px;
-        }
-        
-        #dashboard {
-            display: block
-        }
-        
-        .bd-placeholder-img {
-            font-size: 1.125rem;
-            text-anchor: middle;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-        
-        @media (min-width: 768px) {
-            .bd-placeholder-img-lg {
-                font-size: 3.5rem;
-            }
-        }
-    </style>
     <!-- Custom styles for this template -->
     <link href="index/dashboard.css" rel="stylesheet">
     <style type="text/css">
@@ -80,8 +51,7 @@
                 <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
                 <input type="Login" id="login" class="form-control" placeholder="Login" required autofocus>
                 <input type="password" id="password" class="form-control" placeholder="Password" required="">
-                <button class="btn btn-lg btn-primary btn-block" id="login_button" type="submit" onclick="logIn()">Log
-                    in</button>
+                <button class="btn btn-lg btn-primary btn-block" id="login_btn" type="submit">Log in</button>
                 <span class="error" id="authentication_error"></span>
             </form>
         </div>
@@ -90,7 +60,7 @@
         <button type="button" class="btn btn-link navbar-brand col-sm-3 col-md-2 mr-0">Welcome!</button>
         <ul class="navbar-nav px-3">
             <li class="nav-item text-nowrap">
-                <button type="button" class="btn btn-link nav-link" id="signOut">Sign Out</button>
+                <button type="button" class="btn btn-link nav-link" id="log_out_btn">Log Out</button>
             </li>
         </ul>
     </nav>
@@ -107,15 +77,17 @@
                         </svg> <b>Connected Users</b> <span class="sr-only">(current)</span>
                     </div>
                     <ul class="nav flex-column" id="connected_users_title">
-                        <!-- <li class="nav-item">
-                            <a class="nav-link" href="https://getbootstrap.com/docs/4.3/examples/dashboard/#">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file" data-darkreader-inline-fill="" data-darkreader-inline-stroke=""
-                                    style="--darkreader-inline-fill:none; --darkreader-inline-stroke:currentColor;">
-                          <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
-                          <polyline points="13 2 13 9 20 9"></polyline>
-                        </svg> Orders
-                            </a>
-                        </li> -->
+                        <li class="nav-item">
+                            <div class="contact">
+                                <svg class="bd-placeholder-img mr-2 rounded" width="16" height="16">
+                                    <rect width="100%" height="100%" fill="#007bff">
+                                    </rect>
+                                </svg>
+                                <span>
+                                    bonjour
+                                </span>
+                            </div>
+                        </li>
                     </ul>
                 </div>
             </nav>
@@ -214,8 +186,7 @@
                                         </div>
                                         <input type="text" class="form-control" placeholder="Topic Name" aria-label="topic_name" aria-describedby="topic_name">
                                     </div>
-                                    <button type="button" class="btn btn-lg btn-block btn-outline-primary" id="subscription_topic_btn">Create
-                                        Account</button>
+                                    <button type="button" class="btn btn-lg btn-block btn-outline-primary" id="subscription_topic_btn">Subscribe to Topic</button>
                                 </div>
                             </div>
                         </div>
@@ -239,8 +210,21 @@
                             <textarea class="form-control" aria-label="message" id="message_payload"></textarea>
                         </div>
                         <div class="input-group">
-                            <button type="button" class="btn btn-lg btn-block btn-primary">Post</button>
+                            <button type="button" class="btn btn-lg btn-block btn-primary" id="post_message_btn">Post</button>
                         </div>
+                    </div>
+                </div>
+                <div class="card mb-6 shadow-sm">
+                    <div class="card-header">
+                        <h4 class="my-0 font-weight-normal">Messages</h4>
+                    </div>
+                    <div class="card-body" id="message_list">
+                        <!-- <div class="media text-muted pt-3">
+                            <svg class="bd-placeholder-img mr-2 rounded" width="32" height="32" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 32x32"><title>Placeholder</title><rect width="100%" height="100%" fill="#007bff"></rect><text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text></svg>
+                            <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                                <strong class="d-block text-gray-dark">@username</strong> Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.
+                            </p>
+                        </div> -->
                     </div>
                 </div>
             </main>

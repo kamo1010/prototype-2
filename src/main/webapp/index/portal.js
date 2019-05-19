@@ -2,29 +2,14 @@ var socket;
 var currentUser;
 var credentials;
 var token;
+var request;
 
-document.getElementById("signOut").addEventListener("click", logOut);
-document.getElementById("signOut").addEventListener("click", logOut);
-document.getElementById("signOut").addEventListener("click", logOut);
-document.getElementById("signOut").addEventListener("click", logOut);
-document.getElementById("signOut").addEventListener("click", logOut);
-document.getElementById("signOut").addEventListener("click", logOut);
-document.getElementById("signOut").addEventListener("click", logOut);
-document.getElementById("signOut").addEventListener("click", logOut);
-document.getElementById("signOut").addEventListener("click", logOut);
-document.getElementById("signOut").addEventListener("click", logOut);
-document.getElementById("signOut").addEventListener("click", logOut);
-document.getElementById("signOut").addEventListener("click", logOut);
-document.getElementById("signOut").addEventListener("click", logOut);
-document.getElementById("signOut").addEventListener("click", logOut);
-document.getElementById("signOut").addEventListener("click", logOut);
-document.getElementById("signOut").addEventListener("click", logOut);
-document.getElementById("signOut").addEventListener("click", logOut);
-document.getElementById("signOut").addEventListener("click", logOut);
-document.getElementById("signOut").addEventListener("click", logOut);
-document.getElementById("signOut").addEventListener("click", logOut);
-document.getElementById("signOut").addEventListener("click", logOut);
-document.getElementById("signOut").addEventListener("click", logOut);
+document.getElementById("login_btn").addEventListener("click", logIn); //is ok
+document.getElementById("log_out_btn").addEventListener("click", logOut); //is ok
+document.getElementById("create_account_btn").addEventListener("click", createAccount);
+document.getElementById("creat_topic_btn").addEventListener("click", createTopic);
+document.getElementById("subscription_topic_btn").addEventListener("click", subscribe);
+document.getElementById("post_message_btn").addEventListener("click", postNewMessage);
 /*ajouter les gens qui se connectent dans la barre de côté
 ajouter les topics abbonés qand on s'abonne
 envoyer message quand on crée topic, s'abonne, crée un user, et post message
@@ -38,7 +23,7 @@ function logIn() {
         };
         console.log(JSON.stringify(credentials));
 
-        var request = new XMLHttpRequest();
+        request = new XMLHttpRequest();
         request.open("POST", "http://" + window.location.hostname + ":8080/prototype-two/rest/auth/in");
         request.setRequestHeader("content-Type", "application/json");
         request.onreadystatechange = function() {
@@ -78,28 +63,36 @@ function openSocket() {
     socket.onopen = function(event) {
         document.getElementById("truc").style.display = "none";
         document.getElementById("dashboard").style.display = "block";
+        //remplir la section properties
     };
     socket.onmessage = function(event) {
         if (typeof event.data === "string") {
             var webSocketMessage = JSON.parse(event.data);
             switch (webSocketMessage.topic) {
                 case "Administration":
+                    //envoyer le message
                     displayNewMessage(webSocketMessage);
                     break;
-                case "Connection":
-                    var beforeStatus = document.getElementById("connected_users_title").value;
+                case "Connection": //is ok
+                    //extraire la liste, sous forme d'un texte
+                    //y ajouter le nouvel arrivant
+                    //remettre le tout dans le message
                     cleanAvailableUsers();
-                    document.getElementById("connected_users_title").appendChild(beforeStatus);
-                    addAvailableUsers(webSocketMessage.login);
+                    displayAvailableUsers(webSocketMessage);
                     break;
                 case "New Topic":
-                    displayTopicCreation(webSocketMessage)
+                    //annoncer la disponibilité d'un nouveau topic
+                    displayNewMessage(webSocketMessage.payload);
                     break;
                 default:
+                    //envoyer le message aux concernés
                     displayNewMessage(webSocketMessage);
             }
         }
     };
+    socket.onclose = function(event) {
+        logOut();
+    }
 }
 
 
@@ -115,6 +108,42 @@ function logOut() {
             document.getElementById("truc").style.display = "block";
             document.getElementById("dashboard").style.display = "none";
         }
+    }
+}
+
+function displayAvailableUsers(wsmessage) {
+    var i;
+    for (i = 0; i < wsmessage.payload.length; i++) {
+        var navItem = document.createElement("li");
+        navItem.setAttribute("class", "nav-item");
+
+        var contact = document.createElement("div");
+        contact.setAttribute("class", "contact");
+        navItem.appendChild(contact);
+
+        var entry = document.createElement("svg");
+        entry.setAttribute("class", "bd-placeholder-img mr-2 rounded");
+        contact.appendChild(entry);
+
+        var rectangle = document.createElement("rect");
+        rectangle.setAttribute("width", "100%");
+        rectangle.setAttribute("height", "100%");
+        rectangle.setAttribute("fill", "#007bff");
+        entry.appendChild(rectangle);
+
+        var login = document.createElement("span");
+        login.appendChild(document.createTextNode(wsmessage.payload[i]));
+        contact.appendChild(login);
+
+        var contacts = document.getElementById("connected_users_title");
+        contacts.appendChild(navItem);
+    }
+}
+
+function cleanAvailableUsers() {
+    var contacts = document.getElementById("connected_users_title");
+    while (contacts.hasChildNodes()) {
+        contacts.removeChild(contacts.lastChild);
     }
 }
 
@@ -193,32 +222,4 @@ function displayDisconnectedUserMessage(login) {
 
     var messages = document.getElementById("messages");
     messages.appendChild(message);
-}
-
-function addAvailableUsers(login) {
-    var contact = document.createElement("li");
-    contact.setAttribute("class", "nav-item");
-
-    var icon = document.createElement("div");
-    icon.setAttribute("class", "contact");
-    contact.appendChild(icon);
-
-    var status = document.createElement("div");
-    status.setAttribute("class", "status");
-    icon.appendChild(status);
-
-    var payload = document.createElement("span");
-    payload.setAttribute("class", "name");
-    payload.appendChild(document.createTextNode(login));
-    contact.appendChild(payload);
-
-    var contacts = document.getElementById("connected_users_title");
-    contacts.appendChild(contact);
-}
-
-function cleanAvailableUsers() {
-    var contacts = document.getElementById("connected_users_title");
-    while (contacts.hasChildNodes()) {
-        contacts.removeChild(contacts.lastChild);
-    }
 }

@@ -10,6 +10,7 @@ import java.util.TreeSet;
 import com.mo.kyung.dps.prototype2.data.datatypes.AccountUser;
 import com.mo.kyung.dps.prototype2.data.datatypes.ExchangeMessage;
 import com.mo.kyung.dps.prototype2.data.datatypes.Topic;
+import com.mo.kyung.dps.prototype2.websocket.Constants;
 
 public class Database {
 	private static Set<AccountUser> users = new TreeSet<AccountUser>();
@@ -17,9 +18,9 @@ public class Database {
 	private static Map<String, AccountUser> connectedUsers = new TreeMap<String, AccountUser>(); // String is for the token
 	private static Set<ExchangeMessage> uploadedMessages = new TreeSet<ExchangeMessage>();
 	static {
-		addTopic(new Topic("Administration", true));
-		addTopic(new Topic("Connection", true));
-		addTopic(new Topic("New Topic", true));
+		addTopic(new Topic(Constants.getAdministrationTopic(), true));
+		addTopic(new Topic(Constants.getConnectionTopic(), true));
+		addTopic(new Topic(Constants.getNewTopicTopic(), true));
 
 		addUser(new AccountUser("admin", "admin", "admin", "admin"));
 
@@ -116,7 +117,7 @@ public class Database {
 				return user;
 			}
 		}
-		return null;// user does not exist
+		return null;// user does not exist or is not connected
 	}
 
 	public static boolean addConnectedUser(AccountUser user) throws UnsupportedEncodingException {
@@ -148,5 +149,13 @@ public class Database {
 
 	public static boolean applySubscription(String login, String topicName) {
 		return getUser(login).subscribeToTopic(getTopic(topicName));
+	}
+
+	public static Set<String> getConnectedUsersLogin(){
+		Set<String> connectesUsersLogin = new TreeSet<String>();
+		for (AccountUser user : connectedUsers.values()) {
+			connectesUsersLogin.add(user.getLogin());
+		}
+		return connectesUsersLogin;
 	}
 }

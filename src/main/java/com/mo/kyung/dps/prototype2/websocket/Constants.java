@@ -9,8 +9,20 @@ public class Constants {
 	private static final String MESSAGE_KEY = "payload";
 	private static final String EDITION_DATE_KEY = "editionDate";
 	private static final ObjectMapper MAPPER = new ObjectMapper();
+	private static final String ADMINISTRATION_TOPIC = "Administration";
+	private static final String CONNECTION_TOPIC = "Connection";
+	private static final String NEW_TOPIC_TOPIC = "New Topic";
 
-    private Constants() {
+    public static String getAdministrationTopic() {
+		return ADMINISTRATION_TOPIC;
+	}
+	public static String getConnectionTopic() {
+		return CONNECTION_TOPIC;
+	}
+	public static String getNewTopicTopic() {
+		return NEW_TOPIC_TOPIC;
+	}
+	private Constants() {
         throw new IllegalStateException(INSTANTIATION_NOT_ALLOWED);
     }
 	public static String getInstantiationNotAllowed() {
