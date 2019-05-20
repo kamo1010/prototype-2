@@ -6,8 +6,10 @@ import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Date;
 import java.util.List;
 
+import javax.websocket.Session;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
@@ -20,14 +22,16 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mo.kyung.dps.prototype2.data.Database;
 import com.mo.kyung.dps.prototype2.data.datatypes.AccountUser;
 import com.mo.kyung.dps.prototype2.data.datatypes.ExchangeMessage;
 import com.mo.kyung.dps.prototype2.data.datatypes.Topic;
 import com.mo.kyung.dps.prototype2.data.representations.ReceivedMessageRepresentation;
 import com.mo.kyung.dps.prototype2.data.representations.SentMessageRepresentation;
-import com.mo.kyung.dps.prototype2.data.representations.TopicCreationRepresentation;
 import com.mo.kyung.dps.prototype2.data.representations.UserPropertiesRepresentation;
+import com.mo.kyung.dps.prototype2.websocket.Constants;
+import com.mo.kyung.dps.prototype2.websocket.NotificationSessionManager;
 
 @Path("{login}")
 public class AccountUserResource {
@@ -56,9 +60,20 @@ public class AccountUserResource {
 		} else {
 			if (login.equals(new String(Base64.getDecoder().decode(token), StandardCharsets.UTF_8.toString())
 					.split("@101@")[0])) {
-				Database.uploadMessaage(new ExchangeMessage(Database.getUser(login), Database.getTopic(message.getTopic()), message.getPayload()));
-				StringBuilder builder = new StringBuilder(login).append("/notifications");
-				return Response.created(new URI(builder.toString())).build();
+				if (Database.getTopic(message.getTopic()) != null) {
+					if (Database.getConnectedUser(login).getTopics().contains(Database.getTopic(message.getTopic()))){
+						Database.uploadMessaage(new ExchangeMessage(Database.getUser(login), Database.getTopic(message.getTopic()), message.getPayload()));
+						StringBuilder builder = new StringBuilder(login).append("/notifications");
+						for (Session session : NotificationSessionManager.getSessions()) {
+							NotificationSessionManager.publish(new ReceivedMessageRepresentation(login, message.getTopic(), message.getPayload(), new Date()), session);
+						}
+						return Response.created(new URI(builder.toString())).build();
+					} else {
+						return Response.status(Status.FORBIDDEN).build();
+					}
+				} else {
+					return Response.status(Status.NOT_ACCEPTABLE).build();
+				}
 			} else {
 				return Response.status(Status.FORBIDDEN).build();
 			}
@@ -74,11 +89,11 @@ public class AccountUserResource {
 		} else {
 			if (login.equals(new String(Base64.getDecoder().decode(token), StandardCharsets.UTF_8.toString())
 					.split("@101@")[0])) {
-				AccountUser user = Database.getUser(login);
+				AccountUser user = Database.getConnectedUser(login);
 				List<ReceivedMessageRepresentation> messages = new ArrayList<ReceivedMessageRepresentation>();
 				for (ExchangeMessage message : Database.getUploadedMessages()) {
 					if (user.isInterestedIn(message.getTopic())) {
-						messages.add(new ReceivedMessageRepresentation(message.getAuthor(), message.getTopic(), message.getPayload(), message.getEditionDate()));
+						messages.add(new ReceivedMessageRepresentation(message.getUser().getLogin(), message.getTopic().getName(), message.getPayload(), message.getEditionDate()));
 					}
 				}
 				return Response.ok(messages).build();
@@ -107,18 +122,27 @@ public class AccountUserResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createNewTopic(@PathParam(value = "login") String login,
 			@HeaderParam(value = "token") String token,
-			TopicCreationRepresentation newTopic) throws URISyntaxException, UnsupportedEncodingException {
+			String newTopic) throws URISyntaxException, UnsupportedEncodingException, JsonProcessingException {
 		if (token.isEmpty()) {
 			return Response.status(Status.UNAUTHORIZED).build();
 		} else {
 			if (login.equals(new String(Base64.getDecoder().decode(token), StandardCharsets.UTF_8.toString())
 					.split("@101@")[0])) {
-				if (Database.getTopic(newTopic.getTopicName()) != null) {
-					Topic topic = new Topic(newTopic.getTopicName(), newTopic.isPublik());
-					AccountUser user = Database.getUser(login);
+				if (Database.getTopic(newTopic) == null) {
+					Topic topic = new Topic(newTopic, false);
+					AccountUser user = Database.getConnectedUser(login);
 					Database.addTopic(topic);
 					user.subscribeToTopic(topic);
-					StringBuilder builder = new StringBuilder(login).append("/topics/").append(newTopic.getTopicName());
+					StringBuilder builder = new StringBuilder(login).append("/topics/").append(newTopic);
+					for (Session session : NotificationSessionManager.getSessions()) {
+						NotificationSessionManager.publish(
+								new ReceivedMessageRepresentation(
+										login,
+										Constants.getAdministrationTopic(),
+										Constants.getMapper().writeValueAsString(new UserPropertiesRepresentation(Database.getConnectedUser(login))),
+										new Date()),
+								session);
+					}
 					return Response.created(new URI(builder.toString())).build();
 				}
 				return Response.status(418).build();
@@ -127,7 +151,7 @@ public class AccountUserResource {
 			}
 		}
 	}
-	@POST
+	@PUT
 	@Path("topics/{topic_name}")
 	public Response unsubscribeFromTopic(@PathParam(value = "login") String login,
 			@HeaderParam(value = "token") String token,
@@ -160,16 +184,20 @@ public class AccountUserResource {
 		} else {
 			if (login.equals(new String(Base64.getDecoder().decode(token), StandardCharsets.UTF_8.toString())
 					.split("@101@")[0])) {
-				AccountUser user = Database.getUser(login);
-				Topic topic = Database.getTopic(topicName);
-				if (user.getTopics().contains(topic)) {
-					if (user.subscribeToTopic(topic)) {
-						return Response.ok().build();
+				if (Database.getTopic(topicName) != null) {
+					AccountUser user = Database.getUser(login);
+					Topic topic = Database.getTopic(topicName);
+					if (!user.getTopics().contains(topic)) {
+						if (user.subscribeToTopic(topic)) {
+							return Response.ok().build();
+						} else {
+							return Response.status(Status.BAD_REQUEST).build();
+						}
 					} else {
-						return Response.status(Status.BAD_REQUEST).build();
+						return Response.status(418, "You cannot invite users to a topic you haven't subscribed to").build();
 					}
 				} else {
-					return Response.status(418, "You cannot invite users to a topic you haven't subscribed to").build();
+					return Response.status(Status.CONFLICT).build();
 				}
 			} else {
 				return Response.status(Status.FORBIDDEN).build();

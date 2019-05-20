@@ -1,33 +1,32 @@
 package com.mo.kyung.dps.prototype2.data.representations;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import com.mo.kyung.dps.prototype2.data.datatypes.AccountUser;
-import com.mo.kyung.dps.prototype2.data.datatypes.Topic;
 
 /*
  * representation of messages when received by users
  */
 public class ReceivedMessageRepresentation {
-	private String author;
+	private String login;
 	private String topic;
 	private String payload;
 	private String editionDate;
 	public ReceivedMessageRepresentation() {
 		super();
 	}
-	public ReceivedMessageRepresentation(AccountUser accountUser, Topic topic, String payload, Date date) {
+	public ReceivedMessageRepresentation(String login, String string, String payload, Date date) {
 		super();
-		this.author = accountUser.getLogin();
-		this.topic = topic.getName();
+		this.login = login;
+		this.topic = string;
 		this.payload = payload;
-		this.editionDate = date.toString();
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy   -   HH:mm:ss");
+		this.editionDate = simpleDateFormat.format(date);
 	}
 	public String getAuthor() {
-		return author;
+		return login;
 	}
-	public void setAuthor(String author) {
-		this.author = author;
+	public void setAuthor(String login) {
+		this.login = login;
 	}
 	public String getTopic() {
 		return topic;

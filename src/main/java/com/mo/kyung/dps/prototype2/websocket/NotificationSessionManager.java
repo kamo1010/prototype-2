@@ -1,6 +1,7 @@
 package com.mo.kyung.dps.prototype2.websocket;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
@@ -12,6 +13,7 @@ import javax.websocket.CloseReason.CloseCodes;
 import javax.websocket.EncodeException;
 import javax.websocket.Session;
 
+import com.mo.kyung.dps.prototype2.data.Database;
 import com.mo.kyung.dps.prototype2.data.representations.ReceivedMessageRepresentation;
 
 public class NotificationSessionManager {
@@ -23,11 +25,17 @@ public class NotificationSessionManager {
         throw new IllegalStateException(Constants.getInstantiationNotAllowed());
     }
 
-    static void publish(final ReceivedMessageRepresentation receivedMessageRepresentation, final Session origin) {
+    public static Set<Session> getSessions() {
+		return Collections.unmodifiableSet(SESSIONS);
+	}
+
+	public static void publish(final ReceivedMessageRepresentation receivedMessageRepresentation, final Session origin) {
         assert !Objects.isNull(receivedMessageRepresentation) && !Objects.isNull(origin);
         SESSIONS.stream().forEach(session -> {
-            try {
-                session.getBasicRemote().sendObject(receivedMessageRepresentation);
+            try {//gotta check who is concerned
+                if (Database.getConnectedUser((String) session.getUserProperties().get(Constants.getUserNameKey())).isInterestedIn(Database.getTopic(receivedMessageRepresentation.getTopic()))) {
+                	session.getBasicRemote().sendObject(receivedMessageRepresentation);
+                }
             } catch (IOException | EncodeException e) {
                 e.printStackTrace();
             }

@@ -14,6 +14,7 @@ import javax.websocket.server.ServerEndpoint;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mo.kyung.dps.prototype2.data.Database;
+import com.mo.kyung.dps.prototype2.data.datatypes.Topic;
 import com.mo.kyung.dps.prototype2.data.representations.ReceivedMessageRepresentation;
 import com.mo.kyung.dps.prototype2.data.representations.SentMessageRepresentation;
 import com.mo.kyung.dps.prototype2.data.representations.UserPropertiesRepresentation;
@@ -29,20 +30,22 @@ public class NotificationEndpoint {
 			session.getUserProperties().put(Constants.getUserNameKey(), login);
 			if (NotificationSessionManager.register(session)) {
 				System.out.printf("Session opened for %s\n", login);
+				Database.addTopic(new Topic(login, false));
 				NotificationSessionManager.publish(
 						new ReceivedMessageRepresentation(
-								Database.getUser(login),
-								Database.getTopic(Constants.getConnectionTopic()),
+								login,
+								Constants.getConnectionTopic(),
 								Constants.getMapper().writeValueAsString(Database.getConnectedUsersAsString()),
 								new Date()),
 						session);
 				NotificationSessionManager.publish(
 						new ReceivedMessageRepresentation(
-								Database.getUser(login),
-								Database.getTopic(Constants.getAdministrationTopic()),
+								login,
+								login,
 								Constants.getMapper().writeValueAsString(new UserPropertiesRepresentation(Database.getConnectedUser(login))),
 								new Date()),
 						session);
+				Database.removeTopic(Database.getTopic(login));
 				System.out.println(Database.getConnectedUser(login).getTopics().isEmpty());
 			} else {
 				throw new RegistrationFailedException("Unable to register, username already exists, try another");
@@ -67,10 +70,11 @@ public class NotificationEndpoint {
 		if (NotificationSessionManager.remove(session)) {
 			String login = (String) session.getUserProperties().get(Constants.getUserNameKey());
 			System.out.printf("Session closed for %s\n", session.getUserProperties().get(Constants.getUserNameKey()));
+			Database.removeConnectedUser(Database.getConnectedUser(login));
 			NotificationSessionManager.publish(
 					new ReceivedMessageRepresentation(
-							Database.getUser(login),
-							Database.getTopic(Constants.getConnectionTopic()),
+							login,
+							Constants.getConnectionTopic(),
 							Constants.getMapper().writeValueAsString(Database.getConnectedUsersLogin()),
 							new Date()),
 					session);

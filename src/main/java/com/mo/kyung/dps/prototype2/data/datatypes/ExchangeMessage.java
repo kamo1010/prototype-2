@@ -3,21 +3,21 @@ package com.mo.kyung.dps.prototype2.data.datatypes;
 import java.util.Date;
 
 public class ExchangeMessage implements Comparable<ExchangeMessage>{
-	private AccountUser author;
+	private AccountUser login;
 	private Topic topic;
 	private String payload;
 	private Date editionDate;
 	public ExchangeMessage() {
 		this.editionDate = new Date();
 	}
-	public ExchangeMessage(AccountUser author, Topic topic, String payload) {
+	public ExchangeMessage(AccountUser user, Topic topic, String payload) {
 		this.editionDate = new Date();
-		this.author = author;
+		this.login = user;
 		this.topic = topic;
 		this.payload = payload;
 	}
-	public AccountUser getAuthor() {
-		return author;
+	public AccountUser getUser() {
+		return login;
 	}
 	public Topic getTopic() {
 		return topic;

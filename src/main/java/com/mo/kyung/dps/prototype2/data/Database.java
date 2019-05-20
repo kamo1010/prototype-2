@@ -24,25 +24,26 @@ public class Database {
 		addTopic(new Topic(Constants.getAdministrationTopic(), true));
 		addTopic(new Topic(Constants.getConnectionTopic(), true));
 		addTopic(new Topic(Constants.getNewTopicTopic(), true));
+		addTopic(new Topic("test", true));
 		
 		addUser(admin);
 
-//		addUser(new AccountUser("Patrick", "GRIMBERG", "patrick", "grimberg"));
-//		addUser(new AccountUser("Jerome", "DAZIANO", "jerome", "daziano"));
-//		addUser(new AccountUser("Maud", "CADORET", "maud", "cadoret"));
-//		addUser(new AccountUser("Hamza", "OUCHEIKH", "hamza", "oucheikh"));
-//		addUser(new AccountUser("Abdoulaye", "SOW", "abdoulaye", "sow"));
-//		addUser(new AccountUser("Pascal", "REINA", "pascal", "reina"));
-//		addUser(new AccountUser("Mohamad", "YASSINE", "mohamad", "yassine"));
-//		addUser(new AccountUser("Frederic", "GANTOIS", "frederic", "gantois"));
-//		addUser(new AccountUser("Alexis", "LE ROY", "alexis", "leroy"));
-//		addUser(new AccountUser("Kyung Mo", "YANG", "kyungmo", "yang"));
-//		addUser(new AccountUser("Amar", "LANKRI", "amar", "lankri"));
-//		addUser(new AccountUser("Syed Farath", "SAYEED", "syedfarath", "sayeed"));
-//		addUser(new AccountUser("Benoit", "GRASSET", "benoit", "grasset"));
-//		addUser(new AccountUser("Nathan", "MARGUET", "nathan", "marguet"));
-//		addUser(new AccountUser("Didier", "TERRIER", "didier", "terrier"));
-//		addUser(new AccountUser("Antoine", "MUNCK", "antoine", "munck"));
+		addUser(new AccountUser("Patrick", "GRIMBERG", "patrick", "grimberg"));
+		addUser(new AccountUser("Jerome", "DAZIANO", "jerome", "daziano"));
+		addUser(new AccountUser("Maud", "CADORET", "maud", "cadoret"));
+		addUser(new AccountUser("Hamza", "OUCHEIKH", "hamza", "oucheikh"));
+		addUser(new AccountUser("Abdoulaye", "SOW", "abdoulaye", "sow"));
+		addUser(new AccountUser("Pascal", "REINA", "pascal", "reina"));
+		addUser(new AccountUser("Mohamad", "YASSINE", "mohamad", "yassine"));
+		addUser(new AccountUser("Frederic", "GANTOIS", "frederic", "gantois"));
+		addUser(new AccountUser("Alexis", "LE ROY", "alexis", "leroy"));
+		addUser(new AccountUser("Kyung Mo", "YANG", "kyungmo", "yang"));
+		addUser(new AccountUser("Amar", "LANKRI", "amar", "lankri"));
+		addUser(new AccountUser("Syed Farath", "SAYEED", "syedfarath", "sayeed"));
+		addUser(new AccountUser("Benoit", "GRASSET", "benoit", "grasset"));
+		addUser(new AccountUser("Nathan", "MARGUET", "nathan", "marguet"));
+		addUser(new AccountUser("Didier", "TERRIER", "didier", "terrier"));
+		addUser(new AccountUser("Antoine", "MUNCK", "antoine", "munck"));
 
 		/*
 		 * getUser("abdoulaye").subscribeToTopic(getTopic("Administrator"));
