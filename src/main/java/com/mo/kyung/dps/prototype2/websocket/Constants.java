@@ -6,7 +6,7 @@ import com.mo.kyung.dps.prototype2.data.datatypes.AccountUser;
 
 public class Constants {
 	private static final String INSTANTIATION_NOT_ALLOWED = "Instantiation not allowed";
-	private static final String USER_NAME_KEY = "author";
+	private static final String USER_NAME_KEY = "login";
 	private static final String TOPIC_KEY = "topic";
 	private static final String MESSAGE_KEY = "payload";
 	private static final String EDITION_DATE_KEY = "editionDate";

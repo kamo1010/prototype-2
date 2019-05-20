@@ -42,6 +42,30 @@ public class NotificationSessionManager {
         });
     }
 
+    public static void publishOnce(final ReceivedMessageRepresentation receivedMessageRepresentation, final Session targetSession) {
+        assert !Objects.isNull(receivedMessageRepresentation) && !Objects.isNull(targetSession);
+        if (Database.getConnectedUser((String) targetSession.getUserProperties().get(Constants.getUserNameKey())).isInterestedIn(Database.getTopic(receivedMessageRepresentation.getTopic()))) {
+            try {
+                targetSession.getBasicRemote().sendObject(receivedMessageRepresentation);
+            } catch (IOException | EncodeException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static Session getASession(){
+        return (Session) SESSIONS.toArray()[0];
+    }
+
+    public static Session getSession(String login){
+        for (Session session : SESSIONS) {
+            if (session.getUserProperties().get(Constants.getUserNameKey()).equals(login)){
+                return session;
+            }
+        }
+        return null;
+    }
+
     static boolean register(final Session session) {
         assert !Objects.isNull(session);
 

@@ -30,7 +30,6 @@ public class NotificationEndpoint {
 			session.getUserProperties().put(Constants.getUserNameKey(), login);
 			if (NotificationSessionManager.register(session)) {
 				System.out.printf("Session opened for %s\n", login);
-				Database.addTopic(new Topic(login, false));
 				NotificationSessionManager.publish(
 						new ReceivedMessageRepresentation(
 								login,
@@ -38,14 +37,13 @@ public class NotificationEndpoint {
 								Constants.getMapper().writeValueAsString(Database.getConnectedUsersAsString()),
 								new Date()),
 						session);
-				NotificationSessionManager.publish(
+				NotificationSessionManager.publishOnce(
 						new ReceivedMessageRepresentation(
 								login,
-								login,
+								Constants.getAdministrationTopic(),
 								Constants.getMapper().writeValueAsString(new UserPropertiesRepresentation(Database.getConnectedUser(login))),
 								new Date()),
 						session);
-				Database.removeTopic(Database.getTopic(login));
 				System.out.println(Database.getConnectedUser(login).getTopics().isEmpty());
 			} else {
 				throw new RegistrationFailedException("Unable to register, username already exists, try another");

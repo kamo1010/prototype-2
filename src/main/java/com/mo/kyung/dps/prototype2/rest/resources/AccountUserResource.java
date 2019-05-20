@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
@@ -50,6 +51,7 @@ public class AccountUserResource {
 			}
 		}
 	}
+
 	@POST
 	@Path("post")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -61,12 +63,15 @@ public class AccountUserResource {
 			if (login.equals(new String(Base64.getDecoder().decode(token), StandardCharsets.UTF_8.toString())
 					.split("@101@")[0])) {
 				if (Database.getTopic(message.getTopic()) != null) {
-					if (Database.getConnectedUser(login).getTopics().contains(Database.getTopic(message.getTopic()))){
-						Database.uploadMessaage(new ExchangeMessage(Database.getUser(login), Database.getTopic(message.getTopic()), message.getPayload()));
+					if (Database.getConnectedUser(login).getTopics().contains(Database.getTopic(message.getTopic()))) {
+						Database.uploadMessaage(new ExchangeMessage(Database.getUser(login),
+								Database.getTopic(message.getTopic()), message.getPayload()));
 						StringBuilder builder = new StringBuilder(login).append("/notifications");
-						for (Session session : NotificationSessionManager.getSessions()) {
-							NotificationSessionManager.publish(new ReceivedMessageRepresentation(login, message.getTopic(), message.getPayload(), new Date()), session);
-						}
+						NotificationSessionManager
+								.publishOnce(
+										new ReceivedMessageRepresentation(login, message.getTopic(),
+												message.getPayload(), new Date()),
+										NotificationSessionManager.getSession(login));
 						return Response.created(new URI(builder.toString())).build();
 					} else {
 						return Response.status(Status.FORBIDDEN).build();
@@ -79,6 +84,7 @@ public class AccountUserResource {
 			}
 		}
 	}
+
 	@GET
 	@Path("notifications")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -93,8 +99,14 @@ public class AccountUserResource {
 				List<ReceivedMessageRepresentation> messages = new ArrayList<ReceivedMessageRepresentation>();
 				for (ExchangeMessage message : Database.getUploadedMessages()) {
 					if (user.isInterestedIn(message.getTopic())) {
-						messages.add(new ReceivedMessageRepresentation(message.getUser().getLogin(), message.getTopic().getName(), message.getPayload(), message.getEditionDate()));
+						ReceivedMessageRepresentation receivedMessage = new ReceivedMessageRepresentation(
+								message.getUser().getLogin(), message.getTopic().getName(), message.getPayload(),
+								message.getEditionDate());
+						messages.add(receivedMessage);
+						NotificationSessionManager.publishOnce(receivedMessage,
+								NotificationSessionManager.getSession(login));
 					}
+
 				}
 				return Response.ok(messages).build();
 			} else {
@@ -102,6 +114,7 @@ public class AccountUserResource {
 			}
 		}
 	}
+
 	@GET
 	@Path("topics")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -110,19 +123,21 @@ public class AccountUserResource {
 		if (token.isEmpty()) {
 			return Response.status(Status.UNAUTHORIZED).build();
 		} else {
-			if (login.equals(new String(Base64.getDecoder().decode(token), StandardCharsets.UTF_8.toString()).split("@101@")[0])) {
+			if (login.equals(new String(Base64.getDecoder().decode(token), StandardCharsets.UTF_8.toString())
+					.split("@101@")[0])) {
 				return Response.ok(Database.getUser(login).getTopics()).build();
 			} else {
 				return Response.status(Status.FORBIDDEN).build();
 			}
 		}
 	}
+
 	@POST
 	@Path("topics")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createNewTopic(@PathParam(value = "login") String login,
-			@HeaderParam(value = "token") String token,
-			String newTopic) throws URISyntaxException, UnsupportedEncodingException, JsonProcessingException {
+	public Response createNewTopic(@PathParam(value = "login") String login, @HeaderParam(value = "token") String token,
+			String newTopic)
+			throws URISyntaxException, UnsupportedEncodingException, JsonProcessingException, ParseException {
 		if (token.isEmpty()) {
 			return Response.status(Status.UNAUTHORIZED).build();
 		} else {
@@ -134,15 +149,11 @@ public class AccountUserResource {
 					Database.addTopic(topic);
 					user.subscribeToTopic(topic);
 					StringBuilder builder = new StringBuilder(login).append("/topics/").append(newTopic);
-					for (Session session : NotificationSessionManager.getSessions()) {
-						NotificationSessionManager.publish(
-								new ReceivedMessageRepresentation(
-										login,
-										Constants.getAdministrationTopic(),
-										Constants.getMapper().writeValueAsString(new UserPropertiesRepresentation(Database.getConnectedUser(login))),
-										new Date()),
-								session);
-					}
+					ReceivedMessageRepresentation receivedMessage = new ReceivedMessageRepresentation(login,
+							Constants.getAdministrationTopic(), login + " has created a new topic : " + topic.getName(),
+							new Date());
+					Database.uploadMessaage(receivedMessage.toExchangeMessage());
+					NotificationSessionManager.publish(receivedMessage, NotificationSessionManager.getSession(login));
 					return Response.created(new URI(builder.toString())).build();
 				}
 				return Response.status(418).build();
@@ -151,11 +162,12 @@ public class AccountUserResource {
 			}
 		}
 	}
+
 	@PUT
 	@Path("topics/{topic_name}")
 	public Response unsubscribeFromTopic(@PathParam(value = "login") String login,
-			@HeaderParam(value = "token") String token,
-			@PathParam(value = "topic_name") String topicName) throws URISyntaxException, UnsupportedEncodingException {
+			@HeaderParam(value = "token") String token, @PathParam(value = "topic_name") String topicName)
+			throws URISyntaxException, UnsupportedEncodingException {
 		if (token.isEmpty()) {
 			return Response.status(Status.UNAUTHORIZED).build();
 		} else {
@@ -173,12 +185,12 @@ public class AccountUserResource {
 			}
 		}
 	}
+
 	@PUT
 	@Path("subscribe")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response subscribe(@PathParam(value = "login") String login,
-			@HeaderParam(value = "token") String token,
-			String topicName) throws UnsupportedEncodingException, URISyntaxException {
+	public Response subscribe(@PathParam(value = "login") String login, @HeaderParam(value = "token") String token,
+			String topicName) throws UnsupportedEncodingException, URISyntaxException, ParseException {
 		if (token.isEmpty()) {
 			return Response.status(Status.UNAUTHORIZED).build();
 		} else {
@@ -189,12 +201,18 @@ public class AccountUserResource {
 					Topic topic = Database.getTopic(topicName);
 					if (!user.getTopics().contains(topic)) {
 						if (user.subscribeToTopic(topic)) {
+							ReceivedMessageRepresentation receivedMessage = new ReceivedMessageRepresentation(login,
+									Constants.getAdministrationTopic(),
+									login + " has subscribed to the topic : " + topic.getName(), new Date());
+							Database.uploadMessaage(receivedMessage.toExchangeMessage());
+							NotificationSessionManager.publish(receivedMessage, NotificationSessionManager.getSession(login));
 							return Response.ok().build();
 						} else {
 							return Response.status(Status.BAD_REQUEST).build();
 						}
 					} else {
-						return Response.status(418, "You cannot invite users to a topic you haven't subscribed to").build();
+						return Response.status(418, "You cannot invite users to a topic you haven't subscribed to")
+								.build();
 					}
 				} else {
 					return Response.status(Status.CONFLICT).build();

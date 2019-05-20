@@ -16,6 +16,12 @@ public class ExchangeMessage implements Comparable<ExchangeMessage>{
 		this.topic = topic;
 		this.payload = payload;
 	}
+	public ExchangeMessage(AccountUser user, Topic topic, String payload, Date date) {
+		this.editionDate = date;
+		this.login = user;
+		this.topic = topic;
+		this.payload = payload;
+	}
 	public AccountUser getUser() {
 		return login;
 	}

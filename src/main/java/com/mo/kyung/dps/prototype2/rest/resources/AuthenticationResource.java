@@ -42,7 +42,7 @@ public class AuthenticationResource {
 		String login = new String(Base64.getDecoder().decode(token), StandardCharsets.UTF_8.toString()).split("@101@")[0];
 		if (Database.getUser(login).isConnected()) {
 			Database.removeConnectedUser(Database.getUser(login));
-			return Response.status(200).build();
+			return Response.ok().build();
 		}
 		return Response.status(418).build();
 	}

@@ -7,7 +7,6 @@ var LOGIN;
 
 document.getElementById("login_btn").addEventListener("click", logIn); // is ok
 document.getElementById("log_out_btn").addEventListener("click", logOut); // is ok
-document.getElementById("create_account_btn").addEventListener("click", createAccount); //byebye
 document.getElementById("creat_topic_btn").addEventListener("click", createTopic);
 document.getElementById("subscription_topic_btn").addEventListener("click", subscribe);
 document.getElementById("post_message_btn").addEventListener("click", postNewMessage); //is ok
@@ -36,6 +35,12 @@ function logIn() {
                     case 200:
                         currentUser = credentials.login;
                         token = request.responseText;
+                        request = new XMLHttpRequest();
+                        request.open("GET", "http://" + window.location.hostname +
+                            ":8080/prototype-two/rest/" + LOGIN + "/notifications");
+                        request.setRequestHeader("content-Type", "application/json");
+                        request.setRequestHeader("token", token);
+                        request.send();
                         openSocket();
                         break;
                     case 403:
@@ -72,6 +77,8 @@ function openSocket() {
             var webSocketMessage = JSON.parse(event.data);
             switch (webSocketMessage.topic) {
                 case "administration":
+                    // envoyer le message
+                    displayProperties(webSocketMessage);
                     break;
                 case "connection": // is ok
                     // extraire la liste, sous forme d'un texte
@@ -84,10 +91,6 @@ function openSocket() {
                 case "new topic":
                     // annoncer la disponibilité d'un nouveau topic
                     displayNewMessage(webSocketMessage);
-                    break;
-                case LOGIN:
-                    // envoyer le message
-                    displayProperties(webSocketMessage);
                     break;
                 default:
                     // envoyer le message aux concernés
@@ -109,7 +112,7 @@ function logOut() {
         request.setRequestHeader("token", token);
         request.send();
         console.log(request.status)
-        if (request.status === 0) {
+        if (request.status === 200) {
             token = undefined;
             document.getElementById("truc").style.display = "block";
             document.getElementById("dashboard").style.display = "none";
@@ -175,7 +178,6 @@ function postNewMessage() {
         request.setRequestHeader("content-Type", "application/json");
         request.setRequestHeader("token", token);
         request.send(JSON.stringify(message));
-        console.log("ok")
     }
 }
 
@@ -184,6 +186,7 @@ function createAccount() { //not available in this version
 }
 
 function createTopic() {
+    var message = document.getElementById("input_topic");
     console.log("createTopic");
     request = new XMLHttpRequest();
     request.open("POST", "http://" + window.location.hostname +
