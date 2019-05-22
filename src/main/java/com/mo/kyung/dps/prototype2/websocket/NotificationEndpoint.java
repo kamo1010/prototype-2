@@ -14,7 +14,6 @@ import javax.websocket.server.ServerEndpoint;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mo.kyung.dps.prototype2.data.Database;
-import com.mo.kyung.dps.prototype2.data.datatypes.Topic;
 import com.mo.kyung.dps.prototype2.data.representations.ReceivedMessageRepresentation;
 import com.mo.kyung.dps.prototype2.data.representations.SentMessageRepresentation;
 import com.mo.kyung.dps.prototype2.data.representations.UserPropertiesRepresentation;
@@ -68,7 +67,6 @@ public class NotificationEndpoint {
 		if (NotificationSessionManager.remove(session)) {
 			String login = (String) session.getUserProperties().get(Constants.getUserNameKey());
 			System.out.printf("Session closed for %s\n", session.getUserProperties().get(Constants.getUserNameKey()));
-			Database.removeConnectedUser(Database.getConnectedUser(login));
 			NotificationSessionManager.publish(
 					new ReceivedMessageRepresentation(
 							login,

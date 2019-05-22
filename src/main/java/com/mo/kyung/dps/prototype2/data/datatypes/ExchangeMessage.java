@@ -36,6 +36,6 @@ public class ExchangeMessage implements Comparable<ExchangeMessage>{
 	}
 	@Override
 	public int compareTo(ExchangeMessage o) {
-		return -1 * editionDate.compareTo(o.getEditionDate()); //anti-chronological order
+		return editionDate.compareTo(o.getEditionDate()); //chronological order
 	}
 }

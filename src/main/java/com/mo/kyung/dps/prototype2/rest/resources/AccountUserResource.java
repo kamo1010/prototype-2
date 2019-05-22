@@ -10,7 +10,6 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 
-import javax.websocket.Session;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
@@ -67,11 +66,15 @@ public class AccountUserResource {
 						Database.uploadMessaage(new ExchangeMessage(Database.getUser(login),
 								Database.getTopic(message.getTopic()), message.getPayload()));
 						StringBuilder builder = new StringBuilder(login).append("/notifications");
-						NotificationSessionManager
+						for (AccountUser user : Database.getConnectedUsers().values()) {
+							if (user.isInterestedIn(Database.getTopic(message.getTopic()))){
+								NotificationSessionManager
 								.publishOnce(
-										new ReceivedMessageRepresentation(login, message.getTopic(),
-												message.getPayload(), new Date()),
-										NotificationSessionManager.getSession(login));
+									new ReceivedMessageRepresentation(login, message.getTopic(),
+											message.getPayload(), new Date()),
+									NotificationSessionManager.getSession(user.getLogin()));
+							}
+						}
 						return Response.created(new URI(builder.toString())).build();
 					} else {
 						return Response.status(Status.FORBIDDEN).build();
@@ -148,12 +151,19 @@ public class AccountUserResource {
 					AccountUser user = Database.getConnectedUser(login);
 					Database.addTopic(topic);
 					user.subscribeToTopic(topic);
-					StringBuilder builder = new StringBuilder(login).append("/topics/").append(newTopic);
+					StringBuilder builder = new StringBuilder(login).append("/topics/");
 					ReceivedMessageRepresentation receivedMessage = new ReceivedMessageRepresentation(login,
-							Constants.getAdministrationTopic(), login + " has created a new topic : " + topic.getName(),
+							Constants.getNewTopicTopic(), login + " has created a new topic : " + topic.getName(),
 							new Date());
 					Database.uploadMessaage(receivedMessage.toExchangeMessage());
 					NotificationSessionManager.publish(receivedMessage, NotificationSessionManager.getSession(login));
+					NotificationSessionManager.publishOnce(
+						new ReceivedMessageRepresentation(
+								login,
+								Constants.getAdministrationTopic(),
+								Constants.getMapper().writeValueAsString(new UserPropertiesRepresentation(Database.getConnectedUser(login))),
+								new Date()),
+								NotificationSessionManager.getSession(login));
 					return Response.created(new URI(builder.toString())).build();
 				}
 				return Response.status(418).build();
@@ -190,7 +200,7 @@ public class AccountUserResource {
 	@Path("subscribe")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response subscribe(@PathParam(value = "login") String login, @HeaderParam(value = "token") String token,
-			String topicName) throws UnsupportedEncodingException, URISyntaxException, ParseException {
+			String topicName) throws UnsupportedEncodingException, URISyntaxException, ParseException, JsonProcessingException {
 		if (token.isEmpty()) {
 			return Response.status(Status.UNAUTHORIZED).build();
 		} else {
@@ -202,10 +212,17 @@ public class AccountUserResource {
 					if (!user.getTopics().contains(topic)) {
 						if (user.subscribeToTopic(topic)) {
 							ReceivedMessageRepresentation receivedMessage = new ReceivedMessageRepresentation(login,
-									Constants.getAdministrationTopic(),
+									topicName,
 									login + " has subscribed to the topic : " + topic.getName(), new Date());
 							Database.uploadMessaage(receivedMessage.toExchangeMessage());
 							NotificationSessionManager.publish(receivedMessage, NotificationSessionManager.getSession(login));
+							NotificationSessionManager.publishOnce(
+						new ReceivedMessageRepresentation(
+								login,
+								Constants.getAdministrationTopic(),
+								Constants.getMapper().writeValueAsString(new UserPropertiesRepresentation(Database.getConnectedUser(login))),
+								new Date()),
+								NotificationSessionManager.getSession(login));
 							return Response.ok().build();
 						} else {
 							return Response.status(Status.BAD_REQUEST).build();

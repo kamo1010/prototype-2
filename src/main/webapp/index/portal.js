@@ -78,6 +78,7 @@ function openSocket() {
             switch (webSocketMessage.topic) {
                 case "administration":
                     // envoyer le message
+                    cleanProperties();
                     displayProperties(webSocketMessage);
                     break;
                 case "connection": // is ok
@@ -147,8 +148,17 @@ function cleanAvailableUsers() {
     }
 }
 
+function cleanProperties() {
+    document.getElementById("properties_first_name").innerHTML = "First Name:";
+    document.getElementById("properties_last_name").innerHTML = "Last Name:";
+    document.getElementById("properties_login").innerHTML = "Login:";
+    var list = document.getElementById("properties_subscriber_topics_list");
+    while (list.hasChildNodes()) {
+        list.removeChild(list.lastChild);
+    }
+}
+
 function displayProperties(msg) {
-    console.log(msg);
     var whole = JSON.parse(msg.payload);
     console.log(whole.topicsNames);
     var fName = document.getElementById("properties_first_name").innerHTML + " ";
@@ -186,24 +196,23 @@ function createAccount() { //not available in this version
 }
 
 function createTopic() {
-    var message = document.getElementById("input_topic");
-    console.log("createTopic");
+    var message = document.getElementById("input_topic").value;
     request = new XMLHttpRequest();
     request.open("POST", "http://" + window.location.hostname +
         ":8080/prototype-two/rest/" + LOGIN + "/topics");
     request.setRequestHeader("content-Type", "application/json");
     request.setRequestHeader("token", token);
-    request.send(JSON.stringify(message));
+    request.send(message);
 }
 
 function subscribe() {
-    console.log("subscribe");
+    var message = document.getElementById("input_subscribe").value;
     request = new XMLHttpRequest();
     request.open("PUT", "http://" + window.location.hostname +
         ":8080/prototype-two/rest/" + LOGIN + "/subscribe");
     request.setRequestHeader("content-Type", "application/json");
     request.setRequestHeader("token", token);
-    request.send(JSON.stringify(message));
+    request.send(message);
 }
 
 function displayNewMessage(msg) {
