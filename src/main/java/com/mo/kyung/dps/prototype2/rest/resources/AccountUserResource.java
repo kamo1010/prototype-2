@@ -36,15 +36,16 @@ import com.mo.kyung.dps.prototype2.websocket.NotificationSessionManager;
 @Path("{login}")
 public class AccountUserResource {
 	@GET
-	@Produces(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON) // method used to fill the properties tab
 	public Response getPersonalDetails(@PathParam(value = "login") String login,
-			@HeaderParam(value = "token") String token) throws UnsupportedEncodingException {
+			@HeaderParam(value = "token") String token) throws UnsupportedEncodingException, JsonProcessingException {
 		if (token.isEmpty()) {
 			return Response.status(Status.UNAUTHORIZED).build();
 		} else {
 			if (login.equals(new String(Base64.getDecoder().decode(token), StandardCharsets.UTF_8.toString())
 					.split("@101@")[0])) {
-				return Response.ok(new UserPropertiesRepresentation(Database.getUser(login))).build();
+				return Response.ok(Constants.getMapper()
+						.writeValueAsString(new UserPropertiesRepresentation(Database.getUser(login)))).build();
 			} else {
 				return Response.status(Status.FORBIDDEN).build();
 			}
@@ -67,12 +68,11 @@ public class AccountUserResource {
 								Database.getTopic(message.getTopic()), message.getPayload()));
 						StringBuilder builder = new StringBuilder(login).append("/notifications");
 						for (AccountUser user : Database.getConnectedUsers().values()) {
-							if (user.isInterestedIn(Database.getTopic(message.getTopic()))){
-								NotificationSessionManager
-								.publishOnce(
-									new ReceivedMessageRepresentation(login, message.getTopic(),
-											message.getPayload(), new Date()),
-									NotificationSessionManager.getSession(user.getLogin()));
+							if (user.isInterestedIn(Database.getTopic(message.getTopic()))) {
+								NotificationSessionManager.publishToOne(
+										new ReceivedMessageRepresentation(login, message.getTopic(),
+												message.getPayload(), new Date()),
+										NotificationSessionManager.getSession(user.getLogin()));
 							}
 						}
 						return Response.created(new URI(builder.toString())).build();
@@ -92,7 +92,7 @@ public class AccountUserResource {
 	@Path("notifications")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getNotifications(@PathParam(value = "login") String login,
-			@HeaderParam(value = "token") String token) throws UnsupportedEncodingException {
+			@HeaderParam(value = "token") String token) throws UnsupportedEncodingException, JsonProcessingException {
 		if (token.isEmpty()) {
 			return Response.status(Status.UNAUTHORIZED).build();
 		} else {
@@ -100,18 +100,18 @@ public class AccountUserResource {
 					.split("@101@")[0])) {
 				AccountUser user = Database.getConnectedUser(login);
 				List<ReceivedMessageRepresentation> messages = new ArrayList<ReceivedMessageRepresentation>();
-				for (ExchangeMessage message : Database.getUploadedMessages()) {
-					if (user.isInterestedIn(message.getTopic())) {
-						ReceivedMessageRepresentation receivedMessage = new ReceivedMessageRepresentation(
-								message.getUser().getLogin(), message.getTopic().getName(), message.getPayload(),
-								message.getEditionDate());
-						messages.add(receivedMessage);
-						NotificationSessionManager.publishOnce(receivedMessage,
-								NotificationSessionManager.getSession(login));
-					}
+				if (!Database.getUploadedMessages().isEmpty()) {
+					for (ExchangeMessage message : Database.getUploadedMessages()) {
+						if (user.isInterestedIn(message.getTopic())) {
+							ReceivedMessageRepresentation receivedMessage = new ReceivedMessageRepresentation(
+									message.getUser().getLogin(), message.getTopic().getName(), message.getPayload(),
+									message.getEditionDate());
+							messages.add(receivedMessage);
+						}
 
+					}
 				}
-				return Response.ok(messages).build();
+				return Response.ok(Constants.getMapper().writeValueAsString(messages)).build();
 			} else {
 				return Response.status(Status.FORBIDDEN).build();
 			}
@@ -156,14 +156,13 @@ public class AccountUserResource {
 							Constants.getNewTopicTopic(), login + " has created a new topic : " + topic.getName(),
 							new Date());
 					Database.uploadMessaage(receivedMessage.toExchangeMessage());
-					NotificationSessionManager.publish(receivedMessage, NotificationSessionManager.getSession(login));
-					NotificationSessionManager.publishOnce(
-						new ReceivedMessageRepresentation(
-								login,
-								Constants.getAdministrationTopic(),
-								Constants.getMapper().writeValueAsString(new UserPropertiesRepresentation(Database.getConnectedUser(login))),
-								new Date()),
-								NotificationSessionManager.getSession(login));
+					NotificationSessionManager.publishToAll(receivedMessage,
+							NotificationSessionManager.getSession(login));
+					NotificationSessionManager.publishToOne(new ReceivedMessageRepresentation(login,
+							Constants.getAdministrationTopic(),
+							Constants.getMapper().writeValueAsString(
+									new UserPropertiesRepresentation(Database.getConnectedUser(login))),
+							new Date()), NotificationSessionManager.getSession(login));
 					return Response.created(new URI(builder.toString())).build();
 				}
 				return Response.status(418).build();
@@ -200,7 +199,8 @@ public class AccountUserResource {
 	@Path("subscribe")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response subscribe(@PathParam(value = "login") String login, @HeaderParam(value = "token") String token,
-			String topicName) throws UnsupportedEncodingException, URISyntaxException, ParseException, JsonProcessingException {
+			String topicName)
+			throws UnsupportedEncodingException, URISyntaxException, ParseException, JsonProcessingException {
 		if (token.isEmpty()) {
 			return Response.status(Status.UNAUTHORIZED).build();
 		} else {
@@ -212,17 +212,18 @@ public class AccountUserResource {
 					if (!user.getTopics().contains(topic)) {
 						if (user.subscribeToTopic(topic)) {
 							ReceivedMessageRepresentation receivedMessage = new ReceivedMessageRepresentation(login,
-									topicName,
-									login + " has subscribed to the topic : " + topic.getName(), new Date());
+									topicName, login + " has subscribed to the topic : " + topic.getName(), new Date());
 							Database.uploadMessaage(receivedMessage.toExchangeMessage());
-							NotificationSessionManager.publish(receivedMessage, NotificationSessionManager.getSession(login));
-							NotificationSessionManager.publishOnce(
-						new ReceivedMessageRepresentation(
-								login,
-								Constants.getAdministrationTopic(),
-								Constants.getMapper().writeValueAsString(new UserPropertiesRepresentation(Database.getConnectedUser(login))),
-								new Date()),
-								NotificationSessionManager.getSession(login));
+							NotificationSessionManager.publishToAll(receivedMessage,
+									NotificationSessionManager.getSession(login));
+							NotificationSessionManager
+									.publishToOne(
+											new ReceivedMessageRepresentation(login, Constants.getAdministrationTopic(),
+													Constants.getMapper()
+															.writeValueAsString(new UserPropertiesRepresentation(
+																	Database.getConnectedUser(login))),
+													new Date()),
+											NotificationSessionManager.getSession(login));
 							return Response.ok().build();
 						} else {
 							return Response.status(Status.BAD_REQUEST).build();

@@ -16,7 +16,6 @@ import com.mo.kyung.dps.prototype2.data.Database;
 import com.mo.kyung.dps.prototype2.data.datatypes.AccountUser;
 import com.mo.kyung.dps.prototype2.data.representations.LogInRepresentation;
 
-
 //this service is not ok
 @Path("auth")
 public class AuthenticationResource {
@@ -25,28 +24,26 @@ public class AuthenticationResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response logIn(LogInRepresentation credentials) throws UnsupportedEncodingException {
 		for (AccountUser user : Database.getUsers()) {
-			if (user.getLogin().equals(credentials.getLogin()) && user.getPassword().equals(credentials.getPassword())) {
-				if (!user.isConnected()) {
+			if (user.getLogin().equals(credentials.getLogin())) {
+				if (user.getPassword().equals(credentials.getPassword())) {
 					Database.addConnectedUser(user);
 					return Response.ok(user.getToken()).build();
-				} else {
-					return Response.status(418).build();
 				}
 			}
 		}
 		return Response.status(400, "Login not found.").build();
 	}
+
 	@PUT
 	@Path("out")
 	public Response logOut(@HeaderParam(value = "token") String token) throws UnsupportedEncodingException {
-		String login = new String(Base64.getDecoder().decode(token), StandardCharsets.UTF_8.toString()).split("@101@")[0];
+		String login = new String(Base64.getDecoder().decode(token), StandardCharsets.UTF_8.toString())
+				.split("@101@")[0];
 		if (Database.getUser(login).isConnected()) {
 			Database.removeConnectedUser(Database.getUser(login));
+			System.out.println("1");
 			return Response.ok().build();
 		}
 		return Response.status(418).build();
 	}
 }
-
-
-

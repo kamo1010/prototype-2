@@ -16,7 +16,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mo.kyung.dps.prototype2.data.Database;
 import com.mo.kyung.dps.prototype2.data.representations.ReceivedMessageRepresentation;
 import com.mo.kyung.dps.prototype2.data.representations.SentMessageRepresentation;
-import com.mo.kyung.dps.prototype2.data.representations.UserPropertiesRepresentation;
 
 @ServerEndpoint(value = "/{login}", encoders = NotificationEncoder.class, decoders = NotificationDecoder.class)
 public class NotificationEndpoint {
@@ -29,27 +28,17 @@ public class NotificationEndpoint {
 			session.getUserProperties().put(Constants.getUserNameKey(), login);
 			if (NotificationSessionManager.register(session)) {
 				System.out.printf("Session opened for %s\n", login);
-				NotificationSessionManager.publish(
-						new ReceivedMessageRepresentation(
-								login,
-								Constants.getConnectionTopic(),
-								Constants.getMapper().writeValueAsString(Database.getConnectedUsersAsString()),
-								new Date()),
+				NotificationSessionManager.publishToAll(new ReceivedMessageRepresentation(login,
+						Constants.getConnectionTopic(),
+						Constants.getMapper().writeValueAsString(Database.getConnectedUsersAsString()), new Date()),
 						session);
-				NotificationSessionManager.publishOnce(
-						new ReceivedMessageRepresentation(
-								login,
-								Constants.getAdministrationTopic(),
-								Constants.getMapper().writeValueAsString(new UserPropertiesRepresentation(Database.getConnectedUser(login))),
-								new Date()),
-						session);
-				System.out.println(Database.getConnectedUser(login).getTopics().isEmpty());
 			} else {
 				throw new RegistrationFailedException("Unable to register, username already exists, try another");
 			}
 		}
 	}
-//AccountUser accountUser, Topic topic, String payload, Date date
+
+	// AccountUser accountUser, Topic topic, String payload, Date date
 	@OnError
 	public void onError(final Session session, final Throwable throwable) {
 		if (throwable instanceof RegistrationFailedException) {
@@ -67,12 +56,9 @@ public class NotificationEndpoint {
 		if (NotificationSessionManager.remove(session)) {
 			String login = (String) session.getUserProperties().get(Constants.getUserNameKey());
 			System.out.printf("Session closed for %s\n", session.getUserProperties().get(Constants.getUserNameKey()));
-			NotificationSessionManager.publish(
-					new ReceivedMessageRepresentation(
-							login,
-							Constants.getConnectionTopic(),
-							Constants.getMapper().writeValueAsString(Database.getConnectedUsersLogin()),
-							new Date()),
+			NotificationSessionManager.publishToAll(
+					new ReceivedMessageRepresentation(login, Constants.getConnectionTopic(),
+							Constants.getMapper().writeValueAsString(Database.getConnectedUsersLogin()), new Date()),
 					session);
 		}
 	}

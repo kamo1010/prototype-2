@@ -17,7 +17,7 @@ import com.mo.kyung.dps.prototype2.data.Database;
 import com.mo.kyung.dps.prototype2.data.representations.ReceivedMessageRepresentation;
 
 public class NotificationSessionManager {
-	private static final Lock LOCK = new ReentrantLock();
+    private static final Lock LOCK = new ReentrantLock();
     private static final Set<Session> SESSIONS = new CopyOnWriteArraySet<>();
     private static final int openSessionLimitNumber = 15;
 
@@ -26,15 +26,17 @@ public class NotificationSessionManager {
     }
 
     public static Set<Session> getSessions() {
-		return Collections.unmodifiableSet(SESSIONS);
-	}
+        return Collections.unmodifiableSet(SESSIONS);
+    }
 
-	public static void publish(final ReceivedMessageRepresentation receivedMessageRepresentation, final Session origin) {
+    public static void publishToAll(final ReceivedMessageRepresentation receivedMessageRepresentation,
+            final Session origin) {
         assert !Objects.isNull(receivedMessageRepresentation) && !Objects.isNull(origin);
         SESSIONS.stream().forEach(session -> {
-            try {//gotta check who is concerned
-                if (Database.getConnectedUser((String) session.getUserProperties().get(Constants.getUserNameKey())).isInterestedIn(Database.getTopic(receivedMessageRepresentation.getTopic()))) {
-                	session.getBasicRemote().sendObject(receivedMessageRepresentation);
+            try {// gotta check who is concerned
+                if (Database.getConnectedUser((String) session.getUserProperties().get(Constants.getUserNameKey()))
+                        .isInterestedIn(Database.getTopic(receivedMessageRepresentation.getTopic()))) {
+                    session.getBasicRemote().sendObject(receivedMessageRepresentation);
                 }
             } catch (IOException | EncodeException e) {
                 e.printStackTrace();
@@ -42,24 +44,23 @@ public class NotificationSessionManager {
         });
     }
 
-    public static void publishOnce(final ReceivedMessageRepresentation receivedMessageRepresentation, final Session targetSession) {
+    public static void publishToOne(final ReceivedMessageRepresentation receivedMessageRepresentation,
+            final Session targetSession) {
         assert !Objects.isNull(receivedMessageRepresentation) && !Objects.isNull(targetSession);
-        if (Database.getConnectedUser((String) targetSession.getUserProperties().get(Constants.getUserNameKey())).isInterestedIn(Database.getTopic(receivedMessageRepresentation.getTopic()))) {
-            try {
-                targetSession.getBasicRemote().sendObject(receivedMessageRepresentation);
-            } catch (IOException | EncodeException e) {
-                e.printStackTrace();
-            }
+        try {
+            targetSession.getBasicRemote().sendObject(receivedMessageRepresentation);
+        } catch (IOException | EncodeException e) {
+            e.printStackTrace();
         }
     }
 
-    public static Session getASession(){
+    public static Session getASession() {
         return (Session) SESSIONS.toArray()[0];
     }
 
-    public static Session getSession(String login){
+    public static Session getSession(String login) {
         for (Session session : SESSIONS) {
-            if (session.getUserProperties().get(Constants.getUserNameKey()).equals(login)){
+            if (session.getUserProperties().get(Constants.getUserNameKey()).equals(login)) {
                 return session;
             }
         }
@@ -73,18 +74,21 @@ public class NotificationSessionManager {
         try {
             LOCK.lock();
 
-            result = !SESSIONS.contains(session) && SESSIONS.size() < openSessionLimitNumber && !SESSIONS.stream()
-                    .filter(elem -> ((String) elem.getUserProperties().get(Constants.getUserNameKey())).equals((String) session.getUserProperties().get(Constants.getUserNameKey())))
-                    .findFirst().isPresent() && SESSIONS.add(session);
+            result = !SESSIONS.contains(session) && SESSIONS.size() < openSessionLimitNumber
+                    && !SESSIONS.stream()
+                            .filter(elem -> ((String) elem.getUserProperties().get(Constants.getUserNameKey()))
+                                    .equals((String) session.getUserProperties().get(Constants.getUserNameKey())))
+                            .findFirst().isPresent()
+                    && SESSIONS.add(session);
         } finally {
             LOCK.unlock();
         }
         return result;
     }
-    
+
     static void close(final Session session, final CloseCodes closeCode, final String message) {
         assert !Objects.isNull(session) && !Objects.isNull(closeCode);
-        
+
         try {
             session.close(new CloseReason(closeCode, message));
         } catch (IOException e) {

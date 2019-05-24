@@ -2,6 +2,7 @@ package com.mo.kyung.dps.prototype2.data;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -17,7 +18,8 @@ public class Database {
 	private static AccountUser admin = new AccountUser("admin", "admin", "admin", "admin");
 	private static Set<AccountUser> users = new TreeSet<AccountUser>();
 	private static Set<Topic> topics = new TreeSet<Topic>();
-	private static Map<String, AccountUser> connectedUsers = new TreeMap<String, AccountUser>(); // String is for the token
+	private static Map<String, AccountUser> connectedUsers = new TreeMap<String, AccountUser>(); // String is for the
+																									// token
 	private static Set<ExchangeMessage> uploadedMessages = new TreeSet<ExchangeMessage>();
 	static {
 		System.out.println("bonjour");
@@ -25,7 +27,7 @@ public class Database {
 		addTopic(new Topic(Constants.getConnectionTopic(), true));
 		addTopic(new Topic(Constants.getNewTopicTopic(), true));
 		addTopic(new Topic("test", true));
-		
+
 		addUser(admin);
 
 		addUser(new AccountUser("Patrick", "GRIMBERG", "patrick", "grimberg"));
@@ -45,6 +47,7 @@ public class Database {
 		addUser(new AccountUser("Didier", "TERRIER", "didier", "terrier"));
 		addUser(new AccountUser("Antoine", "MUNCK", "antoine", "munck"));
 
+		uploadMessaage(new ExchangeMessage(getUser("admin"), getTopic("test"), "Welcome", new Date()));
 		/*
 		 * getUser("abdoulaye").subscribeToTopic(getTopic("Administrator"));
 		 * getUser("abdoulaye").subscribeToTopic(getTopic("Stagiaires"));
@@ -155,7 +158,7 @@ public class Database {
 		return getUser(login).subscribeToTopic(getTopic(topicName));
 	}
 
-	public static Set<String> getConnectedUsersLogin(){
+	public static Set<String> getConnectedUsersLogin() {
 		Set<String> connectesUsersLogin = new TreeSet<String>();
 		for (AccountUser user : connectedUsers.values()) {
 			connectesUsersLogin.add(user.getLogin());
@@ -164,7 +167,7 @@ public class Database {
 	}
 
 	public static Set<String> getConnectedUsersAsString() {
-		Set<String> logins =new HashSet<>();
+		Set<String> logins = new HashSet<>();
 		for (AccountUser user : connectedUsers.values()) {
 			logins.add(user.getLogin());
 		}
