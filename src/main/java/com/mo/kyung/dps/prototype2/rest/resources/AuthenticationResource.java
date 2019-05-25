@@ -41,8 +41,7 @@ public class AuthenticationResource {
 				.split("@101@")[0];
 		if (Database.getUser(login).isConnected()) {
 			Database.removeConnectedUser(Database.getUser(login));
-			System.out.println("1");
-			return Response.ok().build();
+			return Response.noContent().build();
 		}
 		return Response.status(418).build();
 	}

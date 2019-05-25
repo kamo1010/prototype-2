@@ -7,9 +7,8 @@ var LOGIN;
 document.getElementById("login_btn").addEventListener("click", logIn);
 document.getElementById("log_out_btn").addEventListener("click", logOut);
 document.getElementById("post_message_btn").addEventListener("click", postNewMessage);
-/*
 document.getElementById("creat_topic_btn").addEventListener("click", createTopic);
-document.getElementById("subscription_topic_btn").addEventListener("click", subscribe);*/
+document.getElementById("subscription_topic_btn").addEventListener("click", subscribe);
 /*
  * ajouter les gens qui se connectent dans la barre de côté ajouter les topics
  * abbonés qand on s'abonne envoyer message quand on crée topic, s'abonne, crée
@@ -32,7 +31,6 @@ function logIn() {
             if (request.readyState === XMLHttpRequest.DONE) {
                 switch (request.status) {
                     case 200:
-                        currentUser = credentials.login;
                         token = request.responseText;
                         openSocket();
                         break;
@@ -51,7 +49,7 @@ function logIn() {
 }
 
 function switchDisplay() {
-    document.getElementById("truc").style.display = "none";
+    document.getElementById("authenticatePanel").style.display = "none";
     document.getElementById("dashboard").style.display = "block";
 }
 
@@ -64,7 +62,6 @@ function openSocket() {
     socket.onopen = function(event) {
         switchDisplay();
         displayTextProperties();
-        console.log("bonjour");
         displayPreviousMessages();
     };
     socket.onmessage = function(event) {
@@ -121,6 +118,23 @@ function displayTextProperties() {
     }
 }
 
+function displayProperties(msg) {
+    var properties = JSON.parse(msg.payload);
+    console.log(properties);
+    var fName = document.getElementById("properties_first_name").innerHTML + " ";
+    var lName = document.getElementById("properties_last_name").innerHTML + " ";
+    var loggin = document.getElementById("properties_login").innerHTML + " ";
+    document.getElementById("properties_first_name").innerHTML = fName + properties.firstName;
+    document.getElementById("properties_last_name").innerHTML = lName + properties.lastName;
+    document.getElementById("properties_login").innerHTML = loggin + properties.login;
+    for (var i = 0; i < properties.topicsNames.length; i++) {
+        var topicElement = document.createElement("li");
+        topicElement.setAttribute("class", "list-group-item d-flex justify-content-between align-items-center");
+        topicElement.innerHTML = properties.topicsNames[i];
+        document.getElementById("properties_subscriber_topics_list").appendChild(topicElement);
+    }
+}
+
 function displayPreviousMessages() {
     var request = new XMLHttpRequest();
     request.open("GET", "http://" + window.location.hostname +
@@ -166,8 +180,7 @@ function logOut() {
         request.setRequestHeader("token", token);
         request.send();
         request.onreadystatechange = function() {
-            console.log(request.status);
-            if (request.status === 200) {
+            if (request.status === 204) {
                 resetSession();
             }
         }
@@ -181,7 +194,7 @@ function resetSession() {
     cleanAvailableUsers();
     cleanProperties();
     cleanMessages();
-    document.getElementById("truc").style.display = "block";
+    document.getElementById("authenticatePanel").style.display = "block";
     document.getElementById("dashboard").style.display = "none";
 }
 
@@ -228,7 +241,7 @@ function displayAvailableUsers(msg) {
         contacts.innerHTML = contacts.innerHTML + elementToBeAdded;
     }
 }
-/*
+
 function postNewMessage() {
     message = {
         topic: document.getElementById("message_topic").value,
@@ -242,10 +255,6 @@ function postNewMessage() {
         request.setRequestHeader("token", token);
         request.send(JSON.stringify(message));
     }
-}
-
-function createAccount() { //not available in this version
-    console.log("createAccount");
 }
 
 function createTopic() {
@@ -267,4 +276,14 @@ function subscribe() {
     request.setRequestHeader("token", token);
     request.send(message);
 }
-*/
+
+/* function displayProperties(webSocketMessage) {
+    var body = JSON.parse(webSocketMessage);
+    console.log(body);
+} */
+
+/* function displayAvailableUsers(webSocketMessage) {
+    console.log(webSocketMessage);
+    var body = JSON.parse(webSocketMessage.payload);
+    console.log(body);
+} */

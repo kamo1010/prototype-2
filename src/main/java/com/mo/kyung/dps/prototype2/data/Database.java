@@ -27,6 +27,7 @@ public class Database {
 		addTopic(new Topic(Constants.getConnectionTopic(), true));
 		addTopic(new Topic(Constants.getNewTopicTopic(), true));
 		addTopic(new Topic("test", true));
+		addTopic(new Topic("special", false));
 
 		addUser(admin);
 
@@ -48,20 +49,8 @@ public class Database {
 		addUser(new AccountUser("Antoine", "MUNCK", "antoine", "munck"));
 
 		uploadMessaage(new ExchangeMessage(getUser("admin"), getTopic("test"), "Welcome", new Date()));
-		/*
-		 * getUser("abdoulaye").subscribeToTopic(getTopic("Administrator"));
-		 * getUser("abdoulaye").subscribeToTopic(getTopic("Stagiaires"));
-		 * getUser("abdoulaye").subscribeToTopic(getTopic("Karren"));
-		 * getUser("abdoulaye").subscribeToTopic(getTopic("Administrator"));
-		 * getUser("didier").subscribeToTopic(getTopic("Administrator"));
-		 * getUser("antoine").subscribeToTopic(getTopic("Administrator"));
-		 * getUser("patrick").subscribeToTopic(getTopic("Administrator"));
-		 * getUser("maud").subscribeToTopic(getTopic("Stagiaires"));
-		 * getUser("alexis").subscribeToTopic(getTopic("Stagiaires"));
-		 * getUser("hamza").subscribeToTopic(getTopic("Stagiaires"));
-		 * getUser("kyungmo").subscribeToTopic(getTopic("Stagiaires"));
-		 * getUser("jerome").subscribeToTopic(getTopic("Karren"));
-		 */
+		getUser("admin").subscribeToTopic(getTopic("special"));
+		getUser("kyungmo").subscribeToTopic(getTopic("special"));
 	}
 
 	public static Set<AccountUser> getUsers() {

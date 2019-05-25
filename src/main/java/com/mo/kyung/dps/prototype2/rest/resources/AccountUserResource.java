@@ -64,18 +64,21 @@ public class AccountUserResource {
 					.split("@101@")[0])) {
 				if (Database.getTopic(message.getTopic()) != null) {
 					if (Database.getConnectedUser(login).getTopics().contains(Database.getTopic(message.getTopic()))) {
-						Database.uploadMessaage(new ExchangeMessage(Database.getUser(login),
-								Database.getTopic(message.getTopic()), message.getPayload()));
-						StringBuilder builder = new StringBuilder(login).append("/notifications");
-						for (AccountUser user : Database.getConnectedUsers().values()) {
+						ExchangeMessage msg = new ExchangeMessage(Database.getUser(login),
+						Database.getTopic(message.getTopic()), message.getPayload());
+						Database.uploadMessaage(msg);
+						/* for (AccountUser user : Database.getConnectedUsers().values()) {
 							if (user.isInterestedIn(Database.getTopic(message.getTopic()))) {
 								NotificationSessionManager.publishToOne(
 										new ReceivedMessageRepresentation(login, message.getTopic(),
 												message.getPayload(), new Date()),
 										NotificationSessionManager.getSession(user.getLogin()));
 							}
-						}
-						return Response.created(new URI(builder.toString())).build();
+						} */
+						NotificationSessionManager.publishToAll(new ReceivedMessageRepresentation(msg.getUser().getLogin(), msg.getTopic().getName(),
+						msg.getPayload(), msg.getEditionDate()),
+				NotificationSessionManager.getASession());
+						return Response.created(new URI(new StringBuilder(login).append("/notifications").toString())).build();
 					} else {
 						return Response.status(Status.FORBIDDEN).build();
 					}
@@ -151,7 +154,6 @@ public class AccountUserResource {
 					AccountUser user = Database.getConnectedUser(login);
 					Database.addTopic(topic);
 					user.subscribeToTopic(topic);
-					StringBuilder builder = new StringBuilder(login).append("/topics/");
 					ReceivedMessageRepresentation receivedMessage = new ReceivedMessageRepresentation(login,
 							Constants.getNewTopicTopic(), login + " has created a new topic : " + topic.getName(),
 							new Date());
@@ -161,9 +163,9 @@ public class AccountUserResource {
 					NotificationSessionManager.publishToOne(new ReceivedMessageRepresentation(login,
 							Constants.getAdministrationTopic(),
 							Constants.getMapper().writeValueAsString(
-									new UserPropertiesRepresentation(Database.getConnectedUser(login))),
+									new UserPropertiesRepresentation(user)),
 							new Date()), NotificationSessionManager.getSession(login));
-					return Response.created(new URI(builder.toString())).build();
+					return Response.created(new URI(new StringBuilder(login).append("/topics/").toString())).build();
 				}
 				return Response.status(418).build();
 			} else {
