@@ -29,7 +29,9 @@ public class UserPropertiesRepresentation {
 		this.login = user.getLogin();
 		this.topicsNames = new TreeSet<String>();
 		for (Topic topic : user.getTopics()) {
-			topicsNames.add(topic.getName());
+			if (!topic.isPublic()) {
+				topicsNames.add(topic.getName());
+			}
 		}
 	}
 

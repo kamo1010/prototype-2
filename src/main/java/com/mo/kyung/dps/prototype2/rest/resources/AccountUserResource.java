@@ -121,23 +121,6 @@ public class AccountUserResource {
 		}
 	}
 
-	@GET
-	@Path("topics")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getInterestTopics(@PathParam(value = "login") String login,
-			@HeaderParam(value = "token") String token) throws UnsupportedEncodingException {
-		if (token.isEmpty()) {
-			return Response.status(Status.UNAUTHORIZED).build();
-		} else {
-			if (login.equals(new String(Base64.getDecoder().decode(token), StandardCharsets.UTF_8.toString())
-					.split("@101@")[0])) {
-				return Response.ok(Database.getUser(login).getTopics()).build();
-			} else {
-				return Response.status(Status.FORBIDDEN).build();
-			}
-		}
-	}
-
 	@POST
 	@Path("topics")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -149,8 +132,8 @@ public class AccountUserResource {
 		} else {
 			if (login.equals(new String(Base64.getDecoder().decode(token), StandardCharsets.UTF_8.toString())
 					.split("@101@")[0])) {
-				if (Database.getTopic(newTopic) == null) {
-					Topic topic = new Topic(newTopic, false);
+				Topic topic = new Topic(newTopic, false);
+				if (!topic.equals(Database.getTopic(newTopic))) {
 					AccountUser user = Database.getConnectedUser(login);
 					Database.addTopic(topic);
 					user.subscribeToTopic(topic);
