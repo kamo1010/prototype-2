@@ -24,7 +24,10 @@ public class Topic implements Comparable<Topic> {
 		return publik;
 	}
 	public boolean addSubscriber(AccountUser subscriber) {
-		return this.subscribers.add(subscriber);
+		if (subscriber.getLogin() != null) {
+			return this.subscribers.add(subscriber);
+		}
+		return false;
 	}
 	public boolean removeSubscriber(AccountUser subscriber) {
 		return this.subscribers.remove(subscriber);
