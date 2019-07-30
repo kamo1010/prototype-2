@@ -22,7 +22,8 @@ function logIn() {
             password: document.getElementById("password").value
         };
         LOGIN = credentials.login;
-
+        console.log(LOGIN);
+        console.log(credentials.password);
         var request = new XMLHttpRequest();
         request.open("POST", "http://" + window.location.hostname +
             ":8080/prototype-two/rest/auth/in");

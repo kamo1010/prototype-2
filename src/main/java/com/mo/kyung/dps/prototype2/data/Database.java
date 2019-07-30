@@ -47,6 +47,7 @@ public class Database {
 		addUser(new AccountUser("Nathan", "MARGUET", "nathan", "marguet"));
 		addUser(new AccountUser("Didier", "TERRIER", "didier", "terrier"));
 		addUser(new AccountUser("Antoine", "MUNCK", "antoine", "munck"));
+		addUser(new AccountUser("Hyo Mi", "KIM", "hyomi", "kim"));
 
 		uploadMessaage(new ExchangeMessage(getUser("admin"), getTopic("test"), "Welcome", new Date()));
 		getUser("admin").subscribeToTopic(getTopic("special"));
