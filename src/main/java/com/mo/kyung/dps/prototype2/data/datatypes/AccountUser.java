@@ -87,6 +87,6 @@ public class AccountUser implements Comparable<AccountUser> {
 		return (addTopic(topic) && topic.addSubscriber(this));
 	}
 	public boolean unsubscribe(Topic topic) {
-		return removeTopic(topic);
+		return (removeTopic(topic) && topic.removeSubscriber(this));
 	}
 }

@@ -19,7 +19,7 @@ public class Database {
 	private static Set<AccountUser> users = new TreeSet<AccountUser>();
 	private static Set<Topic> topics = new TreeSet<Topic>();
 	private static Map<String, AccountUser> connectedUsers = new TreeMap<String, AccountUser>(); // String is for the
-																									// token
+																					// token
 	private static Set<ExchangeMessage> uploadedMessages = new TreeSet<ExchangeMessage>();
 	static {
 		System.out.println("bonjour");

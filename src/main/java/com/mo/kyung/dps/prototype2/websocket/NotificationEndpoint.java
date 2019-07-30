@@ -55,6 +55,7 @@ public class NotificationEndpoint {
 	public void onClose(final Session session) throws JsonProcessingException {
 		if (NotificationSessionManager.remove(session)) {
 			String login = (String) session.getUserProperties().get(Constants.getUserNameKey());
+			
 			System.out.printf("Session closed for %s\n", session.getUserProperties().get(Constants.getUserNameKey()));
 			NotificationSessionManager.publishToAll(
 					new ReceivedMessageRepresentation(login, Constants.getConnectionTopic(),

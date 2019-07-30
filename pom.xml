@@ -13,12 +13,19 @@
 		<maven.war.plugin>3.2.0</maven.war.plugin>
 		<cargo.maven.plugin>1.6.4</cargo.maven.plugin>
 		<tomcat.version>8.5.23</tomcat.version>
+		<powermock.version>2.0.2</powermock.version>
 
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
 		<dependency>
 			<groupId>javax.websocket</groupId>
 			<artifactId>javax.websocket-api</artifactId>
@@ -60,6 +67,10 @@
 			<version>4.0.0</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>2.28.2</version>
+		</dependency>
 	</dependencies>
-
 </project>
