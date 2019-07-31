@@ -30,9 +30,7 @@ public class AuthenticationResource {
 					Database.addConnectedUser(user);
 					return Response.ok(user.getToken()).build();
 				}
-				System.out.println("no pw");
 			}
-			System.out.println("no login");
 		}
 		return Response.status(403, "Login not found.").build();
 	}
