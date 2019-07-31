@@ -23,15 +23,18 @@ public class AuthenticationResource {
 	@Path("in")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response logIn(LogInRepresentation credentials) throws UnsupportedEncodingException {
+		System.out.println(credentials.getLogin() + credentials.getPassword());
 		for (AccountUser user : Database.getUsers()) {
 			if (user.getLogin().equals(credentials.getLogin())) {
 				if (user.getPassword().equals(credentials.getPassword())) {
 					Database.addConnectedUser(user);
 					return Response.ok(user.getToken()).build();
 				}
+				System.out.println("no pw");
 			}
+			System.out.println("no login");
 		}
-		return Response.status(400, "Login not found.").build();
+		return Response.status(403, "Login not found.").build();
 	}
 
 	@PUT
