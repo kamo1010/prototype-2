@@ -34,5 +34,4 @@ public class NotificationDecoder implements Decoder.Text<SentMessageRepresentati
 				&& message.contains(Constants.getEditionDateKey())
 				&& message.contains(Constants.getTopicKey());
     }
-
 }

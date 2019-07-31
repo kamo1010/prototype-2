@@ -10,6 +10,7 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import com.mo.kyung.dps.prototype2.data.datatypes.AccountUser;
+import com.mo.kyung.dps.prototype2.data.datatypes.EEnnuum;
 import com.mo.kyung.dps.prototype2.data.datatypes.ExchangeMessage;
 import com.mo.kyung.dps.prototype2.data.datatypes.Topic;
 import com.mo.kyung.dps.prototype2.websocket.Constants;
@@ -23,6 +24,7 @@ public class Database {
 	private static Set<ExchangeMessage> uploadedMessages = new TreeSet<ExchangeMessage>();
 	static {
 		System.out.println("bonjour");
+		System.out.println(EEnnuum.ONE);
 		addTopic(new Topic(Constants.getAdministrationTopic(), true));
 		addTopic(new Topic(Constants.getConnectionTopic(), true));
 		addTopic(new Topic(Constants.getNewTopicTopic(), true));
@@ -47,6 +49,10 @@ public class Database {
 		addUser(new AccountUser("Nathan", "MARGUET", "nathan", "marguet"));
 		addUser(new AccountUser("Didier", "TERRIER", "didier", "terrier"));
 		addUser(new AccountUser("Antoine", "MUNCK", "antoine", "munck"));
+		addUser(new AccountUser("Hugo", "MASSELOT", "hugo", "masselot"));
+		addUser(new AccountUser("Léo", "REMY", "leo", "remy"));
+		addUser(new AccountUser("Henri", "BAUER", "henri", "bauer"));
+		addUser(new AccountUser("Ladjel", "BELLATRECHE", "ladjel", "bellatreche"));
 
 		uploadMessaage(new ExchangeMessage(getUser("admin"), getTopic("test"), "Welcome", new Date()));
 		getUser("admin").subscribeToTopic(getTopic("special"));
